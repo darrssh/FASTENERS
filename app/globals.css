@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #080706;
+  --color-ink-soft: #11100e;
+  --color-ivory: #f3efe7;
+  --color-gold: #c6a66b;
+  --color-gold-soft: #d8c18a;
+  --color-mist: #96918a;
+  --color-line: #27231e;
+
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-body: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-ivory);
+    font-family: var(--font-body);
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-gold);
+    outline-offset: 4px;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  .hero-scroll {
+    height: 380vh;
+  }
+
+  .menu-clip {
+    clip-path: circle(0% at 100% 0%);
+    transition: clip-path 0.7s cubic-bezier(0.77, 0, 0.18, 1);
+  }
+
+  .menu-clip-open {
+    clip-path: circle(150% at 100% 0%);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-scroll {
+    height: 320vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
