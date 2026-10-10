@@ -5,7 +5,7 @@ import { Environment, Lightformer } from '@react-three/drei';
  * plus a LOCAL Lightformer environment so metals have something believable
  * to reflect without fetching remote HDRIs (works offline, no broken URLs).
  */
-export function StudioLighting({ rimIntensity = 2.2 }: { rimIntensity?: number }) {
+export function StudioLighting({ rimIntensity = 2.2, shadows = true }: { rimIntensity?: number; shadows?: boolean }) {
   return (
     <>
       {/* KEY — large soft source above-left: reveals head + thread highlights */}
@@ -13,7 +13,7 @@ export function StudioLighting({ rimIntensity = 2.2 }: { rimIntensity?: number }
         position={[4.5, 6, 3.5]}
         intensity={2.6}
         color="#fff6e3"
-        castShadow
+        castShadow={shadows}
         shadow-mapSize={[1024, 1024]}
         shadow-bias={-0.0002}
       />

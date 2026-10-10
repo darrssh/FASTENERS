@@ -15,7 +15,7 @@ export function FeaturedProducts() {
             <p className="eyebrow" data-reveal>Featured · 07</p>
             <h2 className="display-section mt-3 text-balance" data-reveal>Stock the <span className="serif-accent brass-text">essentials.</span></h2>
           </div>
-          <Link to="/products" className="btn-ghost" data-reveal>Shop all 46 →</Link>
+          <Link to="/products" className="btn-ghost" data-reveal>Shop all {products.length} →</Link>
         </div>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-3" data-reveal>
           {featured.map((p) => (

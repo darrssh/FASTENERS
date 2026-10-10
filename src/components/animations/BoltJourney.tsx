@@ -37,7 +37,7 @@ export function BoltJourney({ progress, finishId = 'stainless', reducedMotion = 
     const w = buildWasher(material);
     return { bolt: b.group, nut: n, washer: w };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isMobile]);
 
   // Dispose procedural geometries on unmount — generator code owns its buffers.
   useEffect(() => {
@@ -78,6 +78,10 @@ export function BoltJourney({ progress, finishId = 'stainless', reducedMotion = 
     return g;
   }, [isMobile]);
   const dustMat = useRef<THREE.PointsMaterial>(null);
+
+  // `dust` is allocated in useMemo and attached via <points geometry> —
+  // R3F only auto-disposes objects it creates itself, so free it manually.
+  useEffect(() => () => dust.dispose(), [dust]);
 
   useFrame(({ clock, camera: cam }, delta) => {
     const rawT = progress.current;

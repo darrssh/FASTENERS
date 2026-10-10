@@ -11,8 +11,17 @@ export function useFastenerMaterial(finishId: string): THREE.MeshStandardMateria
     mat.metalness = next.metalness;
     mat.roughness = next.roughness;
     mat.envMapIntensity = next.envMapIntensity;
+    // Material.dispose() does NOT free textures — the throwaway's canvas
+    // roughnessMap must go explicitly or every finish switch leaks GPU memory.
+    next.roughnessMap?.dispose();
     next.dispose();
   }, [finishId, mat]);
-  useEffect(() => () => mat.dispose(), [mat]);
+  useEffect(
+    () => () => {
+      mat.roughnessMap?.dispose();
+      mat.dispose();
+    },
+    [mat],
+  );
   return mat;
 }

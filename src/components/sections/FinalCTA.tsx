@@ -6,10 +6,12 @@ import { StudioLighting } from '../hero/HeroLighting';
 import { AimCamera } from '../hero/AimCamera';
 import { ErrorBoundary } from '../ui/ErrorBoundary';
 import { useReveal } from '../../hooks/useScrollProgress';
+import { useInView } from '../../hooks/useInView';
 
 /** Final CTA (§24): pinned finale, brass glow, scroll-linked 3D. */
-export function FinalCTA() {
+export function FinalCTA({ isMobile = false }: { isMobile?: boolean }) {
   const ref = useReveal<HTMLElement>(true);
+  const { ref: viewRef, inView } = useInView<HTMLDivElement>(0.05);
   return (
     <section ref={ref} className="studio-bg relative overflow-hidden border-t hairline" aria-label="Final call to action">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brass/60 to-transparent" aria-hidden />
@@ -26,11 +28,16 @@ export function FinalCTA() {
         </div>
         <div data-reveal data-reveal-clip>
           <ErrorBoundary>
-            <div className="card-premium relative h-[340px] overflow-hidden md:h-[480px]" aria-label="Assembled bolt, nut and washer" data-parallax="-18">
-              <Canvas dpr={[1, 1.75]} camera={{ position: [3.6, 1.4, 4.6], fov: 35 }} gl={{ antialias: true, alpha: true }}>
+            <div ref={viewRef} className="card-premium relative h-[340px] overflow-hidden md:h-[480px]" aria-label="Assembled bolt, nut and washer">
+              <Canvas
+                dpr={isMobile ? [1, 1.25] : [1, 1.75]}
+                camera={{ position: [3.6, 1.4, 4.6], fov: 35 }}
+                gl={{ antialias: !isMobile, alpha: true }}
+                frameloop={inView ? 'always' : 'never'}
+              >
                 <Suspense fallback={null}>
                   <AimCamera target={[0.4, -0.1, 0]} />
-                  <StudioLighting rimIntensity={2.6} />
+                  <StudioLighting rimIntensity={2.6} shadows={!isMobile} />
                   <HeroBolt finishId="zinc" assembled />
                 </Suspense>
               </Canvas>

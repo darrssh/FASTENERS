@@ -3,6 +3,8 @@ import { Input, Textarea } from '../components/ui/Input';
 import { brand, contactHref } from '../data/brand';
 import { setMeta } from '../lib/utils';
 
+const CONTACT_KEY = 'fasteners-contact-v1';
+
 export function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [sent, setSent] = useState(false);
@@ -21,14 +23,14 @@ export function ContactPage() {
       <div>
         <p className="eyebrow">Contact · editable</p>
         <h1 className="display-section mt-3">Talk to a <span className="serif-accent brass-text">fastener human.</span></h1>
-        <dl className="card mt-6 space-y-3 p-6 text-[14px]">
-          <div><dt className="eyebrow">Business email</dt><dd className="mt-1">{email ? <a className="underline" href={email}>{brand.supportEmail}</a> : <span className="text-muted-dim">[not provided — edit src/data/brand.ts]</span>}</dd></div>
-          <div><dt className="eyebrow">Phone</dt><dd className="mt-1">{phone ? <a className="underline" href={phone}>{brand.phone}</a> : <span className="text-muted-dim">[not provided]</span>}</dd></div>
-          <div><dt className="eyebrow">Address</dt><dd className="mt-1">{brand.address || <span className="text-muted-dim">[not provided]</span>}</dd></div>
-          <div><dt className="eyebrow">Business hours</dt><dd className="mt-1">{brand.businessHours || <span className="text-muted-dim">[not provided]</span>}</dd></div>
-          <div><dt className="eyebrow">WhatsApp</dt><dd className="mt-1">{wa ? <a className="underline" href={wa}>Chat on WhatsApp</a> : <span className="text-muted-dim">[not configured]</span>}</dd></div>
-          <div><dt className="eyebrow">Social</dt><dd className="mt-1 text-muted-dim">[no social links provided]</dd></div>
-        </dl>
+        <address className="card mt-6 space-y-3 p-6 text-[14px] not-italic">
+          <div><p className="eyebrow">Business email</p><p className="mt-1">{email ? <a className="underline" href={email}>{brand.supportEmail}</a> : <span className="text-muted-dim">[not provided — edit src/data/brand.ts]</span>}</p></div>
+          <div><p className="eyebrow">Phone</p><p className="mt-1">{phone ? <a className="underline" href={phone}>{brand.phone}</a> : <span className="text-muted-dim">[not provided]</span>}</p></div>
+          <div><p className="eyebrow">Address</p><p className="mt-1">{brand.address || <span className="text-muted-dim">[not provided]</span>}</p></div>
+          <div><p className="eyebrow">Business hours</p><p className="mt-1">{brand.businessHours || <span className="text-muted-dim">[not provided]</span>}</p></div>
+          <div><p className="eyebrow">WhatsApp</p><p className="mt-1">{wa ? <a className="underline" href={wa}>Chat on WhatsApp</a> : <span className="text-muted-dim">[not configured]</span>}</p></div>
+          <div><p className="eyebrow">Social</p><p className="mt-1 text-muted-dim">[no social links provided]</p></div>
+        </address>
       </div>
       <div>
         {sent ? (
@@ -48,6 +50,14 @@ export function ContactPage() {
                 return;
               }
               setError('');
+              try {
+                const log = JSON.parse(localStorage.getItem(CONTACT_KEY) ?? '[]');
+                const lines = Array.isArray(log) ? log : [];
+                lines.push({ ...form, at: new Date().toISOString() });
+                localStorage.setItem(CONTACT_KEY, JSON.stringify(lines));
+              } catch {
+                /* storage blocked — still confirm, nothing to persist to */
+              }
               setSent(true);
             }}
             noValidate

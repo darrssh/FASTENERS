@@ -25,14 +25,22 @@ export function FAQ() {
           {FAQS.map((f, i) => (
             <div key={f.q} className={cx('overflow-hidden rounded-2xl border transition-colors duration-300', open === i ? 'card-premium' : 'card')} data-reveal>
               <button
+                type="button"
                 onClick={() => setOpen(open === i ? -1 : i)}
                 aria-expanded={open === i}
-                className="flex w-full items-center justify-between gap-4 p-5 text-left"
+                aria-controls={`faq-panel-${i}`}
+                id={`faq-button-${i}`}
+                className="flex min-h-[44px] w-full items-center justify-between gap-4 p-5 text-left"
               >
                 <span className="font-display text-[17px] font-semibold"><span className="mr-3 text-[12px] tracking-[0.2em] text-brass">0{i + 1}</span>{f.q}</span>
-                <span className={cx('grid h-8 w-8 shrink-0 place-items-center rounded-full border border-brass/30 text-xl text-brass transition-transform duration-300', open === i && 'rotate-45 bg-brass text-black')}>+</span>
+                <span aria-hidden="true" className={cx('grid h-8 w-8 shrink-0 place-items-center rounded-full border border-brass/30 text-xl text-brass transition-transform duration-300', open === i && 'rotate-45 bg-brass text-black')}>+</span>
               </button>
-              <div className={cx('grid transition-all duration-500', open === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0')}>
+              <div
+                id={`faq-panel-${i}`}
+                role="region"
+                aria-labelledby={`faq-button-${i}`}
+                className={cx('grid transition-all duration-500', open === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0')}
+              >
                 <div className="overflow-hidden">
                   <p className="px-5 pb-5 text-[14px] leading-relaxed text-muted">{f.a}</p>
                 </div>

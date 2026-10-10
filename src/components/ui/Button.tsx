@@ -6,9 +6,17 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;
 };
 
-export function Button({ variant = 'primary', children, className, ...rest }: Props) {
+export function Button({ variant = 'primary', type, children, className, ...rest }: Props) {
   return (
-    <button className={cx(variant === 'primary' ? 'btn-primary' : 'btn-ghost', className)} {...rest}>
+    <button
+      type={type ?? 'button'}
+      className={cx(
+        variant === 'primary' ? 'btn-primary' : 'btn-ghost',
+        'disabled:cursor-not-allowed disabled:opacity-60',
+        className,
+      )}
+      {...rest}
+    >
       {children}
     </button>
   );

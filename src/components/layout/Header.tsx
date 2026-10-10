@@ -4,7 +4,8 @@ import { brand } from '../../data/brand';
 import { categories, categoryGroups } from '../../data/categories';
 import { products } from '../../data/products';
 import { useCart } from '../../hooks/useCart';
-import { cx } from '../../lib/utils';
+import { cx, lockBodyScroll, unlockBodyScroll } from '../../lib/utils';
+import { useDialogFocus } from '../../hooks/useDialogFocus';
 
 export function Header({ onSearch }: { onSearch: () => void }) {
   const [scrolled, setScrolled] = useState(false);
@@ -12,9 +13,18 @@ export function Header({ onSearch }: { onSearch: () => void }) {
   const [mega, setMega] = useState(false);
   const [mobile, setMobile] = useState(false);
   const closeTimer = useRef<number | null>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const cart = useCart();
   const navigate = useNavigate();
+  const drawerRef = useDialogFocus<HTMLDivElement>(mobile);
+
+  // Touch laptops fire mouseenter on first tap AND click — gate hover-open
+  // to fine pointers so a tap doesn't open-then-instantly-close the menu.
+  const hoverOpen = () => {
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) openMega();
+  };
 
   const openMega = () => {
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
@@ -31,7 +41,20 @@ export function Header({ onSearch }: { onSearch: () => void }) {
     setMobile(false);
   }, [location.pathname, location.search]);
 
+  // Keyboard users: close the mega menu once focus leaves trigger + panel.
   useEffect(() => {
+    if (!mega) return;
+    const onFocus = (e: FocusEvent) => {
+      const t = e.target as Node | null;
+      if (!t) return;
+      if (!triggerRef.current?.contains(t) && !panelRef.current?.contains(t)) setMega(false);
+    };
+    document.addEventListener('focusin', onFocus);
+    return () => document.removeEventListener('focusin', onFocus);
+  }, [mega]);
+
+  useEffect(() => {
+    if (!mega && !mobile) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setMega(false);
@@ -40,7 +63,7 @@ export function Header({ onSearch }: { onSearch: () => void }) {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [mega, mobile]);
 
   useEffect(() => () => {
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
@@ -57,11 +80,11 @@ export function Header({ onSearch }: { onSearch: () => void }) {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
+  // Reference-counted: opening Search on top of the drawer can't unlock early.
   useEffect(() => {
-    document.body.style.overflow = mobile ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
+    if (!mobile) return;
+    lockBodyScroll();
+    return () => unlockBodyScroll();
   }, [mobile]);
 
   return (
@@ -90,14 +113,15 @@ export function Header({ onSearch }: { onSearch: () => void }) {
           </Link>
 
           <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
-            <div className="relative" onMouseEnter={openMega} onMouseLeave={scheduleCloseMega}>
+            <div ref={triggerRef} className="relative" onMouseEnter={hoverOpen} onMouseLeave={scheduleCloseMega}>
               <button
                 type="button"
                 className="flex items-center gap-1.5 text-[13px] font-semibold uppercase tracking-[0.14em] text-silver hover:text-paper"
                 aria-expanded={mega}
-                aria-haspopup="true"
+                aria-haspopup="menu"
+                aria-controls="products-mega"
                 onClick={() => setMega((v) => !v)}
-                onFocus={openMega}
+                onFocus={hoverOpen}
               >
                 Products
                 <span aria-hidden className={cx('text-[10px] transition-transform duration-200', mega && 'rotate-180')}>▾</span>
@@ -121,17 +145,24 @@ export function Header({ onSearch }: { onSearch: () => void }) {
           </nav>
 
           <div className="flex items-center gap-2">
-            <button onClick={onSearch} className="rounded-lg border hairline bg-white/[0.02] p-2.5 text-silver backdrop-blur transition-all hover:-translate-y-0.5 hover:border-brass/50 hover:text-brass-light" aria-label="Search products">
+            <button type="button" onClick={onSearch} className="rounded-lg border hairline bg-white/[0.02] p-2.5 text-silver backdrop-blur transition-all hover:-translate-y-0.5 hover:border-brass/50 hover:text-brass-light" aria-label="Search products">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden><circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.8" /><line x1="12.5" y1="12.5" x2="16.5" y2="16.5" stroke="currentColor" strokeWidth="1.8" /></svg>
             </button>
-            <button onClick={() => navigate('/cart')} className="relative rounded-lg border hairline bg-white/[0.02] p-2.5 text-silver backdrop-blur transition-all hover:-translate-y-0.5 hover:border-brass/50 hover:text-brass-light" aria-label={`Cart, ${cart.count} items`}>
+            <button type="button" onClick={() => navigate('/cart')} className="relative rounded-lg border hairline bg-white/[0.02] p-2.5 text-silver backdrop-blur transition-all hover:-translate-y-0.5 hover:border-brass/50 hover:text-brass-light" aria-label={`Cart, ${cart.count} items`}>
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden><path d="M2 3h2.5l2 9h8l2-6H6" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /><circle cx="7.5" cy="15" r="1.4" fill="currentColor" /><circle cx="13.5" cy="15" r="1.4" fill="currentColor" /></svg>
               {cart.count > 0 && (
-                <span className="absolute -right-1.5 -top-1.5 rounded-full bg-gradient-to-br from-brass-light to-brass-dark px-1.5 text-[11px] font-bold text-black">{cart.count}</span>
+                <span className="absolute -right-1.5 -top-1.5 min-w-[20px] rounded-full bg-gradient-to-br from-brass-light to-brass-dark px-1.5 text-center text-[11px] font-bold leading-5 text-black">{cart.count}</span>
               )}
             </button>
             <Link to="/quote" className="btn-primary hidden !px-5 !py-2.5 md:inline-flex">Request a quote</Link>
-            <button onClick={() => setMobile(true)} className="rounded-lg border hairline p-2.5 text-silver lg:hidden" aria-label="Open menu">
+            <button
+              type="button"
+              onClick={() => setMobile(true)}
+              className="rounded-lg border hairline p-2.5 text-silver lg:hidden"
+              aria-label="Open menu"
+              aria-expanded={mobile}
+              aria-controls="mobile-nav"
+            >
               <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden><line x1="2" y1="4.5" x2="16" y2="4.5" stroke="currentColor" strokeWidth="1.8" /><line x1="2" y1="9" x2="16" y2="9" stroke="currentColor" strokeWidth={1.8} /><line x1="2" y1="13.5" x2="16" y2="13.5" stroke="currentColor" strokeWidth={1.8} /></svg>
             </button>
           </div>
@@ -142,16 +173,15 @@ export function Header({ onSearch }: { onSearch: () => void }) {
           trigger, so it can't overflow one side), height-capped with its own
           scroll, dismissible via backdrop / Escape / route change. */}
       {mega && (
-        <div className="fixed inset-0 z-[59] hidden lg:block" role="presentation">
+        <div className="fixed inset-0 z-[59] hidden lg:block">
           <div className="absolute bottom-0 left-0 right-0 top-[70px] bg-black/55" onClick={() => setMega(false)} aria-hidden />
           <div
+            ref={panelRef}
             className="absolute left-1/2 top-[74px] w-[min(880px,calc(100vw-2rem))] -translate-x-1/2"
-            onMouseEnter={openMega}
+            onMouseEnter={hoverOpen}
             onMouseLeave={scheduleCloseMega}
-            role="menu"
-            aria-label="Product categories"
           >
-            <div className="card-premium max-h-[calc(100vh-110px)] overflow-auto bg-ink-900/95 p-6 backdrop-blur-xl">
+            <nav id="products-mega" className="card-premium max-h-[calc(100vh-110px)] overflow-auto bg-ink-900/95 p-6 backdrop-blur-xl" aria-label="Product categories">
               <div className="grid grid-cols-3 gap-6">
                 {categoryGroups.map((g) => (
                   <div key={g}>
@@ -173,26 +203,26 @@ export function Header({ onSearch }: { onSearch: () => void }) {
                   </div>
                 ))}
               </div>
-              <div className="mt-6 flex items-center justify-between border-t hairline pt-4">
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t hairline pt-4">
                 <p className="text-[13px] text-muted">Full catalog — {products.length} Excel products. <span className="text-brass">PBR + scroll-story inside.</span></p>
                 <Link to="/products" onClick={() => setMega(false)} className="btn-primary !py-2.5 !px-5">
                   View all products
                 </Link>
               </div>
-            </div>
+            </nav>
           </div>
         </div>
       )}
 
       {mobile && (
-        <div className="fixed inset-0 z-[70] lg:hidden" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+        <div ref={drawerRef} className="fixed inset-0 z-[70] lg:hidden" role="dialog" aria-modal="true" aria-label="Mobile navigation">
           <div className="absolute inset-0 bg-black/70" onClick={() => setMobile(false)} />
-          <div className="absolute right-0 top-0 flex h-full w-[86%] max-w-sm flex-col bg-ink-900 p-6">
+          <div id="mobile-nav" className="absolute right-0 top-0 flex h-full w-[86%] max-w-sm flex-col overflow-y-auto overscroll-contain bg-ink-900 p-6">
             <div className="flex items-center justify-between">
               <p className="font-display text-sm font-bold tracking-[0.18em]">MENU</p>
-              <button onClick={() => setMobile(false)} className="rounded-md border hairline px-3 py-1.5 text-sm" autoFocus>Close</button>
+              <button type="button" onClick={() => setMobile(false)} className="rounded-md border hairline px-3 py-1.5 text-sm" autoFocus>Close</button>
             </div>
-            <nav className="mt-6 flex flex-col gap-4" aria-label="Mobile">
+            <nav className="mt-6 flex flex-col" aria-label="Mobile">
               {[
                 ['Home', '/'],
                 ['Products', '/products'],
@@ -201,21 +231,21 @@ export function Header({ onSearch }: { onSearch: () => void }) {
                 ['Contact', '/contact'],
                 ['Cart (demo)', '/cart'],
               ].map(([label, to]) => (
-                <Link key={to} to={to} onClick={() => setMobile(false)} className="border-b hairline pb-3 text-lg font-semibold">
+                <Link key={to} to={to} onClick={() => setMobile(false)} className="flex min-h-[44px] items-center border-b hairline text-lg font-semibold">
                   {label}
                 </Link>
               ))}
             </nav>
             <p className="eyebrow mb-2 mt-6">Categories</p>
-            <div className="flex flex-wrap gap-2 overflow-auto">
+            <div className="flex max-h-48 flex-wrap gap-2 overflow-auto">
               {categories.slice(0, 12).map((c) => (
-                <Link key={c.id} to={`/products?category=${c.id}`} onClick={() => setMobile(false)} className="rounded-full border hairline px-3 py-1.5 text-[13px] text-muted">
+                <Link key={c.id} to={`/products?category=${c.id}`} onClick={() => setMobile(false)} className="inline-flex min-h-[44px] items-center rounded-full border hairline px-3 py-1.5 text-[13px] text-muted">
                   {c.name}
                 </Link>
               ))}
             </div>
             <div className="mt-auto flex flex-col gap-2 pt-6">
-              <button onClick={() => { setMobile(false); onSearch(); }} className="btn-ghost">Search</button>
+              <button type="button" onClick={() => { setMobile(false); onSearch(); }} className="btn-ghost">Search</button>
               <Link to="/quote" onClick={() => setMobile(false)} className="btn-primary">Request a quote</Link>
             </div>
           </div>

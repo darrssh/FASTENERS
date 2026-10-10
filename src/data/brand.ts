@@ -8,7 +8,6 @@ export const brand = {
   brandName: 'Fasteners',
   projectName: 'Fasteners',
   tagline: 'Engineered to Hold. Built to Last.',
-  primaryColor: '#3B82F6',
   // Contact placeholders — all empty = not provided by business yet.
   supportEmail: '',
   phone: '',

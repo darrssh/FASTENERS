@@ -38,7 +38,16 @@ body {
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  /* clip (not hidden): kills horizontal scroll without breaking position:sticky
+     children, which overflow-x:hidden breaks on some mobile browsers. */
   overflow-x: hidden;
+  overflow-x: clip;
+}
+
+/* 16px floor on form controls — iOS Safari auto-zooms on focus below 16px,
+   which shatters fixed drawers and sticky layouts on phones. */
+input, select, textarea {
+  font-size: 16px;
 }
 
 /* film grain */
@@ -102,7 +111,7 @@ h1, h2, h3, h4 {
 }
 
 .display-hero {
-  font-size: clamp(46px, 7.5vw, 108px);
+  font-size: clamp(38px, 9vw, 108px);
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -127,6 +136,10 @@ h1, h2, h3, h4 {
 .text-stroke {
   -webkit-text-stroke: 1px rgba(255,255,255,0.22);
   color: transparent;
+}
+/* No text-stroke support (very old browsers) → legible flat color, not invisible. */
+@supports not (-webkit-text-stroke: 1px black) {
+  .text-stroke { color: rgba(255, 255, 255, 0.15); }
 }
 
 .hairline { border-color: var(--border); }

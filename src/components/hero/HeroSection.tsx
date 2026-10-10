@@ -17,7 +17,8 @@ import { webglAvailable } from '../../lib/utils';
 export function HeroSection({ reducedMotion, isMobile }: { reducedMotion: boolean; isMobile: boolean }) {
   const root = useRef<HTMLElement>(null);
   const [glFailed, setGlFailed] = useState(false);
-  const noGL = !webglAvailable();
+  // Probe once: webglAvailable() builds a throwaway canvas per call.
+  const [noGL] = useState(() => !webglAvailable());
 
   useEffect(() => {
     if (reducedMotion || !root.current) return;
@@ -70,7 +71,7 @@ export function HeroSection({ reducedMotion, isMobile }: { reducedMotion: boolea
             <Link to="/products" className="btn-primary">Explore products</Link>
             <Link to="/quote" className="btn-ghost">Request a quote</Link>
           </div>
-          <dl data-hero-fade className="mt-8 flex max-w-xl items-stretch gap-5 border-t hairline pt-5 text-[12px]" aria-label="Featured specification">
+          <dl data-hero-fade className="mt-8 flex max-w-xl flex-wrap items-stretch gap-x-5 gap-y-3 border-t hairline pt-5 text-[12px]" aria-label="Featured specification">
             {[
               ['Thread', 'M4 × 0.7'],
               ['Head', 'Socket · CSK'],
@@ -87,8 +88,9 @@ export function HeroSection({ reducedMotion, isMobile }: { reducedMotion: boolea
           </dl>
         </div>
 
-        {/* RIGHT — dedicated 3D zone. Own grid cell ⇒ zero overlap, every viewport. */}
-        <div data-hero-canvas className="relative order-first h-[340px] sm:h-[420px] md:order-last md:h-[560px]" aria-hidden={!showFallback}>
+        {/* RIGHT — dedicated 3D zone. Own grid cell ⇒ zero overlap, every viewport.
+            Shorter on phones (280px) so the headline/CTAs arrive sooner. */}
+        <div data-hero-canvas className="relative order-first h-[280px] sm:h-[420px] md:order-last md:h-[560px]" aria-hidden={!showFallback}>
           {!showFallback ? (
             <ErrorBoundary>
               <div className="absolute inset-0">
@@ -122,7 +124,9 @@ export function HeroSection({ reducedMotion, isMobile }: { reducedMotion: boolea
         </div>
       </div>
       <div className="absolute inset-x-0 bottom-0 z-20 overflow-hidden border-t border-white/5 bg-black/30 py-2.5 backdrop-blur-sm" aria-hidden>
-        <div className="marquee-track gap-8 text-[11px] font-semibold tracking-[0.28em] text-muted">
+        {/* No gap on the track: translateX(-50%) loops seamlessly only when the
+            two halves sit flush; inner spans carry their own spacing. */}
+        <div className="marquee-track text-[11px] font-semibold tracking-[0.28em] text-muted">
           {[0, 1].map((k) => (
             <span key={k} className="flex shrink-0 items-center gap-8 pr-8">
               <span>SHCS</span><span className="text-brass">◆</span>

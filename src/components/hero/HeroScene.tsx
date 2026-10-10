@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { ContactShadows, Float } from '@react-three/drei';
+import * as THREE from 'three';
 import { HeroBolt } from './HeroBolt';
 import { StudioLighting } from './HeroLighting';
 import { AimCamera } from './AimCamera';
@@ -24,19 +25,18 @@ export function HeroScene({ finishId = 'stainless', reducedMotion = false, isMob
       camera={{ position: isMobile ? [4.4, 1.9, 5.9] : [4.2, 1.8, 5.6], fov: 35 }}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
       onCreated={({ gl }) => {
-        try {
-          gl.shadowMap.enabled = !isMobile;
-          gl.shadowMap.type = 2;
-        } catch {
-          onError?.();
-        }
+        // Context creation already succeeded when this runs; real WebGL-missing
+        // handling is the webglAvailable() gate + onError prop.
+        gl.shadowMap.enabled = !isMobile;
+        gl.shadowMap.type = THREE.PCFSoftShadowMap;
+        if (!gl.getContext()) onError?.();
       }}
       onError={onError}
       aria-hidden
     >
       <Suspense fallback={null}>
         <AimCamera target={[0, 0, 0]} />
-        <StudioLighting />
+        <StudioLighting shadows={!isMobile} />
         {reducedMotion ? (
           <HeroBolt finishId={finishId} shift={[0, 0, 0]} />
         ) : (

@@ -22,7 +22,7 @@ export function QuoteSection() {
           </div>
         </div>
         <ol className="relative space-y-3" data-reveal>
-          <span className="absolute bottom-4 left-[27px] top-4 w-px bg-gradient-to-b from-brass via-brass/25 to-transparent" aria-hidden />
+          <span className="absolute bottom-4 left-[37px] top-4 w-px bg-gradient-to-b from-brass via-brass/25 to-transparent" aria-hidden />
           {['Pick products or describe from scratch', 'Add materials, sizes, quantities', 'Attach drawings / specs (demo validation)', 'Get a structured summary to send when backend connects'].map((s, i) => (
             <li key={s} className="card card-hover-lift relative flex items-center gap-4 p-5">
               <span className="z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brass-light to-brass-dark font-display text-sm font-bold text-black">{i + 1}</span>

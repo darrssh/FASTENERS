@@ -8,16 +8,20 @@ export function cx(...parts: Array<string | false | null | undefined>): string {
  * (`/FASTENERS/...`) as well as local dev (`/`).
  */
 export function assetUrl(p: string): string {
-  if (/^(https?:|data:|blob:)/.test(p)) return p;
-  const base: string = import.meta.env.BASE_URL || '/';
-  if (p.startsWith('/')) return base + p.slice(1);
-  return base + p;
+  if (/^(https?:|data:|blob:|\/\/)/.test(p)) return p;
+  const base = `${import.meta.env.BASE_URL || '/'}/`.replace(/\/{2,}/g, '/');
+  return base + p.replace(/^\//, '');
 }
 
 export function formatINR(value: number | null, currency = 'INR'): string {
   if (value === null || value === undefined) return 'Request quote';
   try {
-    return new Intl.NumberFormat('en-IN', { style: 'currency', currency, maximumFractionDigits: 2 }).format(value);
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(value);
   } catch {
     return `${currency} ${value.toFixed(2)}`;
   }
@@ -79,7 +83,33 @@ export function sceneIndexForProgress(t: number): number {
 export function setMeta(title: string, description: string) {
   document.title = title;
   let el = document.querySelector('meta[name="description"]');
-  if (el) el.setAttribute('content', description);
+  if (!el) {
+    el = document.createElement('meta');
+    el.setAttribute('name', 'description');
+    document.head.appendChild(el);
+  }
+  el.setAttribute('content', description);
+}
+
+/** Reference-counted body scroll lock shared by drawers, dialogs and overlays. */
+let bodyLocks = 0;
+
+export function lockBodyScroll(): void {
+  if (typeof document === 'undefined') return;
+  bodyLocks += 1;
+  if (bodyLocks === 1) {
+    document.body.dataset.prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+export function unlockBodyScroll(): void {
+  if (typeof document === 'undefined') return;
+  bodyLocks = Math.max(0, bodyLocks - 1);
+  if (bodyLocks === 0) {
+    document.body.style.overflow = document.body.dataset.prevOverflow ?? '';
+    delete document.body.dataset.prevOverflow;
+  }
 }
 
 export function webglAvailable(): boolean {

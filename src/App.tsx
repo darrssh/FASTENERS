@@ -16,10 +16,17 @@ import { LegalPage, NotFoundPage } from './pages/LegalPage';
 import { useReducedMotion, useIsMobile } from './hooks/useMediaQuery';
 
 function ScrollToTop() {
-  const { pathname, search } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname, search]);
+    if (hash) {
+      // In-page anchor (e.g. #specs): jump to it instead of top.
+      document.getElementById(hash.slice(1))?.scrollIntoView();
+      return;
+    }
+    // Pathname-only: query-param changes (catalog typing) must NOT yank scroll.
+    // 'auto' defeats the CSS smooth-scroll so route changes land instantly.
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [pathname, hash]);
   return null;
 }
 
@@ -38,7 +45,7 @@ export function App() {
       </a>
       <Header onSearch={() => setSearchOpen(true)} />
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
-      <div id="main">
+      <div id="main" tabIndex={-1}>
         <Routes>
           <Route path="/" element={<HomePage reducedMotion={reducedMotion} isMobile={isMobile} />} />
           <Route path="/products" element={<ProductsPage />} />

@@ -1,4 +1,5 @@
 import { Suspense, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { ContactShadows } from '@react-three/drei';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,6 +8,7 @@ import { StudioLighting } from '../hero/HeroLighting';
 import { useScrollProgress } from '../../hooks/useScrollProgress';
 import { sceneIndexForProgress, webglAvailable, cx } from '../../lib/utils';
 import { materials } from '../../data/categories';
+import { products } from '../../data/products';
 
 const SCENES = [
   {
@@ -69,8 +71,8 @@ const SCENES = [
     tag: 'Scene 08 — Final composition',
     title: 'Start with a connection.',
     accent: false,
-    body: 'Forty-six Excel products, nine finishes, one quote in minutes. Take the assembly with you.',
-    spec: '46 products · 9 finishes',
+    body: `${products.length} Excel products, nine finishes, one quote in minutes. Take the assembly with you.`,
+    spec: `${products.length} products · 9 finishes`,
     label: null,
   },
 ];
@@ -99,21 +101,38 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
   const [ready, setReady] = useState(false);
   const [finish, setFinish] = useState(finishId);
   const barRef = useRef<HTMLDivElement>(null);
+  const lastScene = useRef(0);
+  const visibleRef = useRef(true);
 
   useEffect(() => setFinish(finishId), [finishId]);
   useEffect(() => {
     setNoGL(!webglAvailable());
   }, []);
 
+  // Pause scene bookkeeping while the story is off-screen or the tab hidden.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(([entry]) => {
+      visibleRef.current = entry.isIntersecting;
+    }, { threshold: 0 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref]);
+
   useEffect(() => {
     let raf = 0;
     const tick = () => {
-      const p = progress.current;
-      setScene((s) => {
+      if (!document.hidden && visibleRef.current) {
+        const p = progress.current;
+        // Compare OUTSIDE the setter: no 60fps setState churn when idle.
         const n = sceneIndexForProgress(p);
-        return n === s ? s : n;
-      });
-      if (barRef.current) barRef.current.style.transform = `scaleX(${p.toFixed(4)})`;
+        if (n !== lastScene.current) {
+          lastScene.current = n;
+          setScene(n);
+        }
+        if (barRef.current) barRef.current.style.transform = `scaleX(${p.toFixed(4)})`;
+      }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -125,7 +144,8 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
     if (!el) return;
     const top = el.getBoundingClientRect().top + window.scrollY;
     const travel = el.offsetHeight - window.innerHeight;
-    window.scrollTo({ top: top + travel * f, behavior: reducedMotion ? 'auto' : 'smooth' });
+    // Programmatic smooth-scroll fights the scrub damping on low-end phones.
+    window.scrollTo({ top: top + travel * f, behavior: reducedMotion || isMobile ? 'auto' : 'smooth' });
   };
 
   const fallback = failed || noGL;
@@ -139,7 +159,7 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
           <p className="eyebrow">The bolt journey · 8 scenes</p>
           <h2 className="display-section mt-3">Engineered <span className="serif-accent brass-text">to hold.</span> Built to last.</h2>
           <ol className="mt-10 space-y-4">
-            {SCENES.map((s, i) => (
+            {SCENES.map((s) => (
               <li key={s.tag} className="card p-6">
                 <p className="text-[11px] font-bold tracking-[0.2em] text-brass">{s.tag}</p>
                 <h3 className="mt-2 font-display text-xl font-bold">{s.title}</h3>
@@ -149,8 +169,8 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
             ))}
           </ol>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="/products" className="btn-primary">Explore products</a>
-            <a href="/quote" className="btn-ghost">Request a quote</a>
+            <Link to="/products" className="btn-primary">Explore products</Link>
+            <Link to="/quote" className="btn-ghost">Request a quote</Link>
           </div>
         </div>
       </section>
@@ -179,7 +199,7 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
               aria-hidden
             >
               <Suspense fallback={null}>
-                <StudioLighting />
+                <StudioLighting shadows={!isMobile} />
                 <BoltJourney progress={progress} finishId={finish} reducedMotion={reducedMotion} isMobile={isMobile} />
                 {!isMobile && <ContactShadows position={[0, -1.7, 0]} opacity={0.5} scale={12} blur={2.6} far={4} color="#000000" />}
               </Suspense>
@@ -241,8 +261,8 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
                   )}
                   {scene === 7 && (
                     <div className="pointer-events-auto mt-6 flex flex-wrap gap-3">
-                      <a href="/products" className="btn-primary">Explore products</a>
-                      <a href="/quote" className="btn-ghost">Request a quote</a>
+                      <Link to="/products" className="btn-primary">Explore products</Link>
+                      <Link to="/quote" className="btn-ghost">Request a quote</Link>
                     </div>
                   )}
                 </motion.div>
@@ -290,7 +310,7 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
               </span>
               SCROLL
             </button>
-            <button type="button" onClick={() => scrollToFraction(1)} className="pointer-events-auto mt-2 text-[11px] tracking-[0.2em] text-muted-dim underline-offset-4 hover:text-paper hover:underline">
+            <button type="button" onClick={() => scrollToFraction(1)} className="pointer-events-auto mt-2 min-h-[44px] px-3 text-[11px] tracking-[0.2em] text-muted-dim underline-offset-4 hover:text-paper hover:underline">
               Skip story
             </button>
           </div>
@@ -344,8 +364,8 @@ function FallbackBolt() {
         <text x="210" y="245" textAnchor="middle" fill="#A5ABB3" fontSize="11" letterSpacing="3">M12 HEX ASSEMBLY · STATIC PREVIEW</text>
       </svg>
       <div className="flex flex-wrap justify-center gap-3">
-        <a href="/products" className="btn-primary">Explore products</a>
-        <a href="/quote" className="btn-ghost">Request a quote</a>
+        <Link to="/products" className="btn-primary">Explore products</Link>
+        <Link to="/quote" className="btn-ghost">Request a quote</Link>
       </div>
     </div>
   );

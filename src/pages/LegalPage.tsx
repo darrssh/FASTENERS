@@ -34,11 +34,17 @@ const DOCS: Record<string, { title: string; body: string[] }> = {
 
 export function LegalPage() {
   const { doc = 'privacy' } = useParams();
-  const entry = DOCS[doc] ?? DOCS.privacy;
+  const entry = DOCS[doc];
 
   useEffect(() => {
-    setMeta(`${entry.title} | Fasteners`, 'Editable legal placeholder.');
-  }, [entry.title]);
+    // Unknown slugs render NotFound below; keep the tab honest in that case.
+    // Placeholder qualifiers stay in-body only — never leak into SERP titles.
+    const title = entry ? entry.title.replace(' (Editable Placeholder)', '') : 'Page not found';
+    setMeta(`${title} | Fasteners`, 'Editable legal placeholder.');
+  }, [entry]);
+
+  // Unknown /legal/:doc is a 404, not a silent Privacy page.
+  if (!entry) return <NotFoundPage />;
 
   return (
     <main className="shell max-w-3xl pb-20 pt-28">
@@ -51,7 +57,7 @@ export function LegalPage() {
       </div>
       <div className="mt-6 flex flex-wrap gap-2">
         {Object.keys(DOCS).map((k) => (
-          <Link key={k} to={`/legal/${k}`} className="rounded-full border hairline px-4 py-2 text-[13px] text-muted hover:text-paper">
+          <Link key={k} to={`/legal/${k}`} className="inline-flex min-h-[44px] items-center rounded-full border hairline px-4 py-2 text-[13px] text-muted hover:text-paper">
             {DOCS[k].title.split(' (')[0]}
           </Link>
         ))}

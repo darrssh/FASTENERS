@@ -29,7 +29,22 @@ function load(): CartLine[] {
     const raw = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw) as CartLine[];
-    return Array.isArray(parsed) ? parsed.filter((l) => productById(l.productId)) : [];
+    if (!Array.isArray(parsed)) return [];
+    // Normalize stored lines: drop unknown products, clamp qty, coerce variant,
+    // refresh unit price from catalog so stale prices can't linger.
+    return parsed.flatMap((l) => {
+      if (!l || typeof l !== 'object') return [];
+      const p = productById(l.productId);
+      if (!p) return [];
+      return [
+        {
+          productId: l.productId,
+          variant: String(l.variant ?? 'Standard'),
+          qty: Math.min(9999, Math.max(1, Math.floor(Number(l.qty) || 1))),
+          unitPrice: p.price,
+        },
+      ];
+    });
   } catch {
     return [];
   }

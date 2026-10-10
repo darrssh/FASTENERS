@@ -48,6 +48,7 @@ export function useReveal<T extends HTMLElement>(enabled = true) {
   useEffect(() => {
     if (!enabled || !ref.current) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const root = ref.current;
     const ctx = gsap.context(() => {
       // Text fade-up
       gsap.fromTo(
@@ -59,7 +60,7 @@ export function useReveal<T extends HTMLElement>(enabled = true) {
           duration: 0.9,
           ease: 'expo.out',
           stagger: 0.09,
-          scrollTrigger: { trigger: ref.current, start: 'top 80%' },
+          scrollTrigger: { trigger: root, start: 'top 80%' },
         },
       );
       // Clip image wipe
@@ -73,11 +74,12 @@ export function useReveal<T extends HTMLElement>(enabled = true) {
           duration: 1.15,
           ease: 'expo.out',
           stagger: 0.1,
-          scrollTrigger: { trigger: ref.current, start: 'top 78%' },
+          scrollTrigger: { trigger: root, start: 'top 78%' },
         },
       );
-      // Parallax layers
-      gsap.utils.toArray<HTMLElement>('[data-parallax]').forEach((el) => {
+      // Parallax layers — scoped to THIS section only. A document-wide query
+      // would attach duplicate scrub triggers (one per section) to every layer.
+      root.querySelectorAll<HTMLElement>('[data-parallax]').forEach((el) => {
         const speed = parseFloat(el.dataset.parallax || '-60');
         gsap.fromTo(
           el,
@@ -85,36 +87,12 @@ export function useReveal<T extends HTMLElement>(enabled = true) {
           {
             y: speed,
             ease: 'none',
-            scrollTrigger: { trigger: ref.current, start: 'top bottom', end: 'bottom top', scrub: 1.1 },
+            scrollTrigger: { trigger: root, start: 'top bottom', end: 'bottom top', scrub: 1.1 },
           },
         );
       });
-    }, ref);
+    }, root);
     return () => ctx.revert();
   }, [enabled]);
-  return ref;
-}
-
-/** Magnetic hover for premium buttons/links. */
-export function useMagnetic<T extends HTMLElement>(strength = 18) {
-  const ref = useRef<T>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const move = (e: MouseEvent) => {
-      const r = el.getBoundingClientRect();
-      const x = e.clientX - (r.left + r.width / 2);
-      const y = e.clientY - (r.top + r.height / 2);
-      gsap.to(el, { x: (x / r.width) * strength, y: (y / r.height) * strength, duration: 0.4, ease: 'power3.out' });
-    };
-    const leave = () => gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1,0.5)' });
-    el.addEventListener('mousemove', move);
-    el.addEventListener('mouseleave', leave);
-    return () => {
-      el.removeEventListener('mousemove', move);
-      el.removeEventListener('mouseleave', leave);
-    };
-  }, [strength]);
   return ref;
 }

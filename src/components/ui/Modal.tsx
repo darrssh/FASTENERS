@@ -1,26 +1,41 @@
 import { useEffect } from 'react';
 import type { ReactNode } from 'react';
+import { lockBodyScroll, unlockBodyScroll } from '../../lib/utils';
+import { useDialogFocus } from '../../hooks/useDialogFocus';
 
 export function Modal({ onClose, children, title }: { onClose: () => void; children: ReactNode; title: string }) {
+  const dialogRef = useDialogFocus<HTMLDivElement>(true);
+
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', fn);
-    document.body.style.overflow = 'hidden';
+    lockBodyScroll();
     return () => {
       window.removeEventListener('keydown', fn);
-      document.body.style.overflow = '';
+      unlockBodyScroll();
     };
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={title}>
-      <button aria-label="Close dialog" onClick={onClose} className="absolute inset-0 bg-black/70" />
+    <div
+      ref={dialogRef}
+      className="fixed inset-0 z-[80] flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
+    >
+      <div aria-hidden onClick={onClose} className="absolute inset-0 cursor-default bg-black/70" />
       <div className="card relative max-h-[85vh] w-full max-w-lg overflow-auto bg-ink-900 p-6">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-xl font-semibold">{title}</h3>
-          <button onClick={onClose} className="rounded-md border hairline px-3 py-1 text-sm text-muted hover:text-paper" autoFocus>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-md border hairline px-3 py-1.5 text-sm text-muted hover:text-paper"
+            autoFocus
+          >
             Close
           </button>
         </div>

@@ -17,17 +17,24 @@ export function Footer() {
           <p className="mt-4 max-w-xs text-[14px] text-muted">
             Precision-engineered fasteners for industrial applications, construction, and manufacturing. Sample catalog demo.
           </p>
-          <div className="mt-4 space-y-1 text-[14px] text-muted">
+          <address className="mt-4 space-y-1 text-[14px] text-muted not-italic">
             <p>Email: {email ? <a className="text-paper underline decoration-brass/60 underline-offset-4 hover:text-brass-light" href={email}>{brand.supportEmail}</a> : <span className="text-muted-dim">[not provided — edit src/data/brand.ts]</span>}</p>
             <p>Phone: {phone ? <a className="text-paper underline decoration-brass/60 underline-offset-4 hover:text-brass-light" href={phone}>{brand.phone}</a> : <span className="text-muted-dim">[not provided]</span>}</p>
             <p>Address: {brand.address || <span className="text-muted-dim">[not provided]</span>}</p>
-          </div>
-          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="btn-ghost mt-5 !px-4 !py-2.5 !text-[12px]">
+          </address>
+          <button
+            type="button"
+            onClick={() => {
+              const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+              window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+            }}
+            className="btn-ghost mt-5 !px-4 !py-2.5 !text-[12px]"
+          >
             ↑ Back to top
           </button>
         </div>
         <nav aria-label="Products" data-reveal>
-          <p className="eyebrow mb-4">Products</p>
+          <h2 className="eyebrow mb-4">Products</h2>
           <ul className="space-y-2.5 text-[14px]">
             {categories.slice(0, 7).map((c) => (
               <li key={c.id}><Link className="text-muted transition-colors hover:text-brass-light" to={`/products?category=${c.id}`}>{c.name}</Link></li>
@@ -36,7 +43,7 @@ export function Footer() {
           </ul>
         </nav>
         <nav aria-label="Company" data-reveal>
-          <p className="eyebrow mb-4">Company</p>
+          <h2 className="eyebrow mb-4">Company</h2>
           <ul className="space-y-2.5 text-[14px]">
             {[['About Us', '/about'], ['Industries', '/industries'], ['Request a Quote', '/quote'], ['Contact', '/contact'], ['Cart (demo)', '/cart']].map(([l, to]) => (
               <li key={to}><Link className="text-muted transition-colors hover:text-brass-light" to={to}>{l}</Link></li>
@@ -44,7 +51,7 @@ export function Footer() {
           </ul>
         </nav>
         <nav aria-label="Legal" data-reveal>
-          <p className="eyebrow mb-4">Legal · Placeholders</p>
+          <h2 className="eyebrow mb-4">Legal · Placeholders</h2>
           <ul className="space-y-2.5 text-[14px]">
             {[['Privacy Policy', '/legal/privacy'], ['Terms & Conditions', '/legal/terms'], ['Shipping Policy', '/legal/shipping'], ['Returns & Refunds', '/legal/returns']].map(([l, to]) => (
               <li key={to}><Link className="text-muted transition-colors hover:text-brass-light" to={to}>{l}</Link></li>

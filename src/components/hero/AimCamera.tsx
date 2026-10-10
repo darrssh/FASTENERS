@@ -9,8 +9,12 @@ import * as THREE from 'three';
  */
 export function AimCamera({ target }: { target: [number, number, number] }) {
   const camera = useThree((s) => s.camera);
+  // Callers pass inline literals ([0,0,0]) that change identity every render —
+  // depend on the joined value so lookAt re-fires only on real changes.
+  const key = target.join(',');
   useEffect(() => {
-    camera.lookAt(new THREE.Vector3(target[0], target[1], target[2]));
-  }, [camera, target]);
+    const [x, y, z] = key.split(',').map(Number);
+    camera.lookAt(new THREE.Vector3(x, y, z));
+  }, [camera, key]);
   return null;
 }

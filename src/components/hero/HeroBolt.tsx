@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import * as THREE from 'three';
 import {
   buildBolt,
   buildNut,
@@ -27,6 +28,20 @@ export function HeroBolt({ finishId = 'stainless', assembled = false, shift = [0
     return { bolt: b.group, nut: n, washer: w };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [material]);
+
+  // Generator code owns its buffers: dispose geometries on unmount/rematerial
+  // (the shared material itself is owned by useFastenerMaterial — not here).
+  useEffect(() => {
+    const roots = [bolt, nut, washer];
+    return () => {
+      for (const root of roots) {
+        root.traverse((o) => {
+          const mesh = o as THREE.Mesh;
+          if (mesh.isMesh) mesh.geometry.dispose();
+        });
+      }
+    };
+  }, [bolt, nut, washer]);
 
   return (
     <group rotation={[0.15, 0, -0.5]} position={shift}>

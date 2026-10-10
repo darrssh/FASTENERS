@@ -7,8 +7,9 @@ export class ErrorBoundary extends Component<{ children: ReactNode; fallback?: R
   static getDerivedStateFromError() {
     return { failed: true };
   }
-  componentDidCatch() {
-    /* intentional no-op: fallback UI below */
+  componentDidCatch(error: Error, info: React.ErrorInfo) {
+    // Surface 3D failures in devtools; the fallback UI below keeps the page alive.
+    console.error('[ErrorBoundary] 3D view failed:', error, info.componentStack);
   }
   render() {
     if (this.state.failed) {
@@ -17,6 +18,13 @@ export class ErrorBoundary extends Component<{ children: ReactNode; fallback?: R
           <div className="card p-8 text-center text-muted">
             <p className="eyebrow">3D unavailable</p>
             <p className="mt-2 text-paper">This 3D view failed to load, but the rest of the site works.</p>
+            <button
+              type="button"
+              onClick={() => this.setState({ failed: false })}
+              className="btn-ghost mt-5 !px-5 !py-2.5 !text-[12px]"
+            >
+              Retry 3D view
+            </button>
           </div>
         )
       );

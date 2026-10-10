@@ -32,14 +32,14 @@ export function HomePage({ reducedMotion, isMobile }: { reducedMotion: boolean; 
       <BoltAnatomy />
       <CategoriesSection />
       <ShowcaseSection />
-      <MaterialsSection />
+      <MaterialsSection reducedMotion={reducedMotion} isMobile={isMobile} />
       <IndustriesSection />
       <WhyChooseUs />
       <FeaturedProducts />
       <QuoteSection />
       <Testimonials />
       <FAQ />
-      <FinalCTA />
+      <FinalCTA isMobile={isMobile} />
     </main>
   );
 }

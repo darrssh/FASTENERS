@@ -14,6 +14,9 @@ export function CartPage() {
     setMeta('Cart (Demo) | Fasteners', 'Demo cart — local only, no checkout integration.');
   }, []);
 
+  // Quote-only lines have no price — checkout would "charge" ₹0.00.
+  const hasPriced = cart.lines.some((l) => l.unitPrice !== null && l.unitPrice !== undefined);
+
   if (done) {
     return (
       <main className="shell max-w-xl pb-20 pt-32 text-center">
@@ -52,17 +55,17 @@ export function CartPage() {
               <div className="w-full overflow-hidden rounded-lg sm:w-40">
                 <ProductRender renderKey={p.images[0]} name={p.name} compact />
               </div>
-              <div className="flex-1">
+              <div className="min-w-0 flex-1">
                 <Link to={`/products/${p.slug}`} className="font-display text-[18px] font-bold hover:underline">{p.name}</Link>
                 <p className="text-[12px] text-muted">SKU {p.sku} · Variant {l.variant}</p>
                 <p className="mt-1 text-[14px] font-semibold">{formatINR(l.unitPrice, 'INR')} each</p>
               </div>
               <div className="flex items-center gap-2">
-                <button onClick={() => cart.setQty(l.productId, l.variant, l.qty - 1)} className="rounded-md border hairline px-3 py-1.5" aria-label="Decrease quantity">−</button>
+                <button type="button" onClick={() => cart.setQty(l.productId, l.variant, l.qty - 1)} className="min-h-[44px] min-w-[44px] rounded-md border hairline px-3 py-1.5" aria-label="Decrease quantity">−</button>
                 <span className="w-10 text-center font-bold" aria-live="polite">{l.qty}</span>
-                <button onClick={() => cart.setQty(l.productId, l.variant, l.qty + 1)} className="rounded-md border hairline px-3 py-1.5" aria-label="Increase quantity">+</button>
+                <button type="button" onClick={() => cart.setQty(l.productId, l.variant, l.qty + 1)} className="min-h-[44px] min-w-[44px] rounded-md border hairline px-3 py-1.5" aria-label="Increase quantity">+</button>
               </div>
-              <button onClick={() => cart.remove(l.productId, l.variant)} className="text-[13px] text-red-400 hover:underline">Remove</button>
+              <button type="button" onClick={() => cart.remove(l.productId, l.variant)} className="self-start px-3 py-2.5 text-[13px] text-red-400 hover:underline sm:self-center">Remove</button>
             </article>
           );
         })}
@@ -74,20 +77,28 @@ export function CartPage() {
           <p className="mt-1 text-[12px] text-muted">Shipping/tax shown only when configured — currently none. Quote-only lines excluded from pricing.</p>
         </div>
         <div className="flex flex-col gap-2">
-          <button
-            className="btn-primary"
-            disabled={checkingOut}
-            onClick={async () => {
-              setCheckingOut(true);
-              await new Promise((r) => setTimeout(r, 1100));
-              cart.clear();
-              setCheckingOut(false);
-              setDone(true);
-            }}
-          >
-            {checkingOut ? 'Processing (demo)…' : 'Checkout — demo only'}
-          </button>
-          <button className="btn-ghost" onClick={cart.clear}>Clear cart</button>
+          {hasPriced ? (
+            <button
+              type="button"
+              className="btn-primary disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={checkingOut}
+              onClick={async () => {
+                setCheckingOut(true);
+                await new Promise((r) => setTimeout(r, 1100));
+                cart.clear();
+                setCheckingOut(false);
+                setDone(true);
+              }}
+            >
+              {checkingOut ? 'Processing (demo)…' : 'Checkout — demo only'}
+            </button>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <p className="max-w-[260px] text-[13px] text-muted">All lines are quote-only — no priced items to check out.</p>
+              <Link to="/quote" className="btn-primary">Request a quote instead →</Link>
+            </div>
+          )}
+          <button type="button" className="btn-ghost" onClick={cart.clear}>Clear cart</button>
         </div>
       </div>
     </main>

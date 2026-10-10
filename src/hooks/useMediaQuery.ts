@@ -8,8 +8,13 @@ export function useMediaQuery(query: string): boolean {
     const m = window.matchMedia(query);
     const fn = (e: MediaQueryListEvent) => setMatches(e.matches);
     setMatches(m.matches);
-    m.addEventListener('change', fn);
-    return () => m.removeEventListener('change', fn);
+    // Safari <14 / old WebViews only implement addListener.
+    if (typeof m.addEventListener === 'function') m.addEventListener('change', fn);
+    else m.addListener(fn);
+    return () => {
+      if (typeof m.removeEventListener === 'function') m.removeEventListener('change', fn);
+      else m.removeListener(fn);
+    };
   }, [query]);
   return matches;
 }
