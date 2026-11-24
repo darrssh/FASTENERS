@@ -70,8 +70,8 @@ export function Footer() {
       </div>
       <div className="border-t hairline">
         <div className="shell flex flex-col gap-2 py-5 text-[12px] text-muted-dim md:flex-row md:items-center md:justify-between">
-          <p>© {new Date().getFullYear()} {brand.brandName} (sample). All sample content — replace before launch.</p>
-          <p>Currency: {brand.currency} · COD-only ordering via custom backend (see SETUP.md)</p>
+          <p>© {new Date().getFullYear()} {brand.brandName}. All rights reserved.</p>
+          <p>Currency: {brand.currency} · COD-only ordering via custom backend</p>
         </div>
       </div>
     </footer>

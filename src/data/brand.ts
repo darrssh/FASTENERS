@@ -23,8 +23,8 @@ export const brand = {
   },
   currency: 'INR',
   // Commerce mode: 'custom' = backend-backed COD orders and quote requests.
-  // The backend API URL is configured via VITE_API_BASE_URL (see SETUP.md).
-  commerceMode: 'custom' as 'demo' | 'shopify' | 'custom',
+  // The backend API URL is configured via VITE_API_BASE_URL.
+  commerceMode: 'custom' as 'shopify' | 'custom',
 };
 
 export function contactHref(kind: 'email' | 'phone' | 'whatsapp'): string | null {

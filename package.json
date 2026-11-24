@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "WELTOQ — Premium industrial fasteners website. Cinematic 3D, scroll-driven bolt journey, catalog, cart (demo), quote (demo).",
+  "description": "WELTOQ — Premium industrial fasteners website. Cinematic 3D, scroll-driven bolt journey, catalog, cart, quote.",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
