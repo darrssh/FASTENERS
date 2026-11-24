@@ -11,7 +11,7 @@ export function ContactPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    setMeta('Contact (Demo) | Fasteners', 'Contact form demo with editable business details.');
+    setMeta('Contact | WELTOQ', 'Contact details and local message draft with editable business information.');
   }, []);
 
   const email = contactHref('email');
@@ -35,9 +35,9 @@ export function ContactPage() {
       <div>
         {sent ? (
           <div className="card p-8 text-center" role="status">
-            <p className="eyebrow">Message saved · demo</p>
+            <p className="eyebrow">Message draft saved</p>
             <h2 className="mt-2 font-display text-2xl font-bold">Thanks, {form.name || 'there'}.</h2>
-            <p className="mt-2 text-[14px] text-muted">Demo mode — your message was validated and stored locally, not emailed.</p>
+            <p className="mt-2 text-[14px] text-muted">Your message was validated and saved in this browser. No business email is configured yet — use the quote form to send requirements to our team.</p>
             <button className="btn-ghost mt-5" onClick={() => { setSent(false); setForm({ name: '', email: '', message: '' }); }}>Send another</button>
           </div>
         ) : (
@@ -66,7 +66,7 @@ export function ContactPage() {
             <Input label="Email" name="email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
             <Textarea label="Message" name="message" required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
             {error && <p role="alert" className="text-[14px] text-red-400">{error}</p>}
-            <button type="submit" className="btn-primary">Send message — demo</button>
+            <button type="submit" className="btn-primary">Save message draft</button>
           </form>
         )}
       </div>

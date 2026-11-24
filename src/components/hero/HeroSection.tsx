@@ -52,7 +52,7 @@ export function HeroSection({ reducedMotion, isMobile }: { reducedMotion: boolea
         <div className="order-last max-w-xl md:order-first">
           <p data-hero-fade className="inline-flex items-center gap-2.5 rounded-full border border-brass/30 bg-black/40 px-4 py-2 text-[11px] font-semibold tracking-[0.22em] text-brass-light backdrop-blur-sm">
             <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-brass" aria-hidden />
-            SHCS · NUTS · WASHERS · {products.length} PRODUCTS
+            SHCS · HEX NUTS · ULTRAFLAT · {products.length} PRODUCTS
           </p>
           <h1 className="display-hero mt-5 text-balance">
             <span data-hero-line className="block">Engineered <span className="serif-accent brass-text">to hold.</span></span>
@@ -74,7 +74,7 @@ export function HeroSection({ reducedMotion, isMobile }: { reducedMotion: boolea
           <dl data-hero-fade className="mt-8 flex max-w-xl flex-wrap items-stretch gap-x-5 gap-y-3 border-t hairline pt-5 text-[12px]" aria-label="Featured specification">
             {[
               ['Thread', 'M4 × 0.7'],
-              ['Head', 'Socket · CSK'],
+              ['Head', 'Socket · Ultraflat'],
               ['Range', `M2–M8 · ${products.length} items`],
             ].map(([k, v]) => (
               <div key={k} className="flex flex-col gap-0.5">
@@ -82,9 +82,6 @@ export function HeroSection({ reducedMotion, isMobile }: { reducedMotion: boolea
                 <dd className="font-display text-[15px] font-bold tracking-wide text-paper">{v}</dd>
               </div>
             ))}
-            <div className="ml-auto hidden self-center sm:block" aria-hidden>
-              <p className="text-right tracking-[0.2em] text-muted-dim">SCROLL ↓<br />8-SCENE STORY</p>
-            </div>
           </dl>
         </div>
 
@@ -130,11 +127,10 @@ export function HeroSection({ reducedMotion, isMobile }: { reducedMotion: boolea
           {[0, 1].map((k) => (
             <span key={k} className="flex shrink-0 items-center gap-8 pr-8">
               <span>SHCS</span><span className="text-brass">◆</span>
-              <span>NUTS</span><span className="text-brass">◆</span>
-              <span>WASHERS</span><span className="text-brass">◆</span>
-              <span>QTF</span><span className="text-brass">◆</span>
-              <span>BEARINGS</span><span className="text-brass">◆</span>
-              <span>POP RIVETS</span><span className="text-brass">◆</span>
+              <span>HEX NUTS</span><span className="text-brass">◆</span>
+              <span>ULTRAFLAT</span><span className="text-brass">◆</span>
+              <span>ISO 4762 / DIN 912</span><span className="text-brass">◆</span>
+              <span>M2–M8</span><span className="text-brass">◆</span>
             </span>
           ))}
         </div>

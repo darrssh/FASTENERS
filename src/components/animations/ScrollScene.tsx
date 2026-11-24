@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { ContactShadows } from '@react-three/drei';
@@ -7,75 +7,23 @@ import { BoltJourney } from './BoltJourney';
 import { StudioLighting } from '../hero/HeroLighting';
 import { useScrollProgress } from '../../hooks/useScrollProgress';
 import { sceneIndexForProgress, webglAvailable, cx } from '../../lib/utils';
-import { materials } from '../../data/categories';
+import { categories, materials } from '../../data/categories';
 import { products } from '../../data/products';
+import { useCart } from '../../hooks/useCart';
+import { resolveMedia } from '../../lib/api';
 
-const SCENES = [
-  {
-    tag: 'Scene 01 — Hero reveal',
-    title: 'Engineered to hold. Built to last.',
-    accent: true,
-    body: 'A fully assembled M12 hex bolt floats in the studio — 19 mm across flats, Class 8.8 steel. Scroll to begin the teardown.',
-    spec: 'M12 × 1.75 · ISO metric',
-    label: null as string | null,
-  },
-  {
-    tag: 'Scene 02 — Macro precision',
-    title: 'A 60° thread, cut to hold.',
-    accent: false,
-    body: 'Dolly-in on the profile: 1.75 mm pitch, true helical ridge — not a texture. This is where clamp load is born.',
-    spec: 'Pitch 1.75 mm · 6g tolerance',
-    label: null,
-  },
-  {
-    tag: 'Scene 03 — Nut loosening',
-    title: 'Rotation locked to pitch.',
-    accent: false,
-    body: 'The nut backs off exactly as steel would — one revolution per 1.75 mm of travel. No fakes, no slides.',
-    spec: 'M12 nut · 19 mm A/F',
-    label: 'HEX NUTS',
-  },
-  {
-    tag: 'Scene 04 — Washer reveal',
-    title: 'Load, spread evenly.',
-    accent: false,
-    body: 'The washer separates — doubling the bearing area, protecting the joint face from galling under torque.',
-    spec: 'Ø24 × 2.5 mm · 200 HV',
-    label: 'WASHERS & SPACERS',
-  },
-  {
-    tag: 'Scene 05 — Exploded view',
-    title: 'Three parts. One axis.',
-    accent: false,
-    body: 'Bolt · Nut · Washer held colinear on a brass guide — the full joint, laid bare for inspection.',
-    spec: 'Bolt · Nut · Washer',
-    label: 'BOLT · NUT · WASHER',
-  },
-  {
-    tag: 'Scene 06 — Reassembly',
-    title: 'Seats like it means it.',
-    accent: false,
-    body: 'Washer drops home, nut runs back down the helix with a soft settle. Reversible — scrub back up to replay.',
-    spec: 'Seating torque ≈ 86 N·m',
-    label: null,
-  },
-  {
-    tag: 'Scene 07 — Site transition',
-    title: 'From studio to structure.',
-    accent: false,
-    body: 'The assembly slides aside as the grade cools blue — the same fastener, now in bridges, plants and frames.',
-    spec: 'Structural · Plant · Site',
-    label: null,
-  },
-  {
-    tag: 'Scene 08 — Final composition',
-    title: 'Start with a connection.',
-    accent: false,
-    body: `${products.length} Excel products, nine finishes, one quote in minutes. Take the assembly with you.`,
-    spec: `${products.length} products · 9 finishes`,
-    label: null,
-  },
+const FEATURED_CATEGORY_ORDER = [
+  'm2-fasteners',
+  'm3-fasteners',
+  'm4-fasteners',
+  'm6-fasteners',
+  'm8-fasteners',
+  'ultralow-sockets',
 ];
+
+const JOURNEY_PRODUCTS = FEATURED_CATEGORY_ORDER.map((categoryId) =>
+  products.find((p) => p.category === categoryId),
+).filter((p): p is (typeof products)[number] => Boolean(p));
 
 /** Per-scene backdrop grade — studio warmth → industrial cool → finale charcoal. */
 const BACKDROPS = [
@@ -95,11 +43,15 @@ type Props = { finishId?: string; reducedMotion?: boolean; isMobile?: boolean };
 
 export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isMobile = false }: Props) {
   const { ref, progress } = useScrollProgress<HTMLDivElement>();
+  const cart = useCart();
+  const journeyProducts = useMemo(() => JOURNEY_PRODUCTS, []);
+  const totalScenes = Math.max(1, journeyProducts.length);
   const [scene, setScene] = useState(0);
   const [failed, setFailed] = useState(false);
   const [noGL, setNoGL] = useState(false);
   const [ready, setReady] = useState(false);
   const [finish, setFinish] = useState(finishId);
+  const [addedId, setAddedId] = useState<string | null>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const lastScene = useRef(0);
   const visibleRef = useRef(true);
@@ -126,7 +78,7 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
       if (!document.hidden && visibleRef.current) {
         const p = progress.current;
         // Compare OUTSIDE the setter: no 60fps setState churn when idle.
-        const n = sceneIndexForProgress(p);
+        const n = sceneIndexForProgress(p, totalScenes);
         if (n !== lastScene.current) {
           lastScene.current = n;
           setScene(n);
@@ -137,7 +89,7 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [progress]);
+  }, [progress, totalScenes]);
 
   const scrollToFraction = (f: number) => {
     const el = ref.current;
@@ -149,37 +101,63 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
   };
 
   const fallback = failed || noGL;
-  const copy = SCENES[scene];
+  const product = journeyProducts[scene] ?? journeyProducts[0];
+  const sceneCountLabel = String(totalScenes).padStart(2, '0');
+  const backdrop = BACKDROPS[scene % BACKDROPS.length];
+  const categoryName = categories.find((c) => c.id === product?.category)?.name ?? 'Catalogue product';
+  const productImage = product?.images?.[0] ? resolveMedia(product.images[0]) : null;
+  const productPrice = product?.price != null ? `INR ${product.price.toLocaleString('en-IN')}` : 'Request quote';
+  const productSpec = [product?.diameter, product?.standard].filter(Boolean).join(' · ') || product?.sku || 'Product';
+
+  const handleAddToCart = (id: string, variant?: string) => {
+    cart.add(id, variant || 'Standard', 1);
+    setAddedId(id);
+    window.setTimeout(() => setAddedId((current) => (current === id ? null : current)), 1400);
+  };
 
   // Reduced motion: a calm, fully readable static story — no sticky, no WebGL.
   if (reducedMotion) {
     return (
-      <section ref={ref} className="studio-bg relative py-24" aria-label="Bolt journey — static story">
-        <div className="shell max-w-3xl">
-          <p className="eyebrow">The bolt journey · 8 scenes</p>
-          <h2 className="display-section mt-3">Engineered <span className="serif-accent brass-text">to hold.</span> Built to last.</h2>
-          <ol className="mt-10 space-y-4">
-            {SCENES.map((s) => (
-              <li key={s.tag} className="card p-6">
-                <p className="text-[11px] font-bold tracking-[0.2em] text-brass">{s.tag}</p>
-                <h3 className="mt-2 font-display text-xl font-bold">{s.title}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-muted">{s.body}</p>
-                <p className="mt-2 text-[12px] tracking-[0.14em] text-muted-dim">{s.spec}</p>
-              </li>
-            ))}
+      <section ref={ref} className="studio-bg relative py-24" aria-label="Bolt journey products — static view">
+        <div className="shell max-w-4xl">
+          <p className="eyebrow">The bolt journey · {totalScenes} products</p>
+          <h2 className="display-section mt-3">Scroll the journey. <span className="serif-accent brass-text">Pick your product.</span></h2>
+          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted">
+            Explore selected WELTORQUE catalogue products one by one, with the same 3D bolt journey experience.
+          </p>
+          <ol className="mt-10 grid gap-4 sm:grid-cols-2">
+            {journeyProducts.map((p, i) => {
+              const img = p.images?.[0] ? resolveMedia(p.images[0]) : null;
+              const cat = categories.find((c) => c.id === p.category)?.name ?? 'Product';
+              return (
+                <li key={p.id} className="card overflow-hidden p-5">
+                  <p className="text-[11px] font-bold tracking-[0.2em] text-brass">{String(i + 1).padStart(2, '0')} · {cat}</p>
+                  <div className="mt-3 flex items-center gap-4">
+                    {img && <img src={img} alt={p.name} className="h-20 w-20 rounded-xl border hairline bg-white object-contain p-2" loading="lazy" />}
+                    <div className="min-w-0">
+                      <h3 className="font-display text-lg font-bold">{p.name}</h3>
+                      <p className="mt-1 text-[13px] text-muted">{p.shortDescription}</p>
+                      <p className="mt-2 text-[12px] tracking-[0.14em] text-muted-dim">{p.diameter} · {p.standard ?? p.sku}</p>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Link to={`/products/${p.slug}`} className="btn-primary !px-4 !py-2 !text-[12px]">View product</Link>
+                    <button type="button" onClick={() => handleAddToCart(p.id, 'Standard')} className="btn-ghost !px-4 !py-2 !text-[12px]">
+                      {addedId === p.id ? 'Added' : 'Add to cart'}
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
           </ol>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/products" className="btn-primary">Explore products</Link>
-            <Link to="/quote" className="btn-ghost">Request a quote</Link>
-          </div>
         </div>
       </section>
     );
   }
 
   return (
-    <div ref={ref} className="relative" style={{ height: isMobile ? '560vh' : '760vh' }} aria-label="Scroll-driven 3D bolt journey">
-      <div className="sticky top-0 h-screen overflow-hidden transition-[background] duration-700" style={{ background: BACKDROPS[scene] }}>
+    <div ref={ref} className="relative" style={{ height: isMobile ? `${totalScenes * 70}vh` : `${totalScenes * 95}vh` }} aria-label="Scroll-driven 3D bolt journey with products">
+      <div className="sticky top-0 h-screen overflow-hidden transition-[background] duration-700" style={{ background: backdrop }}>
         {/* Mobile progress hairline */}
         <div className="absolute inset-x-0 top-0 z-30 h-[3px] bg-white/10 md:hidden" aria-hidden>
           <div ref={barRef} className="h-full w-full origin-left bg-gradient-to-r from-brass-light to-brass-dark" style={{ transform: 'scaleX(0)' }} />
@@ -216,56 +194,68 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/70 via-black/25 to-transparent md:h-40 md:from-black/40" aria-hidden />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/50 to-transparent" aria-hidden />
 
-        {/* Scene-7 industrial wash + Scene-8 finale darken, driven by scene state */}
+        {/* Subtle end-of-journey washes, preserving scroll/visual behavior */}
         <div
           className="pointer-events-none absolute inset-0 transition-opacity duration-700"
           style={{
-            opacity: scene === 6 ? 0.5 : 0,
-            background: 'linear-gradient(100deg, rgba(59,130,246,0.16), transparent 45%, rgba(199,205,211,0.08))',
+            opacity: scene === totalScenes - 2 ? 0.35 : 0,
+            background: 'linear-gradient(100deg, rgba(59,130,246,0.12), transparent 45%, rgba(199,205,211,0.06))',
           }}
           aria-hidden
         />
         <div
           className="pointer-events-none absolute inset-0 transition-opacity duration-700"
-          style={{ opacity: scene === 7 ? 0.55 : 0, background: 'linear-gradient(180deg, transparent, rgba(0,0,0,0.6))' }}
+          style={{ opacity: scene === totalScenes - 1 ? 0.4 : 0, background: 'linear-gradient(180deg, transparent, rgba(0,0,0,0.45))' }}
           aria-hidden
         />
 
-        {/* Scene copy — choreographed swap */}
+        {/* Product content — choreographed swap, one product per scroll step */}
         <div className="pointer-events-none absolute inset-0 flex items-end md:items-center">
           <div className="shell w-full pb-28 md:pb-0">
             <div className="max-w-xl">
               <AnimatePresence mode="wait">
-                <motion.div
-                  key={scene}
-                  initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
-                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                  exit={{ opacity: 0, y: -18, filter: 'blur(6px)' }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <p className="eyebrow">{copy.tag} · {String(scene + 1).padStart(2, '0')}/08</p>
-                  <h2 className="display-section mt-3 text-balance">
-                    {copy.accent ? (
-                      <>Engineered <span className="serif-accent brass-text">to hold.</span> Built to last.</>
-                    ) : (
-                      copy.title
-                    )}
-                  </h2>
-                  <p className="mt-4 max-w-md text-[15px] leading-relaxed text-silver-light/90 [text-shadow:0_2px_18px_rgba(0,0,0,0.65)]">{copy.body}</p>
-                  <p className="mt-3 font-display text-[12px] font-bold tracking-[0.22em] text-brass-light/90">{copy.spec}</p>
-                  {copy.label && (
-                    <p className="mt-5 inline-flex items-center gap-2 rounded-full border border-brass/30 bg-black/45 px-4 py-2 text-[11px] font-semibold tracking-[0.2em] text-brass-light backdrop-blur-sm">
-                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-brass" />
-                      {copy.label}
+                {product && (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, y: -18, filter: 'blur(6px)' }}
+                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <p className="eyebrow">{categoryName} · {String(scene + 1).padStart(2, '0')}/{sceneCountLabel}</p>
+                    <h2 className="display-section mt-3 text-balance">{product.name}</h2>
+                    <p className="mt-4 max-w-md text-[15px] leading-relaxed text-silver-light/90 [text-shadow:0_2px_18px_rgba(0,0,0,0.65)]">
+                      {product.shortDescription}
                     </p>
-                  )}
-                  {scene === 7 && (
-                    <div className="pointer-events-auto mt-6 flex flex-wrap gap-3">
-                      <Link to="/products" className="btn-primary">Explore products</Link>
-                      <Link to="/quote" className="btn-ghost">Request a quote</Link>
+
+                    <div className="mt-4 flex items-center gap-4">
+                      {productImage && (
+                        <img
+                          src={productImage}
+                          alt={product.name}
+                          className="h-20 w-20 rounded-xl border border-white/10 bg-white object-contain p-2 shadow-premium"
+                          loading="lazy"
+                        />
+                      )}
+                      <div>
+                        <p className="font-display text-[12px] font-bold tracking-[0.22em] text-brass-light/90">{productSpec}</p>
+                        <p className="mt-1 text-[14px] font-semibold text-paper">{productPrice}</p>
+                        <p className="mt-1 text-[11px] tracking-[0.14em] text-muted-dim">{product.sku}</p>
+                      </div>
                     </div>
-                  )}
-                </motion.div>
+
+                    <div className="pointer-events-auto mt-6 flex flex-wrap gap-3">
+                      <Link to={`/products/${product.slug}`} className="btn-primary">View product</Link>
+                      <button
+                        type="button"
+                        onClick={() => handleAddToCart(product.id, 'Standard')}
+                        className="btn-ghost"
+                      >
+                        {addedId === product.id ? 'Added to cart' : 'Add to cart'}
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
               </AnimatePresence>
             </div>
           </div>
@@ -302,36 +292,35 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
           <div className="absolute bottom-6 left-1/2 z-30 -translate-x-1/2 text-center">
             <button
               type="button"
-              onClick={() => scrollToFraction(0.14)}
+              onClick={() => scrollToFraction(totalScenes > 1 ? 1 / (totalScenes - 1) : 1)}
               className="pointer-events-auto flex flex-col items-center gap-2 text-[11px] font-semibold tracking-[0.28em] text-muted transition-colors hover:text-brass-light"
             >
               <span className="flex h-11 w-7 items-start justify-center rounded-full border border-brass/30 p-1.5">
                 <span className="h-2 w-2 animate-bounce rounded-full bg-brass" aria-hidden />
               </span>
-              SCROLL
             </button>
             <button type="button" onClick={() => scrollToFraction(1)} className="pointer-events-auto mt-2 min-h-[44px] px-3 text-[11px] tracking-[0.2em] text-muted-dim underline-offset-4 hover:text-paper hover:underline">
-              Skip story
+              Skip products
             </button>
           </div>
         )}
 
         {/* Progress rail — clickable dots on desktop */}
-        <div className="absolute right-5 top-1/2 z-30 hidden -translate-y-1/2 flex-col items-center gap-2 md:flex" role="group" aria-label="Story scenes">
+        <div className="absolute right-5 top-1/2 z-30 hidden -translate-y-1/2 flex-col items-center gap-2 md:flex" role="group" aria-label="Journey products">
           <span className="mb-1 font-display text-[11px] font-bold tracking-[0.2em] text-brass">{String(scene + 1).padStart(2, '0')}</span>
-          {SCENES.map((s, i) => (
+          {journeyProducts.map((p, i) => (
             <button
-              key={s.tag}
+              key={p.id}
               type="button"
-              onClick={() => scrollToFraction(i / (SCENES.length - 1))}
-              aria-label={`Go to ${s.tag}`}
+              onClick={() => scrollToFraction(totalScenes > 1 ? i / (totalScenes - 1) : 0)}
+              aria-label={`Go to ${p.name}`}
               className={cx(
                 'w-[3px] rounded-full transition-all duration-500 hover:bg-brass-light',
                 i === scene ? 'h-10 bg-gradient-to-b from-brass-light to-brass-dark' : i < scene ? 'h-8 bg-brass/60' : 'h-8 bg-white/15',
               )}
             />
           ))}
-          <span className="mt-1 text-[11px] tracking-[0.2em] text-muted-dim">08</span>
+          <span className="mt-1 text-[11px] tracking-[0.2em] text-muted-dim">{sceneCountLabel}</span>
         </div>
       </div>
     </div>

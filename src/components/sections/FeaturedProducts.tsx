@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { products } from '../../data/products';
+import { useCatalog } from '../../hooks/useCatalog';
 import { ProductCard } from '../products/ProductCard';
 import { useReveal } from '../../hooks/useScrollProgress';
 
 export function FeaturedProducts() {
+  const { products } = useCatalog();
   const ref = useReveal<HTMLElement>(true);
   const featured = products.filter((p) => p.featured).slice(0, 6);
   return (

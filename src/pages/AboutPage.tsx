@@ -4,7 +4,7 @@ import { setMeta } from '../lib/utils';
 
 export function AboutPage() {
   useEffect(() => {
-    setMeta('About Us (Editable) | Fasteners', 'Brand story placeholders — replace with verified company information.');
+    setMeta('About Us (Editable) | WELTOQ', 'Brand story placeholders — replace with verified company information.');
   }, []);
   const blocks: Array<[string, string]> = [
     ['Brand introduction', '[EDITABLE PLACEHOLDER] Introduce the business in 2–3 sentences. Do not invent founding years, certifications, or customer names until verified.'],

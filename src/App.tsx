@@ -12,7 +12,9 @@ import { IndustriesPage } from './pages/IndustriesPage';
 import { QuotePage } from './pages/QuotePage';
 import { ContactPage } from './pages/ContactPage';
 import { CartPage } from './pages/CartPage';
+import { CheckoutPage } from './pages/CheckoutPage';
 import { LegalPage, NotFoundPage } from './pages/LegalPage';
+import { AdminPage } from './pages/AdminPage';
 import { useReducedMotion, useIsMobile } from './hooks/useMediaQuery';
 
 function ScrollToTop() {
@@ -55,6 +57,8 @@ export function App() {
           <Route path="/quote" element={<QuotePage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="/legal/:doc" element={<LegalPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

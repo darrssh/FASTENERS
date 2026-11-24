@@ -1,15 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Input, Textarea, Select } from '../components/ui/Input';
-import { categories } from '../data/categories';
-import { products } from '../data/products';
+import { useCatalog } from '../hooks/useCatalog';
 import { setMeta } from '../lib/utils';
+import { submitQuote, type QuoteRequestRecord } from '../lib/api';
 
 type Errors = Record<string, string>;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const QUOTES_KEY = 'fasteners-quotes-v1';
-const LEGACY_QUOTES_KEY = 'tbe-quotes-v1';
 
 const EMPTY_FORM = {
   fullName: '', company: '', email: '', phone: '', country: '',
@@ -18,15 +16,18 @@ const EMPTY_FORM = {
 };
 
 export function QuotePage() {
+  const { categories, products } = useCatalog();
   const [params] = useSearchParams();
   const preselect = params.get('product') ?? '';
   const [form, setForm] = useState({ ...EMPTY_FORM, product: preselect });
   const [file, setFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<Errors>({});
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle');
+  const [quote, setQuote] = useState<QuoteRequestRecord | null>(null);
+  const [serverError, setServerError] = useState('');
 
   useEffect(() => {
-    setMeta('Request a Quote (Demo) | Fasteners', 'Bulk and custom fastener quotation form. Demo submission.');
+    setMeta('Request a Quote | WELTOQ', 'Bulk and custom fastener quotation requests sent to our team.');
   }, []);
 
   // Keep the preselected product in sync if the URL changes while mounted
@@ -55,7 +56,7 @@ export function QuotePage() {
     if (file) {
       const ok = ['application/pdf', 'image/png', 'image/jpeg', 'application/step', 'model/step'].some((t) => file.type === t) || /\.(pdf|png|jpe?g|step|stp|dxf)$/i.test(file.name);
       if (!ok) e.file = 'Allowed: PDF, PNG, JPG, STEP, DXF.';
-      if (file.size > 10 * 1024 * 1024) e.file = 'Max file size is 10 MB (demo limit).';
+      if (file.size > 10 * 1024 * 1024) e.file = 'Max file size is 10 MB.';
     }
     return e;
   }
@@ -64,38 +65,38 @@ export function QuotePage() {
     ev.preventDefault();
     const e = validate();
     setErrors(e);
+    setServerError('');
     if (Object.keys(e).length > 0) {
       setStatus('error');
       return;
     }
     setStatus('sending');
-    // DEMO submission: simulated latency + local persistence. No backend wired.
-    await new Promise((r) => setTimeout(r, 1200));
     try {
-      const raw = JSON.parse(localStorage.getItem(QUOTES_KEY) ?? localStorage.getItem(LEGACY_QUOTES_KEY) ?? '[]');
-      const log = Array.isArray(raw) ? raw : [];
-      log.push({ ...form, fileName: file?.name ?? null, at: new Date().toISOString() });
-      localStorage.setItem(QUOTES_KEY, JSON.stringify(log));
-      setStatus('success');
-    } catch {
+      const created = await submitQuote(form, file);
+      setQuote(created);
+      setStatus('idle');
+    } catch (err) {
+      setServerError(err instanceof Error ? err.message : 'Could not send the quote request. Please try again.');
       setStatus('error');
     }
   }
 
-  if (status === 'success') {
+  if (quote) {
     return (
       <main className="shell max-w-2xl pb-20 pt-32 text-center">
-        <p className="eyebrow">Quote received · demo</p>
-        <h1 className="display-section mt-3">Thanks — summary saved locally.</h1>
+        <p className="eyebrow">Quote request received</p>
+        <h1 className="display-section mt-3">Thanks — we have your requirements.</h1>
         <div className="card mt-6 p-6 text-left text-[14px]">
-          <p><strong>Product:</strong> {summary}</p>
-          <p><strong>Quantity:</strong> {form.quantity}</p>
-          <p><strong>Delivery:</strong> {form.deliveryLocation || '—'} {form.deliveryDate ? `· by ${form.deliveryDate}` : ''}</p>
-          <p className="mt-2 text-muted">Demo mode: nothing was emailed. Connect an email provider / CRM per SETUP.md, then this screen confirms a real ticket ID.</p>
+          <p><strong>Reference:</strong> {quote.quoteNumber}</p>
+          <p className="mt-1"><strong>Product:</strong> {summary}</p>
+          <p><strong>Quantity:</strong> {quote.quantity}</p>
+          <p><strong>Delivery:</strong> {quote.deliveryLocation || '—'} {quote.deliveryDate ? `· by ${quote.deliveryDate}` : ''}</p>
+          <p className="mt-2 text-muted">Your request is now visible to our team. We will contact you at {quote.email} with a quotation.</p>
         </div>
         <button
           className="btn-ghost mt-6"
           onClick={() => {
+            setQuote(null);
             setForm({ ...EMPTY_FORM });
             setFile(null);
             setErrors({});
@@ -112,9 +113,9 @@ export function QuotePage() {
 
   return (
     <main className="studio-bg shell max-w-3xl pb-20 pt-28">
-      <p className="eyebrow">Bulk & custom · demo submission</p>
+      <p className="eyebrow">Bulk & custom · quote request</p>
       <h1 className="display-section mt-3 text-balance">Your requirements. <span className="serif-accent brass-text">Our solutions.</span></h1>
-      <p className="mt-3 text-[15px] text-muted">Structured quote intake. Required fields marked *. Demo: validates, shows loading/success/error, stores locally — no email sent.</p>
+      <p className="mt-3 text-[15px] text-muted">Structured quote intake. Required fields marked *. Your request is sent to our backend and added to the admin queue.</p>
 
       <form onSubmit={submit} className="card-premium mt-8 grid gap-5 p-6 md:p-8 [&>div]:min-w-0" noValidate>
         <div className="grid min-w-0 gap-5 md:grid-cols-2 [&>div]:min-w-0 [&>label]:min-w-0">
@@ -149,16 +150,17 @@ export function QuotePage() {
             onChange={(e) => setFile(e.target.files?.[0] ?? null)}
             className="mt-2 block w-full max-w-full text-base text-muted file:mr-4 file:rounded-lg file:border-0 file:bg-accent file:px-4 file:py-2.5 file:font-semibold file:text-white"
           />
-          {file && <p className="mt-1 text-[13px] text-muted">Selected: {file.name} ({(file.size / 1024).toFixed(0)} KB) — demo only, not uploaded.</p>}
+          {file && <p className="mt-1 text-[13px] text-muted">Selected: {file.name} ({(file.size / 1024).toFixed(0)} KB) — it will be attached to your request.</p>}
           {errors.file && <p role="alert" className="mt-1 text-[13px] text-red-400">{errors.file}</p>}
         </div>
         {status === 'error' && Object.keys(errors).length > 0 && (
           <p role="alert" className="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-[14px] text-red-300">Please fix the highlighted fields and resubmit.</p>
         )}
+        {serverError && <p role="alert" className="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-[14px] text-red-300">{serverError}</p>}
         <button type="submit" disabled={status === 'sending'} className="btn-primary disabled:opacity-60">
-          {status === 'sending' ? 'Sending (demo)…' : 'Submit quote request — demo'}
+          {status === 'sending' ? 'Sending request…' : 'Submit quote request'}
         </button>
-        <p className="text-[12px] leading-relaxed text-muted-dim">Privacy notice (placeholder): demo submissions stay in this browser’s localStorage. When a backend connects, state retention, recipients, and lawful basis here.</p>
+        <p className="text-[12px] leading-relaxed text-muted-dim">Your details are stored in our quote system to prepare a quotation. Review the privacy policy before submitting.</p>
       </form>
     </main>
   );

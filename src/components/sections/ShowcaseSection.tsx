@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom';
-import { products } from '../../data/products';
+import { useCatalog } from '../../hooks/useCatalog';
 import { ProductCard } from '../products/ProductCard';
 import { useReveal } from '../../hooks/useScrollProgress';
 
 /** Interactive product showcase — horizontal scroll rail on desktop, grid on mobile. */
 export function ShowcaseSection() {
+  const { products } = useCatalog();
   const ref = useReveal<HTMLElement>(true);
-  const picks = [products[10], products[18], products[32], products[40]];
+  const picks = ['e01', 'e25', 'e48', 'e79']
+    .map((id) => products.find((p) => p.id === id))
+    .filter((p) => p !== undefined) as typeof products;
   return (
     <section ref={ref} className="relative overflow-hidden border-t hairline bg-ink-900/40" aria-label="Interactive product showcase">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brass/50 to-transparent" aria-hidden />

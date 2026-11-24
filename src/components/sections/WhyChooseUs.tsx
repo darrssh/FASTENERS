@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 import { useReveal } from '../../hooks/useScrollProgress';
 
 const POINTS = [
-  { t: 'Wide, data-driven range', d: 'M2–M8 SHCS, nuts, washers, CSK, QTF, bearings, rivets and grommets in one filterable catalog — all 46 Excel items.' },
-  { t: 'Application-led navigation', d: 'Electronics, machinery, panels, motion and sheet-metal routes each land on the right family.' },
-  { t: 'Bulk & custom workflow', d: 'Quantity, drawings, delivery location and requirements flow into one structured quote request (demo).' },
-  { t: 'Honest commerce states', d: 'Indicative INR prices, MOQs and stock clearly shown; quote-only items flagged, demo checkout never pretends to charge.' },
+  { t: 'Focused, data-driven range', d: 'All 41 products from the WELTORQUE technical catalogue — M2–M8 SHCS, standard hex nuts and M4 ultraflat head fasteners.' },
+  { t: 'Application-led navigation', d: 'Precision assemblies, machinery, compact enclosures and low-profile joints each land on the right family.' },
+  { t: 'Bulk & custom workflow', d: 'Quantity, drawings, delivery location and requirements flow into one structured quote request sent to our team.' },
+  { t: 'Honest commerce states', d: 'COD-only checkout: the order is stored in our backend and the admin is notified. No online payment is taken.' },
 ];
 
 export function WhyChooseUs() {

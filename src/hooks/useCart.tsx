@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { productById } from '../data/products';
+import { useCatalog } from './useCatalog';
 
 export type CartLine = {
   productId: string;
@@ -17,14 +17,15 @@ type CartContextValue = {
   setQty: (productId: string, variant: string, qty: number) => void;
   remove: (productId: string, variant: string) => void;
   clear: () => void;
-  isDemo: true;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
-const KEY = 'fasteners-cart-v1';
+const KEY = 'fasteners-cart-v2';
 const LEGACY_KEY = 'tbe-cart-v1';
 
-function load(): CartLine[] {
+type Lookup = (id: string) => { price: number | null } | undefined;
+
+function load(getProduct: Lookup): CartLine[] {
   try {
     const raw = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY);
     if (!raw) return [];
@@ -34,7 +35,7 @@ function load(): CartLine[] {
     // refresh unit price from catalog so stale prices can't linger.
     return parsed.flatMap((l) => {
       if (!l || typeof l !== 'object') return [];
-      const p = productById(l.productId);
+      const p = getProduct(l.productId);
       if (!p) return [];
       return [
         {
@@ -51,7 +52,10 @@ function load(): CartLine[] {
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [lines, setLines] = useState<CartLine[]>(() => (typeof window === 'undefined' ? [] : load()));
+  const { getProductById } = useCatalog();
+  const [lines, setLines] = useState<CartLine[]>(() =>
+    typeof window === 'undefined' ? [] : load(getProductById),
+  );
 
   useEffect(() => {
     try {
@@ -67,9 +71,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       lines,
       count: lines.reduce((s, l) => s + l.qty, 0),
       subtotal,
-      isDemo: true,
       add: (productId, variant, qty) => {
-        const p = productById(productId);
+        const p = getProductById(productId);
         if (!p) return;
         setLines((prev) => {
           const i = prev.findIndex((l) => l.productId === productId && l.variant === variant);
@@ -91,7 +94,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setLines((prev) => prev.filter((l) => !(l.productId === productId && l.variant === variant))),
       clear: () => setLines([]),
     };
-  }, [lines]);
+  }, [lines, getProductById]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

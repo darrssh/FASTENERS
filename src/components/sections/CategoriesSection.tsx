@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { categories, categoryGroups } from '../../data/categories';
+import { useCatalog } from '../../hooks/useCatalog';
 import { ProductRender } from '../products/ProductRender';
 import { useReveal } from '../../hooks/useScrollProgress';
 
-const GROUPS = categoryGroups as unknown as string[];
-
 export function CategoriesSection() {
+  const { categories, categoryGroups } = useCatalog();
+  const GROUPS = categoryGroups;
   const ref = useReveal<HTMLElement>(true);
   return (
     <section ref={ref} className="shell relative py-24 md:py-32" aria-label="Product categories">

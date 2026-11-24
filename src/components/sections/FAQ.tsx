@@ -3,9 +3,9 @@ import { useReveal } from '../../hooks/useScrollProgress';
 import { cx } from '../../lib/utils';
 
 const FAQS = [
-  { q: 'Is this a live store I can buy from today?', a: 'No — this build is a demo storefront. Cart and quote submissions run locally in your browser. Connect a backend (Shopify / custom API) per SETUP.md before accepting orders.' },
-  { q: 'Are the listed prices and stock real?', a: 'Prices are indicative real-world INR unit prices for the 46 Excel items — confirm with us before ordering. Photos are the exact Excel reference images.' },
-  { q: 'Can I request bulk or custom fasteners?', a: 'Yes — the Quote page collects category, sizes, materials, quantities, delivery, and drawings. Submission is currently simulated; wire it to email/CRM when ready.' },
+  { q: 'Is this a live store I can buy from today?', a: 'Yes. Orders are placed on this site with cash on delivery only. Your order is stored in our backend and the admin is notified immediately — no online payment is taken.' },
+  { q: 'Are the listed prices and stock real?', a: 'The PDF catalogue has no commercial data, so the displayed INR prices, MOQs and stock states are the current acting catalogue values. Technical details and photos are the exact WELTORQUE catalogue pages.' },
+  { q: 'Can I request bulk or custom fasteners?', a: 'Yes — the Quote page collects category, sizes, materials, quantities, delivery, and drawings. The request is sent to our backend and appears in the admin queue.' },
   { q: 'What if my device cannot render 3D?', a: 'The site detects missing WebGL or load failures and swaps in a static render while keeping headlines, CTAs, catalog, and navigation fully usable.' },
   { q: 'How do I replace the brand, contact, and legal text?', a: 'Edit src/data/brand.ts for identity/contact, src/data/products.ts for catalog, and the legal pages under src/pages/LegalPage. All placeholders are labeled.' },
 ];
@@ -19,7 +19,7 @@ export function FAQ() {
         <div className="md:sticky md:top-28 md:self-start">
           <p className="eyebrow" data-reveal>FAQ · 10</p>
           <h2 className="display-section mt-3 text-balance" data-reveal>Straight <span className="serif-accent brass-text">answers.</span></h2>
-          <p className="mt-4 max-w-sm text-[14px] text-muted" data-reveal>No sales talk. Demo limits stated plainly.</p>
+          <p className="mt-4 max-w-sm text-[14px] text-muted" data-reveal>No sales talk. COD and ordering details stated plainly.</p>
         </div>
         <div className="space-y-3">
           {FAQS.map((f, i) => (

@@ -1,5 +1,4 @@
-import { filterOptions } from '../../data/products';
-import { categories } from '../../data/categories';
+import { useCatalog } from '../../hooks/useCatalog';
 
 export type FilterState = {
   query: string;
@@ -67,6 +66,7 @@ export function ProductFilters({
   onChange: (f: FilterState) => void;
   count: number;
 }) {
+  const { categories, filterOptions } = useCatalog();
   const set = (k: keyof FilterState) => (v: string) => onChange({ ...filters, [k]: v });
   const activeCount = (Object.keys(filters) as (keyof FilterState)[]).filter((k) => k !== 'query' && k !== 'sort' && filters[k] !== 'all').length;
   return (

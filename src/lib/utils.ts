@@ -72,12 +72,10 @@ export function damp(current: number, target: number, lambda: number, dt: number
   return lerp(current, target, 1 - Math.exp(-lambda * dt));
 }
 
-export function sceneIndexForProgress(t: number): number {
-  const edges = [0, 0.1, 0.22, 0.36, 0.5, 0.64, 0.78, 0.9, 1.01];
-  for (let i = 0; i < edges.length - 1; i++) {
-    if (t >= edges[i] && t < edges[i + 1]) return i;
-  }
-  return 7;
+export function sceneIndexForProgress(t: number, count = 8): number {
+  const n = Math.max(1, count);
+  const idx = Math.floor(clamp01(t) * n);
+  return Math.min(n - 1, idx);
 }
 
 export function setMeta(title: string, description: string) {

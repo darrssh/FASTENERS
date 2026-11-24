@@ -6,28 +6,28 @@ const DOCS: Record<string, { title: string; body: string[] }> = {
   privacy: {
     title: 'Privacy Policy (Editable Placeholder)',
     body: [
-      '[EDITABLE PLACEHOLDER — have counsel review before launch.] This demo collects form inputs locally in the visitor’s browser (cart, quote drafts). No analytics, tracking, or server storage is wired in this build.',
-      'When you connect a backend, document here: data controller, purposes, lawful basis, retention, recipients (email/CRM/logistics), international transfers, and data-subject rights with a contact route.',
+      '[EDITABLE PLACEHOLDER — have counsel review before launch.] Cart drafts persist in the visitor’s browser. Submitted COD orders and quote requests are stored in our backend so our team can fulfil them.',
+      'Document here: data controller, purposes, lawful basis, retention, recipients (logistics/CRM), international transfers, and data-subject rights with a contact route.',
       'Contact placeholder for privacy requests: [not provided — edit src/data/brand.ts].',
     ],
   },
   terms: {
     title: 'Terms & Conditions (Editable Placeholder)',
     body: [
-      '[EDITABLE PLACEHOLDER — have counsel review.] All products, prices, and availability shown are sample data for demonstration. No offer, acceptance, or contract is formed by using the demo cart or quote form.',
-      'Add your real terms here: ordering, quotations validity, pricing, taxes, delivery, inspection/returns, liability limits, governing law, and dispute resolution.',
+      '[EDITABLE PLACEHOLDER — have counsel review.] Orders placed here are cash-on-delivery requests using the displayed catalogue prices. Our team confirms acceptance and delivery details with you.',
+      'Add your real terms here: ordering, quotation validity, pricing, taxes, delivery, inspection/returns, liability limits, governing law, and dispute resolution.',
     ],
   },
   shipping: {
     title: 'Shipping Policy (Editable Placeholder)',
     body: [
-      '[EDITABLE PLACEHOLDER.] No shipping is configured in this demo build. State here when you go live: zones served, carriers, lead times, freight vs courier thresholds, packing, and who bears transit risk.',
+      '[EDITABLE PLACEHOLDER.] Shipping and tax are currently not charged. After an order is received, our team coordinates delivery and payment. State here: zones served, carriers, lead times, packing, and who bears transit risk.',
     ],
   },
   returns: {
     title: 'Return & Refund Policy (Editable Placeholder)',
     body: [
-      '[EDITABLE PLACEHOLDER.] Demo only — no orders exist to return. Publish real policy before launch: eligibility window, condition requirements, restocking, refund method/timeline, and who pays return freight.',
+      '[EDITABLE PLACEHOLDER.] COD orders are now recorded. Publish the real policy before launch: eligibility window, condition requirements, restocking, refund method/timeline, and who pays return freight.',
     ],
   },
 };
@@ -40,7 +40,7 @@ export function LegalPage() {
     // Unknown slugs render NotFound below; keep the tab honest in that case.
     // Placeholder qualifiers stay in-body only — never leak into SERP titles.
     const title = entry ? entry.title.replace(' (Editable Placeholder)', '') : 'Page not found';
-    setMeta(`${title} | Fasteners`, 'Editable legal placeholder.');
+    setMeta(`${title} | WELTOQ`, 'Editable legal placeholder.');
   }, [entry]);
 
   // Unknown /legal/:doc is a 404, not a silent Privacy page.
@@ -68,7 +68,7 @@ export function LegalPage() {
 
 export function NotFoundPage() {
   useEffect(() => {
-    setMeta('404 — Page not found | Fasteners', 'Invalid route.');
+    setMeta('404 — Page not found | WELTOQ', 'Invalid route.');
   }, []);
   return (
     <main className="shell pb-20 pt-32 text-center">

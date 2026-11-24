@@ -33,7 +33,7 @@ export function ProductCard({ product }: { product: Product }) {
   );
 
   const onAdd = () => {
-    cart.add(product.id, product.availableSizes[0] ?? 'Standard', 1);
+    cart.add(product.id, product.availableSizes[0] ?? 'Standard', Math.max(1, product.moq));
     setAdded(true);
     if (addedTimer.current) window.clearTimeout(addedTimer.current);
     addedTimer.current = window.setTimeout(() => setAdded(false), 1800);

@@ -18,8 +18,8 @@ import { ShowcaseSection } from '../components/sections/ShowcaseSection';
 export function HomePage({ reducedMotion, isMobile }: { reducedMotion: boolean; isMobile: boolean }) {
   useEffect(() => {
     setMeta(
-      'Fasteners — Engineered to Hold. Built to Last. | Premium Industrial Fasteners',
-      'Cinematic 3D fastener storytelling, live material showcase, and a 46-product catalog with real reference photos.',
+      'WELTOQ — Engineered to Hold. Built to Last. | Premium Industrial Fasteners',
+      'Cinematic 3D fastener storytelling, live material showcase, and the 41-product WELTORQUE catalogue with original product images and exact technical specifications.',
     );
   }, []);
 

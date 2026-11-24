@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { productBySlug, products } from '../data/products';
+import { useCatalog } from '../hooks/useCatalog';
 import { formatINR, setMeta } from '../lib/utils';
 import { ProductRender } from '../components/products/ProductRender';
 import { ProductViewer } from '../components/products/ProductViewer';
@@ -8,7 +8,6 @@ import { ProductCard } from '../components/products/ProductCard';
 import { useCart } from '../hooks/useCart';
 import { ErrorBoundary } from '../components/ui/ErrorBoundary';
 import { useIsMobile, useReducedMotion } from '../hooks/useMediaQuery';
-import { brand } from '../data/brand';
 
 const FINISH_TO_MATERIAL: Record<string, string> = {
   'Zinc-Plated': 'zinc',
@@ -21,7 +20,8 @@ const FINISH_TO_MATERIAL: Record<string, string> = {
 
 export function ProductDetailPage() {
   const { slug } = useParams();
-  const product = slug ? productBySlug(slug) : undefined;
+  const { getProductBySlug, products } = useCatalog();
+  const product = slug ? getProductBySlug(slug) : undefined;
   const cart = useCart();
   const reducedMotion = useReducedMotion();
   const isMobile = useIsMobile();
@@ -35,7 +35,7 @@ export function ProductDetailPage() {
       setVariant(product.availableSizes[0] ?? 'Standard');
       setQty(product.moq);
       setAdded(false);
-      setMeta(`${product.name} — ${product.sku} | Fasteners`, product.seoDescription);
+      setMeta(`${product.name} — ${product.sku} | WELTOQ`, product.seoDescription);
       window.scrollTo(0, 0);
     }
   }, [slug, product]);
@@ -58,7 +58,8 @@ export function ProductDetailPage() {
     );
   }
 
-  const related = product.related.map((id) => products.find((p) => p.id === id)).filter(Boolean);
+  const { getProductById } = useCatalog();
+  const related = product.related.map((id) => getProductById(id)).filter(Boolean);
   const finishId = FINISH_TO_MATERIAL[product.finish] ?? (product.material === 'Brass' ? 'brass' : product.material === 'Stainless Steel' ? 'stainless' : 'zinc');
 
   return (
@@ -84,22 +85,49 @@ export function ProductDetailPage() {
           <ErrorBoundary>
             <ProductViewer finishId={finishId} reducedMotion={reducedMotion} isMobile={isMobile} />
           </ErrorBoundary>
-          <p className="text-[12px] text-muted-dim">Photos are the Excel reference images. 3D viewer shows finish preview only.</p>
+          <p className="text-[12px] text-muted-dim">
+            {product.catalogPage
+              ? 'Product image reproduced from the WELTORQUE technical catalogue. 3D viewer shows finish preview only.'
+              : 'Product photos are AI-generated studio renders. 3D viewer shows finish preview only.'}
+          </p>
         </div>
 
         <div className="min-w-0">
           <p className="eyebrow">{product.material} · {product.grade}</p>
           <h1 className="mt-2 font-display text-[clamp(28px,3.5vw,44px)] font-bold leading-tight">{product.name}</h1>
-          <p className="mt-2 text-[13px] tracking-[0.14em] text-brass">SKU {product.sku} · EXCEL CATALOG</p>
-          <p className="mt-4 text-[15px] text-muted">{product.fullDescription}</p>
+          <p className="mt-2 text-[13px] tracking-[0.14em] text-brass">
+            SKU {product.sku} · {product.catalogPage ? `WELTORQUE CATALOG · P.${String(product.catalogPage).padStart(2, '0')}` : 'EXCEL CATALOG'}
+          </p>
+          {product.catalogIntro && (
+            <p className="mt-4 rounded-lg border border-brass/30 bg-brass/5 p-4 text-[14px] leading-relaxed text-muted">
+              {product.catalogIntro}
+            </p>
+          )}
+          <p className="mt-4 text-[15px] leading-relaxed text-muted">{product.fullDescription}</p>
 
           <dl className="card-premium mt-6 grid grid-cols-1 gap-x-6 gap-y-3 p-5 text-[14px] min-[420px]:grid-cols-2">
-            {[['Material', product.material], ['Grade', product.grade], ['Diameter', product.diameter], ['Length', product.length], ['Thread', product.threadType], ['Pitch', product.threadPitch], ['Finish', product.finish], ['MOQ', `${product.moq} pcs`]].map(([k, v]) => (
-              <div key={k} className="flex min-w-0 flex-col">
-                <dt className="text-[11px] uppercase tracking-[0.18em] text-muted">{k}</dt>
-                <dd className="break-words font-semibold">{v}</dd>
-              </div>
-            ))}
+            {([
+              ['Material', product.material],
+              ['Grade', product.grade],
+              ['Standard', product.standard],
+              ['Strength', product.strength],
+              ['Class', product.propertyClass],
+              ['Fastener type', product.fastenerType],
+              ['Diameter', product.diameter],
+              ['Length', product.length],
+              ['Thread', product.threadType],
+              ['Pitch', product.threadPitch],
+              ['Finish', product.finish],
+              ['Remark', product.remark],
+              ['MOQ', `${product.moq} pcs`],
+            ] as Array<[string, string]>)
+              .filter(([, v]) => v && v !== '—' && v !== 'N/A')
+              .map(([k, v]) => (
+                <div key={k} className="flex min-w-0 flex-col">
+                  <dt className="text-[11px] uppercase tracking-[0.18em] text-muted">{k}</dt>
+                  <dd className="break-words font-semibold">{v}</dd>
+                </div>
+              ))}
           </dl>
 
           <div className="mt-6 flex min-w-0 flex-col gap-4">
@@ -139,7 +167,7 @@ export function ProductDetailPage() {
                     addedTimer.current = window.setTimeout(() => setAdded(false), 2500);
                   }}
                 >
-                  {added ? '✓ Added to cart (demo)' : 'Add to cart — demo'}
+                  {added ? '✓ Added to cart' : 'Add to cart'}
                 </button>
               ) : (
                 <Link to={`/quote?product=${product.id}`} className="btn-primary flex-1">Request a quote</Link>
@@ -147,7 +175,7 @@ export function ProductDetailPage() {
               <Link to="/quote" className="btn-ghost flex-1">Bulk quote →</Link>
             </div>
             <p className="rounded-lg border hairline bg-ink-900 p-3 text-[12px] text-muted">
-              Demo commerce ({brand.commerceMode}): cart persists in this browser only. No payment, no backend — see SETUP.md to connect Shopify/custom.
+              Cash on delivery only. Your order is sent to our backend and the admin is notified — no online payment is taken here.
             </p>
           </div>
 
@@ -166,6 +194,20 @@ export function ProductDetailPage() {
               </table>
             </div>
           </div>
+
+          {product.applications && product.applications.length > 0 && (
+            <div className="mt-8 min-w-0">
+              <h2 className="font-display text-xl font-bold">Common applications</h2>
+              <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+                {product.applications.map((application) => (
+                  <li key={application} className="flex gap-2 rounded-lg border hairline bg-ink-900 p-3 text-[14px] text-muted">
+                    <span aria-hidden="true" className="text-brass">◆</span>
+                    <span>{application}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 

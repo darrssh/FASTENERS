@@ -3,17 +3,17 @@ import { Link } from 'react-router-dom';
 import { setMeta } from '../lib/utils';
 
 const INDUSTRIES = [
-  { name: 'Electronics & Instruments', body: 'M2 / M3 micro fasteners, precision washers and threaded inserts.', link: 'm2-fasteners' },
-  { name: 'Manufacturing', body: 'M4 / M6 / M8 SHCS, anchor nuts and washers for machine building and jigs.', link: 'm4-fasteners' },
-  { name: 'Panels & Enclosures', body: 'QTF quarter-turn studs, mushroom heads and CSK flush screws for covers.', link: 'qtf-fasteners' },
-  { name: 'Motion & Pneumatics', body: 'Articulated bearings, spherical clips and Festo tube convertors.', link: 'bearings' },
-  { name: 'Sheet-metal work', body: 'Threaded rivets and blind pop rivets Ø2.3–Ø2.9 for thin sheet.', link: 'pop-rivets' },
-  { name: 'Cable & Sealing', body: 'Ø20 rubber grommets for pass-through and edge protection.', link: 'rubber-grommets' },
+  { name: 'Electronics & Instruments', body: 'M2 / M3 socket head cap screws and hex nuts for compact assemblies.', link: 'm2-fasteners' },
+  { name: 'Manufacturing', body: 'M4 / M6 / M8 SHCS and standard hex nuts for machine building and jigs.', link: 'm4-fasteners' },
+  { name: 'Precision engineering', body: 'M3 / M4 SHCS with exact ISO 4762 / DIN 912 dimensions from the catalogue.', link: 'm3-fasteners' },
+  { name: 'Machine frames', body: 'M6 / M8 socket head cap screws and matching nuts for structural joints.', link: 'm6-fasteners' },
+  { name: 'Standard fastening', body: 'Standard hex nuts M2–M8 matched to the WELTORQUE screw range.', link: 'm8-fasteners' },
+  { name: 'Low-profile joints', body: 'Ultraflat head fasteners M4 × 10–25 mm where reduced head projection matters.', link: 'ultralow-sockets' },
 ];
 
 export function IndustriesPage() {
   useEffect(() => {
-    setMeta('Industries Served (Editable) | Fasteners', 'Industry routes with honest placeholder copy.');
+    setMeta('Industries Served | WELTOQ', 'Applications for the 41-product WELTORQUE fastener catalogue.');
   }, []);
   return (
     <main className="studio-bg shell pb-20 pt-28">

@@ -5,8 +5,8 @@
  */
 export const brand = {
   // Displayed in nav logo + footer. Single source of truth for the site name.
-  brandName: 'Fasteners',
-  projectName: 'Fasteners',
+  brandName: 'WELTOQ',
+  projectName: 'WELTOQ',
   tagline: 'Engineered to Hold. Built to Last.',
   // Contact placeholders — all empty = not provided by business yet.
   supportEmail: '',
@@ -22,9 +22,9 @@ export const brand = {
     linkedin: '',
   },
   currency: 'INR',
-  // Commerce mode: 'demo' = frontend-only cart + quote demo (no real backend).
-  // Switch to 'shopify' | 'custom' only when credentials/endpoints are configured.
-  commerceMode: 'demo' as 'demo' | 'shopify' | 'custom',
+  // Commerce mode: 'custom' = backend-backed COD orders and quote requests.
+  // The backend API URL is configured via VITE_API_BASE_URL (see SETUP.md).
+  commerceMode: 'custom' as 'demo' | 'shopify' | 'custom',
 };
 
 export function contactHref(kind: 'email' | 'phone' | 'whatsapp'): string | null {

@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { materials } from '../../data/categories';
-import { products } from '../../data/products';
+import { useCatalog } from '../../hooks/useCatalog';
 import { HeroBolt } from '../hero/HeroBolt';
 import { ErrorBoundary } from '../ui/ErrorBoundary';
 import { Canvas } from '@react-three/fiber';
@@ -17,6 +16,7 @@ type Props = {
 
 /** Premium material showcase (§19): real PBR configs swap live on the bolt. Scroll-linked. */
 export function MaterialsSection({ reducedMotion = false, isMobile = false }: Props) {
+  const { materials, products } = useCatalog();
   const [active, setActive] = useState(materials[0].id);
   const current = materials.find((m) => m.id === active)!;
   const ref = useReveal<HTMLElement>(true);
@@ -33,7 +33,7 @@ export function MaterialsSection({ reducedMotion = false, isMobile = false }: Pr
           <h2 className="display-section mt-3 text-balance" data-reveal>Not a color swap. <span className="serif-accent brass-text">Real metal behavior.</span></h2>
           <p className="mt-4 max-w-lg text-[15px] text-muted" data-reveal>
             Each finish below drives actual metalness, roughness, and reflection response on a live bolt —
-            stainless through polymer and rubber, matching the {products.length}-product catalog.
+            stainless through hot-dip galvanized. The catalogue leaves material and finish to be specified, so these are preview presets for the {products.length}-product range.
           </p>
           {/* Toggle-button group, not tabs: no tabpanel/keyboard contract to honor. */}
           <div className="mt-6 flex flex-wrap gap-2" role="group" aria-label="Material selector" data-reveal>

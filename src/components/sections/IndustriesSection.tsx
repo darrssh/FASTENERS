@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom';
 import { useReveal } from '../../hooks/useScrollProgress';
 
 const APPS = [
-  { name: 'Precision electronics', desc: 'M2 / M3 micro fasteners for instruments and enclosures.', link: 'm2-fasteners', grad: 'linear-gradient(135deg,#2b2417,#101214)', icon: '⌖' },
-  { name: 'Industrial machinery', desc: 'M4 / M6 / M8 SHCS, anchor nuts and washers for frames.', link: 'm4-fasteners', grad: 'linear-gradient(135deg,#2a2f26,#14171b)', icon: '⚙' },
-  { name: 'Access panels & covers', desc: 'QTF quarter-turn studs, receptacles and mushroom heads.', link: 'qtf-fasteners', grad: 'linear-gradient(135deg,#1d2530,#0e1114)', icon: '◈' },
-  { name: 'Motion & pneumatics', desc: 'Articulated bearings, spherical clips and Festo convertors.', link: 'bearings', grad: 'linear-gradient(135deg,#262d34,#101214)', icon: '⬢' },
-  { name: 'Sheet-metal assembly', desc: 'Threaded rivets and blind pop rivets Ø2.3–Ø2.9.', link: 'pop-rivets', grad: 'linear-gradient(135deg,#2a2118,#121518)', icon: '⬣' },
-  { name: 'Cable & sealing', desc: 'Ø20 rubber grommets for pass-through and edge protection.', link: 'rubber-grommets', grad: 'linear-gradient(135deg,#2b2f26,#131412)', icon: '⬔' },
+  { name: 'Precision electronics', desc: 'M2 / M3 SHCS and hex nuts for instruments and enclosures.', link: 'm2-fasteners', grad: 'linear-gradient(135deg,#2b2417,#101214)', icon: '⌖' },
+  { name: 'Industrial machinery', desc: 'M4 / M6 / M8 SHCS and hex nuts for frames and fixtures.', link: 'm4-fasteners', grad: 'linear-gradient(135deg,#2a2f26,#14171b)', icon: '⚙' },
+  { name: 'Compact assemblies', desc: 'M2–M4 socket head cap screws where space is limited.', link: 'm3-fasteners', grad: 'linear-gradient(135deg,#1d2530,#0e1114)', icon: '◈' },
+  { name: 'Machine frames', desc: 'M6 / M8 socket head cap screws and matching hex nuts.', link: 'm8-fasteners', grad: 'linear-gradient(135deg,#262d34,#101214)', icon: '⬢' },
+  { name: 'Standard fastening', desc: 'Standard hex nuts M2–M8 matched to the catalogue screws.', link: 'm6-fasteners', grad: 'linear-gradient(135deg,#2a2118,#121518)', icon: '⬣' },
+  { name: 'Low-profile joints', desc: 'Ultraflat head fasteners M4 × 10–25 mm for tight clearances.', link: 'ultralow-sockets', grad: 'linear-gradient(135deg,#2b2f26,#131412)', icon: '⬔' },
 ];
 
 export function IndustriesSection() {

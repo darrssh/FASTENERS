@@ -1,8 +1,8 @@
 import { useId, useState } from 'react';
-import { assetUrl } from '../../lib/utils';
+import { resolveMedia } from '../../lib/api';
 
 /**
- * Product renders — real Excel photography first, procedural SVG fallback.
+ * Product renders — original catalogue photography first, procedural SVG fallback.
  * If `renderKey` is a photo path (starts with `/`), render it on a clean
  * studio background. Otherwise fall back to the procedural SVG (used by
  * category/hero 3D sections only).
@@ -137,11 +137,12 @@ export function ProductRender({
   const glow = `url(#tbe-glow-${uid})`;
   const [imgOk, setImgOk] = useState(true);
 
-  if (renderKey.startsWith('/') && imgOk) {
+  const isPhoto = (renderKey.startsWith('/') || /^https?:/i.test(renderKey)) && imgOk;
+  if (isPhoto) {
     return (
       <div className="relative overflow-hidden bg-white">
         <img
-          src={assetUrl(renderKey)}
+          src={resolveMedia(renderKey)}
           alt={`${name} — product photo`}
           loading="lazy"
           width={320}

@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { products } from '../../data/products';
+import { useCatalog } from '../../hooks/useCatalog';
 import { lockBodyScroll, unlockBodyScroll } from '../../lib/utils';
 import { useDialogFocus } from '../../hooks/useDialogFocus';
 
 const norm = (s: string) => s.toLowerCase().replace(/×/g, 'x');
 
 export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { products } = useCatalog();
   const [q, setQ] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useDialogFocus<HTMLDivElement>(open);
@@ -55,7 +56,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
             ref={inputRef}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Try “M4”, “SHCS”, “QTF”, “rivet”, SKU…"
+            placeholder="Try “M4”, “SHCS”, “hex nut”, “ultraflat”, SKU…"
             aria-label="Search products by name, SKU, category, or material"
             className="mt-4 w-full rounded-lg border hairline bg-ink-950 px-4 py-3.5 text-base text-paper placeholder:text-muted-dim focus:border-accent"
           />

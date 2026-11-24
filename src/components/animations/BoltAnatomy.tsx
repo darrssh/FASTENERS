@@ -23,10 +23,7 @@ export function BoltAnatomy() {
             fully usable with 3D disabled, keyboards, and screen readers.
           </p>
           <Link to="/products" className="btn-primary mt-6 inline-flex" data-reveal>Shop the assembly →</Link>
-          <div className="mt-8 hidden items-center gap-3 md:flex" data-reveal aria-hidden>
-            <span className="h-px w-12 bg-brass/60" />
-            <span className="text-[11px] tracking-[0.24em] text-muted">SCROLL TO EXPLODE</span>
-          </div>
+
         </div>
         <ol className="space-y-4">
           {rows.map((r, i) => (

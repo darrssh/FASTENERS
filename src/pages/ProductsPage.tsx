@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { products } from '../data/products';
+import { useCatalog } from '../hooks/useCatalog';
 import { ProductGrid } from '../components/products/ProductGrid';
 import { ProductFilters, EMPTY_FILTERS, type FilterState } from '../components/products/ProductFilters';
 import { Input } from '../components/ui/Input';
@@ -10,6 +10,7 @@ import { useDialogFocus } from '../hooks/useDialogFocus';
 const PAGE_SIZE = 9;
 
 export function ProductsPage() {
+  const { products } = useCatalog();
   const [params, setParams] = useSearchParams();
   const [filters, setFilters] = useState<FilterState>({
     ...EMPTY_FILTERS,
@@ -24,7 +25,7 @@ export function ProductsPage() {
   const wasOpen = useRef(false);
 
   useEffect(() => {
-    setMeta(`Product Catalog — ${products.length} Precision Fasteners | Fasteners`, 'Search, filter, and sort the full fastener catalog from Excel: SHCS, nuts, washers, CSK, QTF, bearings, rivets.');
+    setMeta(`Product Catalog — ${products.length} Precision Fasteners | WELTOQ`, 'Search, filter, and sort the 41-product WELTORQUE catalogue: M2–M8 SHCS, standard hex nuts and M4 ultraflat head fasteners.');
   }, []);
 
   // URL → filters: reset to defaults when a param is REMOVED (Back button,
@@ -116,7 +117,7 @@ export function ProductsPage() {
       <h1 className="display-section mt-3 text-balance">Every fastener. <span className="serif-accent brass-text">One system.</span></h1>
       <p className="mt-3 max-w-2xl text-[15px] text-muted">
         Search by name, SKU, category, or material. Filters update the grid live; sorting included.
-        All {products.length} listings match the Excel sheet, with Excel reference photos.
+        All {products.length} listings come from the WELTORQUE technical catalogue, with the original page images and exact specifications.
       </p>
 
       <div className="mt-6 flex flex-col gap-3 md:flex-row">
@@ -124,7 +125,7 @@ export function ProductsPage() {
           <Input
             label="Search products"
             name="catalog-search"
-            placeholder="M4, SHCS, QTF, rivet, SKU…"
+            placeholder="M4, SHCS, hex nut, ultraflat, SKU…"
             value={filters.query}
             onChange={(e) => onSearchInput(e.target.value)}
           />

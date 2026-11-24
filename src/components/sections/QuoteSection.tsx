@@ -14,7 +14,7 @@ export function QuoteSection() {
           <h2 className="display-section mt-3 text-balance" data-reveal>Your requirements. <span className="serif-accent brass-text">Our solutions.</span></h2>
           <p className="mt-4 max-w-lg text-[15px] text-muted" data-reveal>
             Find the right fasteners for your project or request a quotation for bulk and custom requirements.
-            Drawings, quantities, materials, and delivery in one structured form — demo submission, no backend yet.
+            Drawings, quantities, materials, and delivery in one structured form — sent straight to our team.
           </p>
           <div className="mt-6 flex flex-wrap gap-3" data-reveal>
             <Link to="/quote" className="btn-primary">Request a quote</Link>
@@ -23,7 +23,7 @@ export function QuoteSection() {
         </div>
         <ol className="relative space-y-3" data-reveal>
           <span className="absolute bottom-4 left-[37px] top-4 w-px bg-gradient-to-b from-brass via-brass/25 to-transparent" aria-hidden />
-          {['Pick products or describe from scratch', 'Add materials, sizes, quantities', 'Attach drawings / specs (demo validation)', 'Get a structured summary to send when backend connects'].map((s, i) => (
+          {['Pick products or describe from scratch', 'Add materials, sizes, quantities', 'Attach drawings / specs', 'Receive a quotation from our team'].map((s, i) => (
             <li key={s} className="card card-hover-lift relative flex items-center gap-4 p-5">
               <span className="z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brass-light to-brass-dark font-display text-sm font-bold text-black">{i + 1}</span>
               <p className="text-[15px] font-medium">{s}</p>
