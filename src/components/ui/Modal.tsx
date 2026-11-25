@@ -27,13 +27,13 @@ export function Modal({ onClose, children, title }: { onClose: () => void; child
       aria-label={title}
     >
       <div aria-hidden onClick={onClose} className="absolute inset-0 cursor-default bg-black/70" />
-      <div className="card relative max-h-[85vh] w-full max-w-lg overflow-auto bg-ink-900 p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-xl font-semibold">{title}</h3>
+      <div className="card relative max-h-[85svh] w-full max-w-lg overflow-auto overscroll-contain bg-ink-900 p-5 sm:p-6">
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <h3 className="min-w-0 break-words text-xl font-semibold">{title}</h3>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md border hairline px-3 py-1.5 text-sm text-muted hover:text-paper"
+            className="grid min-h-[44px] min-w-[44px] shrink-0 place-items-center rounded-md border hairline px-3 text-sm text-muted hover:text-paper"
             autoFocus
           >
             Close

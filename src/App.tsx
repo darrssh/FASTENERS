@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { SearchOverlay } from './components/products/ProductSearch';
@@ -15,32 +14,45 @@ import { CartPage } from './pages/CartPage';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { LegalPage, NotFoundPage } from './pages/LegalPage';
 import { AdminPage } from './pages/AdminPage';
+import { RenderHarnessPage } from './pages/RenderHarnessPage';
 import { useReducedMotion, useIsMobile } from './hooks/useMediaQuery';
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
+    // Temporarily disable CSS smooth-scroll: behavior:'auto' still inherits it.
+    const root = document.documentElement;
+    const previous = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
     if (hash) {
-      // In-page anchor (e.g. #specs): jump to it instead of top.
       document.getElementById(hash.slice(1))?.scrollIntoView();
-      return;
+    } else {
+      // Pathname-only: query-param changes (catalog typing) must NOT yank scroll.
+      window.scrollTo(0, 0);
     }
-    // Pathname-only: query-param changes (catalog typing) must NOT yank scroll.
-    // 'auto' defeats the CSS smooth-scroll so route changes land instantly.
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    root.style.scrollBehavior = previous;
   }, [pathname, hash]);
   return null;
 }
 
-export function App() {
+function AppShell() {
   const [searchOpen, setSearchOpen] = useState(false);
   const reducedMotion = useReducedMotion();
   const isMobile = useIsMobile();
-  // '/FASTENERS' on GitHub Pages project hosting, '' in local dev.
-  const basename = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+  const { pathname } = useLocation();
+  const isRenderHarness = pathname.includes('/__render');
+
+  if (isRenderHarness) {
+    return (
+      <Routes>
+        <Route path="/__render/:id/:view" element={<RenderHarnessPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    );
+  }
 
   return (
-    <BrowserRouter basename={basename || undefined}>
+    <>
       <ScrollToTop />
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-white">
         Skip to content
@@ -60,10 +72,22 @@ export function App() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/legal/:doc" element={<LegalPage />} />
+          {import.meta.env.DEV && <Route path="/__render/:id/:view" element={<RenderHarnessPage />} />}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
       <Footer />
+    </>
+  );
+}
+
+export function App() {
+  // '/FASTENERS' on GitHub Pages project hosting, '' in local dev.
+  const basename = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+
+  return (
+    <BrowserRouter basename={basename || undefined}>
+      <AppShell />
     </BrowserRouter>
   );
 }

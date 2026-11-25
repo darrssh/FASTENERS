@@ -13,8 +13,12 @@ export function FeaturedProducts() {
       <div className="shell py-24 md:py-32">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="eyebrow" data-reveal>Featured · 07</p>
+            <p className="eyebrow" data-reveal>Fast movers · 07</p>
             <h2 className="display-section mt-3 text-balance" data-reveal>Stock the <span className="serif-accent brass-text">essentials.</span></h2>
+            <p className="mt-3 max-w-xl text-[14px] text-muted" data-reveal>
+              The most-requested sizes across the M2–M8 range. Each card shows its INR price, MOQ and
+              stock state — add the minimum quantity in one click.
+            </p>
           </div>
           <Link to="/products" className="btn-ghost" data-reveal>Shop all {products.length} →</Link>
         </div>

@@ -5,12 +5,12 @@ import { useReveal } from '../../hooks/useScrollProgress';
 export function BoltAnatomy() {
   const ref = useReveal<HTMLElement>(true);
   const rows = [
-    { part: 'BOLT', spec: 'Hex head · beveled edges · rolled thread', note: 'Carries clamp load; thread form decides fit and fatigue behavior (sample note).' },
-    { part: 'NUT', spec: 'Chamfered hex · matched pitch', note: 'Rotation × pitch = axial travel. Match grade to bolt — never mix unknown grades.' },
-    { part: 'WASHER', spec: 'Flat · controlled OD/ID', note: 'Spreads bearing stress and protects the clamped surface.' },
+    { part: 'BOLT', spec: 'Head · beveled edges · rolled thread', note: 'Carries the clamp load. Every socket head cap screw in the range lists its exact diameter, pitch and length.' },
+    { part: 'NUT', spec: 'Chamfered hex · matched pitch', note: 'Locks the joint. Pair any screw with a matching WELTOQ hex nut from the same diameter family — M2 through M8.' },
+    { part: 'WASHER', spec: 'Flat · controlled OD/ID', note: 'Spreads bearing stress and protects the clamped surface. Select by joint geometry; grade and finish are confirmed on quote.' },
   ];
   return (
-    <section ref={ref} className="relative overflow-hidden border-t hairline" aria-label="Exploded product anatomy">
+    <section ref={ref} className="relative overflow-x-clip border-t hairline" aria-label="Exploded product anatomy">
       <div className="pointer-events-none absolute -right-20 top-10 select-none font-display text-[22vw] font-bold leading-none text-white/[0.02]" aria-hidden data-parallax="-40">
         03
       </div>
@@ -20,9 +20,10 @@ export function BoltAnatomy() {
           <h2 className="display-section mt-3 text-balance" data-reveal>Precision in <span className="serif-accent brass-text">every component.</span></h2>
           <p className="mt-4 text-[15px] text-muted" data-reveal>
             The scroll scene above separates these live. Below is the same information as plain text —
-            fully usable with 3D disabled, keyboards, and screen readers.
+            fully usable with 3D disabled, keyboards, and screen readers. Then shop the 41 listed fasteners
+            with prices, MOQ tiers and stock states attached.
           </p>
-          <Link to="/products" className="btn-primary mt-6 inline-flex" data-reveal>Shop the assembly →</Link>
+          <Link to="/products" className="btn-primary mt-6 inline-flex" data-reveal>Shop the range →</Link>
 
         </div>
         <ol className="space-y-4">

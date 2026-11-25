@@ -16,10 +16,15 @@ const EMPTY_FORM = {
 };
 
 export function QuotePage() {
-  const { categories, products } = useCatalog();
+  const { categories, categoryGroups, products } = useCatalog();
   const [params] = useSearchParams();
   const preselect = params.get('product') ?? '';
-  const [form, setForm] = useState({ ...EMPTY_FORM, product: preselect });
+  const qtyParam = params.get('qty') ?? '';
+  const [form, setForm] = useState({
+    ...EMPTY_FORM,
+    product: preselect,
+    quantity: qtyParam ? `${qtyParam} pcs` : '',
+  });
   const [file, setFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle');
@@ -34,8 +39,13 @@ export function QuotePage() {
   // (e.g. "Request a quote" from different product pages) — including
   // clearing it when the param is removed.
   useEffect(() => {
-    const next = params.get('product') ?? '';
-    setForm((f) => (f.product === next ? f : { ...f, product: next }));
+    const nextProduct = params.get('product') ?? '';
+    const nextQty = params.get('qty') ?? '';
+    setForm((f) => {
+      const nextQuantity = nextQty ? `${nextQty} pcs` : f.quantity;
+      if (f.product === nextProduct && f.quantity === nextQuantity) return f;
+      return { ...f, product: nextProduct, quantity: nextQuantity };
+    });
   }, [params]);
 
   const set = (k: keyof typeof form) => (v: string) => setForm((f) => ({ ...f, [k]: v }));
@@ -115,7 +125,10 @@ export function QuotePage() {
     <main className="studio-bg shell max-w-3xl pb-20 pt-28">
       <p className="eyebrow">Bulk & custom · quote request</p>
       <h1 className="display-section mt-3 text-balance">Your requirements. <span className="serif-accent brass-text">Our solutions.</span></h1>
-      <p className="mt-3 text-[15px] text-muted">Structured quote intake. Required fields marked *. Your request is sent to our backend and added to the admin queue.</p>
+      <p className="mt-3 max-w-2xl text-[15px] text-muted">
+        Structured quote intake for bulk and custom requirements. Required fields marked *. Tell us the
+        material, grade and finish you need — we confirm the exact specification with you before supply.
+      </p>
 
       <form onSubmit={submit} className="card-premium mt-8 grid gap-5 p-6 md:p-8 [&>div]:min-w-0" noValidate>
         <div className="grid min-w-0 gap-5 md:grid-cols-2 [&>div]:min-w-0 [&>label]:min-w-0">
@@ -130,12 +143,25 @@ export function QuotePage() {
           </Select>
           <Select label="Product name" name="product" value={form.product} onChange={set('product')}>
             <option value="">Select…</option>
-            {products.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+            {categoryGroups.map((group) => (
+              <optgroup key={group} label={group}>
+                {products
+                  .filter((p) => categories.find((c) => c.id === p.category)?.group === group)
+                  .map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+              </optgroup>
+            ))}
+            {products.some((p) => !categories.some((c) => c.id === p.category)) && (
+              <optgroup label="Other">
+                {products
+                  .filter((p) => !categories.some((c) => c.id === p.category))
+                  .map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+              </optgroup>
+            )}
           </Select>
           {errors.product && <p role="alert" className="text-[13px] text-red-400 md:col-span-2">{errors.product}</p>}
-          <Input label="Material or grade" name="material" placeholder="e.g. A2 stainless / 8.8 zinc" value={form.material} onChange={(e) => set('material')(e.target.value)} />
-          <Input label="Diameter" name="diameter" placeholder="e.g. M12" value={form.diameter} onChange={(e) => set('diameter')(e.target.value)} />
-          <Input label="Length" name="length" placeholder="e.g. 60 mm" value={form.length} onChange={(e) => set('length')(e.target.value)} />
+          <Input label="Material / grade / finish (to confirm)" name="material" placeholder="Specify if required — we confirm exact spec" value={form.material} onChange={(e) => set('material')(e.target.value)} />
+          <Input label="Diameter" name="diameter" placeholder="e.g. M4 (range M2–M8)" value={form.diameter} onChange={(e) => set('diameter')(e.target.value)} />
+          <Input label="Length" name="length" placeholder="e.g. 25 mm" value={form.length} onChange={(e) => set('length')(e.target.value)} />
           <Input label="Quantity" name="quantity" required placeholder="e.g. 2000 pcs" value={form.quantity} onChange={(e) => set('quantity')(e.target.value)} error={errors.quantity} />
           <Input label="Required delivery date" name="deliveryDate" type="date" min={today} value={form.deliveryDate} onChange={(e) => set('deliveryDate')(e.target.value)} />
           <Input label="Delivery location" name="deliveryLocation" placeholder="City, State / PIN" value={form.deliveryLocation} onChange={(e) => set('deliveryLocation')(e.target.value)} />

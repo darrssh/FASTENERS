@@ -4,7 +4,7 @@ import { useCatalog } from '../../hooks/useCatalog';
 import { useReveal } from '../../hooks/useScrollProgress';
 
 export function Footer() {
-  const { categories } = useCatalog();
+  const { categories, products } = useCatalog();
   const email = contactHref('email');
   const phone = contactHref('phone');
   const ref = useReveal<HTMLElement>(true);
@@ -16,7 +16,7 @@ export function Footer() {
           <p className="font-display text-sm font-bold tracking-[0.18em]">WELTOQ</p>
           <p className="mt-1 text-[12px] tracking-[0.2em] text-muted">ENGINEERED TO HOLD · BUILT TO LAST</p>
           <p className="mt-4 max-w-xs text-[14px] text-muted">
-            Precision-engineered fasteners for industrial applications, construction, and manufacturing, sourced from the WELTORQUE catalogue.
+            A focused range of {products.length} precision fasteners for industrial and compact assemblies — sourced from the WELTORQUE technical reference and sold as WELTOQ.
           </p>
           <address className="mt-4 space-y-1 text-[14px] text-muted not-italic">
             <p>Email: {email ? <a className="text-paper underline decoration-brass/60 underline-offset-4 hover:text-brass-light" href={email}>{brand.supportEmail}</a> : <span className="text-muted-dim">[not provided — edit src/data/brand.ts]</span>}</p>
@@ -29,7 +29,7 @@ export function Footer() {
               const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
               window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
             }}
-            className="btn-ghost mt-5 !px-4 !py-2.5 !text-[12px]"
+            className="btn-ghost mt-5 min-h-[44px] !px-4 !py-2.5 !text-[12px]"
           >
             ↑ Back to top
           </button>
@@ -38,16 +38,16 @@ export function Footer() {
           <h2 className="eyebrow mb-4">Products</h2>
           <ul className="space-y-2.5 text-[14px]">
             {categories.slice(0, 7).map((c) => (
-              <li key={c.id}><Link className="text-muted transition-colors hover:text-brass-light" to={`/products?category=${c.id}`}>{c.name}</Link></li>
+              <li key={c.id}><Link className="inline-flex min-h-[44px] min-w-[44px] items-center text-muted transition-colors hover:text-brass-light" to={`/products?category=${c.id}`}>{c.name}</Link></li>
             ))}
-            <li><Link className="text-brass-light underline underline-offset-4" to="/products">View all →</Link></li>
+            <li><Link className="inline-flex min-h-[44px] min-w-[44px] items-center text-brass-light underline underline-offset-4" to="/products">View all →</Link></li>
           </ul>
         </nav>
         <nav aria-label="Company" data-reveal>
           <h2 className="eyebrow mb-4">Company</h2>
           <ul className="space-y-2.5 text-[14px]">
             {[['About Us', '/about'], ['Industries', '/industries'], ['Request a Quote', '/quote'], ['Contact', '/contact'], ['Cart', '/cart'], ['Admin', '/admin']].map(([l, to]) => (
-              <li key={to}><Link className="text-muted transition-colors hover:text-brass-light" to={to}>{l}</Link></li>
+              <li key={to}><Link className="inline-flex min-h-[44px] min-w-[44px] items-center text-muted transition-colors hover:text-brass-light" to={to}>{l}</Link></li>
             ))}
           </ul>
         </nav>
@@ -55,7 +55,7 @@ export function Footer() {
           <h2 className="eyebrow mb-4">Legal · Placeholders</h2>
           <ul className="space-y-2.5 text-[14px]">
             {[['Privacy Policy', '/legal/privacy'], ['Terms & Conditions', '/legal/terms'], ['Shipping Policy', '/legal/shipping'], ['Returns & Refunds', '/legal/returns']].map(([l, to]) => (
-              <li key={to}><Link className="text-muted transition-colors hover:text-brass-light" to={to}>{l}</Link></li>
+              <li key={to}><Link className="inline-flex min-h-[44px] min-w-[44px] items-center text-muted transition-colors hover:text-brass-light" to={to}>{l}</Link></li>
             ))}
           </ul>
           <p className="mt-4 rounded-xl border border-brass/20 bg-brass/[0.06] p-3 text-[12px] leading-relaxed text-muted">

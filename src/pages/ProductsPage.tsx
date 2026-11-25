@@ -25,7 +25,7 @@ export function ProductsPage() {
   const wasOpen = useRef(false);
 
   useEffect(() => {
-    setMeta(`Product Catalog — ${products.length} Precision Fasteners | WELTOQ`, 'Search, filter, and sort the 41-product WELTORQUE catalogue: M2–M8 SHCS, standard hex nuts and M4 ultraflat head fasteners.');
+    setMeta(`Product Catalog — ${products.length} Precision Fasteners | WELTOQ`, `Search, filter and sort ${products.length} WELTOQ fasteners — M2–M8 SHCS, hex nuts and ultraflat heads — with INR prices, MOQ tiers and live stock.`);
   }, []);
 
   // URL → filters: reset to defaults when a param is REMOVED (Back button,
@@ -113,11 +113,12 @@ export function ProductsPage() {
 
   return (
     <main className="studio-bg shell pb-20 pt-28">
-      <p className="eyebrow">Catalog · {products.length} products · scroll to filter</p>
+      <p className="eyebrow">Catalog · {products.length} products · INR pricing · MOQ tiers</p>
       <h1 className="display-section mt-3 text-balance">Every fastener. <span className="serif-accent brass-text">One system.</span></h1>
       <p className="mt-3 max-w-2xl text-[15px] text-muted">
-        Search by name, SKU, category, or material. Filters update the grid live; sorting included.
-        All {products.length} listings come from the WELTORQUE technical catalogue, with the original page images and exact specifications.
+        Search by name, SKU, size or category. Filters and sorting update the grid live. All {products.length}
+        listings are sourced from the WELTORQUE technical reference, with cropped product overviews, the
+        original catalogue page, exact specifications, prices, MOQs and stock states.
       </p>
 
       <div className="mt-6 flex flex-col gap-3 md:flex-row">
@@ -130,14 +131,16 @@ export function ProductsPage() {
             onChange={(e) => onSearchInput(e.target.value)}
           />
         </div>
-        <button ref={filterBtnRef} onClick={() => setDrawer(true)} className="btn-ghost self-start lg:hidden" aria-label="Open filters" aria-expanded={drawer}>
-          Filters · {results.length}
-        </button>
+        <span className="self-start lg:hidden">
+          <button ref={filterBtnRef} onClick={() => setDrawer(true)} className="btn-ghost" aria-label="Open filters" aria-expanded={drawer}>
+            Filters · {results.length}
+          </button>
+        </span>
       </div>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[280px_1fr]">
         <aside className="hidden lg:block" aria-label="Filters sidebar">
-          <div className="sticky top-24">
+          <div className="sticky top-24 max-h-[calc(100svh-7rem)] overflow-y-auto overscroll-contain pr-1">
             <ProductFilters filters={filters} onChange={setFilters} count={results.length} />
           </div>
         </aside>
@@ -157,12 +160,14 @@ export function ProductsPage() {
       {drawer && (
         <div ref={drawerRef} className="fixed inset-0 z-[70] lg:hidden" role="dialog" aria-modal="true" aria-label="Filters">
           <div className="absolute inset-0 bg-black/70" onClick={() => setDrawer(false)} />
-          <div className="absolute bottom-0 left-0 right-0 max-h-[85vh] overflow-auto overscroll-contain rounded-t-2xl bg-ink-900 p-5">
-            <div className="mb-4 flex items-center justify-between">
+          <div className="absolute inset-x-0 bottom-0 flex max-h-[85svh] flex-col overflow-hidden rounded-t-2xl bg-ink-900 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b hairline bg-ink-900 px-5 py-4">
               <p className="font-display font-bold">Filters</p>
-              <button onClick={() => setDrawer(false)} className="rounded-md border hairline px-3 py-1.5 text-sm" autoFocus>Done</button>
+              <button onClick={() => setDrawer(false)} className="grid min-h-[44px] min-w-[44px] place-items-center rounded-md border hairline px-3 text-sm" autoFocus>Done</button>
             </div>
-            <ProductFilters filters={filters} onChange={setFilters} count={results.length} />
+            <div className="flex-1 overflow-y-auto overscroll-contain px-5 py-4">
+              <ProductFilters filters={filters} onChange={setFilters} count={results.length} />
+            </div>
           </div>
         </div>
       )}

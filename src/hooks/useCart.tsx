@@ -22,8 +22,15 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 const KEY = 'fasteners-cart-v2';
 const LEGACY_KEY = 'tbe-cart-v1';
+const MAX_QTY = 9999;
 
-type Lookup = (id: string) => { price: number | null } | undefined;
+type Lookup = (id: string) => { price: number | null; moq: number } | undefined;
+
+/** Snap any requested quantity to a legal MOQ multiple for the SKU. */
+const snap = (qty: number, moq: number) => {
+  const m = Math.max(1, moq);
+  return Math.min(MAX_QTY, Math.max(m, Math.round((Number(qty) || m) / m) * m));
+};
 
 function load(getProduct: Lookup): CartLine[] {
   try {
@@ -31,8 +38,8 @@ function load(getProduct: Lookup): CartLine[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw) as CartLine[];
     if (!Array.isArray(parsed)) return [];
-    // Normalize stored lines: drop unknown products, clamp qty, coerce variant,
-    // refresh unit price from catalog so stale prices can't linger.
+    // Normalize stored lines: drop unknown products, snap qty to the SKU MOQ,
+    // coerce variant, and refresh the unit price so stale prices can't linger.
     return parsed.flatMap((l) => {
       if (!l || typeof l !== 'object') return [];
       const p = getProduct(l.productId);
@@ -41,7 +48,7 @@ function load(getProduct: Lookup): CartLine[] {
         {
           productId: l.productId,
           variant: String(l.variant ?? 'Standard'),
-          qty: Math.min(9999, Math.max(1, Math.floor(Number(l.qty) || 1))),
+          qty: snap(l.qty, p.moq),
           unitPrice: p.price,
         },
       ];
@@ -78,18 +85,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
           const i = prev.findIndex((l) => l.productId === productId && l.variant === variant);
           if (i >= 0) {
             const next = [...prev];
-            next[i] = { ...next[i], qty: Math.min(9999, next[i].qty + qty) };
+            next[i] = { ...next[i], qty: snap(next[i].qty + qty, p.moq) };
             return next;
           }
-          return [...prev, { productId, variant, qty: Math.max(1, qty), unitPrice: p.price }];
+          return [...prev, { productId, variant, qty: snap(qty, p.moq), unitPrice: p.price }];
         });
       },
       setQty: (productId, variant, qty) =>
-        setLines((prev) =>
-          qty <= 0
-            ? prev.filter((l) => !(l.productId === productId && l.variant === variant))
-            : prev.map((l) => (l.productId === productId && l.variant === variant ? { ...l, qty: Math.min(9999, qty) } : l)),
-        ),
+        setLines((prev) => {
+          if (qty <= 0) return prev.filter((l) => !(l.productId === productId && l.variant === variant));
+          const p = getProductById(productId);
+          return prev.map((l) =>
+            l.productId === productId && l.variant === variant
+              ? { ...l, qty: snap(qty, p?.moq ?? 1) }
+              : l,
+          );
+        }),
       remove: (productId, variant) =>
         setLines((prev) => prev.filter((l) => !(l.productId === productId && l.variant === variant))),
       clear: () => setLines([]),

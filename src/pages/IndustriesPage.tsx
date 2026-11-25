@@ -7,13 +7,13 @@ const INDUSTRIES = [
   { name: 'Manufacturing', body: 'M4 / M6 / M8 SHCS and standard hex nuts for machine building and jigs.', link: 'm4-fasteners' },
   { name: 'Precision engineering', body: 'M3 / M4 SHCS with exact ISO 4762 / DIN 912 dimensions from the catalogue.', link: 'm3-fasteners' },
   { name: 'Machine frames', body: 'M6 / M8 socket head cap screws and matching nuts for structural joints.', link: 'm6-fasteners' },
-  { name: 'Standard fastening', body: 'Standard hex nuts M2–M8 matched to the WELTORQUE screw range.', link: 'm8-fasteners' },
+  { name: 'Standard fastening', body: 'Standard hex nuts M2–M8 matched to the WELTOQ screw range.', link: 'm8-fasteners' },
   { name: 'Low-profile joints', body: 'Ultraflat head fasteners M4 × 10–25 mm where reduced head projection matters.', link: 'ultralow-sockets' },
 ];
 
 export function IndustriesPage() {
   useEffect(() => {
-    setMeta('Industries Served | WELTOQ', 'Applications for the 41-product WELTORQUE fastener catalogue.');
+    setMeta('Applications | WELTOQ', 'Find the right M2–M8 fastener for electronics, manufacturing, machine frames and low-profile joints.');
   }, []);
   return (
     <main className="studio-bg shell pb-20 pt-28">

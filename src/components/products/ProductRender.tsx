@@ -123,11 +123,14 @@ export function ProductRender({
   name,
   className = '',
   compact = false,
+  fit = false,
 }: {
   renderKey: string;
   name: string;
   className?: string;
   compact?: boolean;
+  /** Fill a fixed-size parent (e.g. a 48px admin thumbnail) instead of using the standard render height. */
+  fit?: boolean;
 }) {
   // Unique gradient ids per instance: a catalog grid mounts dozens of these,
   // and duplicate ids resolve to the first card's (possibly unmounted) defs.
@@ -140,7 +143,7 @@ export function ProductRender({
   const isPhoto = (renderKey.startsWith('/') || /^https?:/i.test(renderKey)) && imgOk;
   if (isPhoto) {
     return (
-      <div className="relative overflow-hidden bg-white">
+      <div className={`relative overflow-hidden bg-white ${fit ? 'h-full w-full' : ''}`}>
         <img
           src={resolveMedia(renderKey)}
           alt={`${name} — product photo`}
@@ -149,20 +152,28 @@ export function ProductRender({
           height={220}
           onError={() => setImgOk(false)}
           className={className}
-          style={{ display: 'block', width: '100%', height: compact ? 150 : 220, objectFit: 'contain', background: '#fff', padding: 12, aspectRatio: '320 / 220' }}
+          style={{
+            display: 'block',
+            width: '100%',
+            height: fit ? '100%' : compact ? 150 : 'auto',
+            objectFit: 'contain',
+            background: '#fff',
+            padding: fit ? 4 : compact ? 8 : 12,
+            aspectRatio: fit ? undefined : '320 / 220',
+          }}
         />
         <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" aria-hidden />
       </div>
     );
   }
   return (
-    <div className="relative overflow-hidden">
+    <div className={`relative overflow-hidden ${fit ? 'h-full w-full' : ''}`}>
       <svg
         viewBox="0 0 320 220"
         className={className}
         role="img"
         aria-label={`${name} — procedurally rendered sample product image`}
-        style={{ background: 'radial-gradient(120% 100% at 50% 20%, #232a32 0%, #14171B 55%, #0c0e10 100%)', display: 'block', width: '100%', height: compact ? 150 : 'auto' }}
+        style={{ background: 'radial-gradient(120% 100% at 50% 20%, #232a32 0%, #14171B 55%, #0c0e10 100%)', display: 'block', width: '100%', height: fit ? '100%' : compact ? 150 : 'auto' }}
       >
         <Defs metal={`tbe-metal-${uid}`} dark={`tbe-metal-dark-${uid}`} glow={`tbe-glow-${uid}`} />
         <rect x="0" y="0" width="320" height="220" fill={glow} />

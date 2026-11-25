@@ -18,8 +18,8 @@ import { ShowcaseSection } from '../components/sections/ShowcaseSection';
 export function HomePage({ reducedMotion, isMobile }: { reducedMotion: boolean; isMobile: boolean }) {
   useEffect(() => {
     setMeta(
-      'WELTOQ — Engineered to Hold. Built to Last. | Premium Industrial Fasteners',
-      'Cinematic 3D fastener storytelling, live material showcase, and the 41-product WELTORQUE catalogue with original product images and exact technical specifications.',
+      'WELTOQ — Engineered to Hold. Built to Last. | 41 Precision Fasteners',
+      'Shop 41 WELTOQ fasteners — M2–M8 SHCS, hex nuts and ultraflat heads — with INR prices, MOQ tiers, live stock and exact catalogue specifications. Sourced from the WELTORQUE technical reference.',
     );
   }, []);
 

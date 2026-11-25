@@ -62,6 +62,9 @@ export function CheckoutPage() {
     if (!/^[A-Za-z0-9][A-Za-z0-9\s-]{2,9}$/.test(form.postalCode.trim())) e.postalCode = 'Enter a valid PIN / postal code.';
     if (lines.length === 0) e.lines = 'Your cart is empty.';
     if (lines.some((l) => l.product.price === null)) e.lines = 'Some items are quote-only and cannot be ordered with COD.';
+    if (lines.some((l) => l.qty < l.product.moq || l.qty % l.product.moq !== 0)) {
+      e.lines = 'Quantities must meet each product’s MOQ and be in multiples of it. Please review your cart.';
+    }
     return e;
   }
 
@@ -102,28 +105,29 @@ export function CheckoutPage() {
   if (order) {
     return (
       <main className="shell max-w-3xl pb-24 pt-32 text-center">
-        <p className="eyebrow">Order placed · Cash on delivery</p>
-        <h1 className="display-section mt-3">Thank you. Your order is confirmed.</h1>
+        <p className="eyebrow">Order received · Cash on delivery</p>
+        <h1 className="display-section mt-3">Thanks — your order is <span className="serif-accent brass-text">with us.</span></h1>
         <p className="mt-3 text-muted">
-          Order <strong className="text-paper">{order.orderNumber}</strong> has been sent to our team.
+          Order <strong className="text-paper">{order.orderNumber}</strong> has been recorded and sent to our team.
+          We will confirm availability and the exact material, grade and finish with you before fulfilment.
           Pay <strong className="brass-text">{formatINR(order.total, order.currency)}</strong> in cash when it is delivered.
         </p>
         <div className="card-premium mt-8 p-6 text-left text-[14px]">
           <p className="eyebrow">Delivery to</p>
           <p className="mt-2 font-semibold">{order.customerName}</p>
-          <p className="text-muted">
+          <p className="break-words text-muted">
             {order.addressLine1}
             {order.addressLine2 ? `, ${order.addressLine2}` : ''}
             <br />
             {order.city}, {order.state} {order.postalCode} · {order.country}
           </p>
-          <p className="mt-2 text-muted">{order.customerEmail} · {order.customerPhone}</p>
+          <p className="mt-2 break-all text-muted">{order.customerEmail} · {order.customerPhone}</p>
           <div className="mt-5 border-t hairline pt-4">
             <p className="eyebrow">Items</p>
             {order.items.map((item) => (
               <div key={item.id} className="flex justify-between gap-4 border-b hairline py-2">
-                <span>{item.name} · {item.variant} × {item.qty}</span>
-                <span className="font-semibold">{formatINR(item.lineTotal, order.currency)}</span>
+                <span className="min-w-0 break-words">{item.name} · {item.variant} × {item.qty}</span>
+                <span className="shrink-0 font-semibold">{formatINR(item.lineTotal, order.currency)}</span>
               </div>
             ))}
             <div className="mt-3 flex justify-between text-[17px] font-bold">
@@ -160,7 +164,7 @@ export function CheckoutPage() {
       </p>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
-        <form className="card-premium p-6" onSubmit={submit} noValidate>
+        <form className="card-premium min-w-0 p-5 sm:p-6" onSubmit={submit} noValidate>
           <h2 className="font-display text-xl font-bold">Delivery details</h2>
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             <Input label="Full name *" name="customerName" value={form.customerName} error={errors.customerName} onChange={(e) => set('customerName')(e.target.value)} autoComplete="name" />
@@ -192,7 +196,7 @@ export function CheckoutPage() {
           </p>
         </form>
 
-        <aside className="card-premium h-fit p-6 lg:sticky lg:top-24">
+        <aside className="card-premium h-fit p-5 sm:p-6 lg:sticky lg:top-24">
           <p className="eyebrow">Order summary</p>
           <div className="mt-4 space-y-3">
             {lines.map((line) => (

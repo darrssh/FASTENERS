@@ -49,15 +49,15 @@ export type Product = {
 export const products: Product[] = [
   {
     "id": "e01",
-    "sku": "SHCS-M2X10-A4",
+    "sku": "SHCS-M2X10",
     "name": "M2 SHCS × 10 mm",
     "slug": "m2-shcs-10",
     "category": "m2-fasteners",
     "shortDescription": "M2 SHCS × 10 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M2x10 SHCS is a precision metric fastener with a nominal thread diameter of 2 mm and a length of 10 mm, measured from the underside of the head to the tip. It is designed for secure fastening in compact mechanical assemblies where accurate positioning, reliable clamping force, and limited installation space are required.",
-    "material": "To be specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "To be specified",
+    "finish": "To be confirmed",
     "diameter": "M2",
     "length": "10 mm",
     "threadType": "Metric coarse",
@@ -117,11 +117,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "To be specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Finish",
-        "value": "To be specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -135,11 +135,10 @@ export const products: Product[] = [
       "M2",
       "m2 shcs × 10 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": true,
@@ -155,15 +154,15 @@ export const products: Product[] = [
   },
   {
     "id": "e02",
-    "sku": "SHCS-M2X12-A4",
+    "sku": "SHCS-M2X12",
     "name": "M2 SHCS × 12 mm",
     "slug": "m2-shcs-12",
     "category": "m2-fasteners",
     "shortDescription": "M2 SHCS × 12 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M2×12 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 2 mm and a length of 12 mm, measured from the underside of the head to the tip. It provides reliable clamping force and is suitable for compact mechanical assemblies requiring precision fastening.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M2",
     "length": "12 mm",
     "threadType": "Metric coarse",
@@ -223,11 +222,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -241,11 +240,10 @@ export const products: Product[] = [
       "M2",
       "m2 shcs × 12 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -260,15 +258,15 @@ export const products: Product[] = [
   },
   {
     "id": "e03",
-    "sku": "SHCS-M2X16-A4",
+    "sku": "SHCS-M2X16",
     "name": "M2 SHCS × 16 mm",
     "slug": "m2-shcs-16",
     "category": "m2-fasteners",
     "shortDescription": "M2 SHCS × 16 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M2×16 SHCS (Socket Head Cap Screw) is a metric fastener with a cylindrical head and internal hexagonal (Allen) drive. It features a nominal thread diameter of 2 mm and a thread length of 16 mm, measured from the underside of the head to the tip. It is designed for secure fastening in precision mechanical assemblies, particularly where compact dimensions and reliable clamping force are required.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M2",
     "length": "16 mm",
     "threadType": "Metric coarse",
@@ -328,11 +326,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -346,11 +344,10 @@ export const products: Product[] = [
       "M2",
       "m2 shcs × 16 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -365,15 +362,15 @@ export const products: Product[] = [
   },
   {
     "id": "e04",
-    "sku": "NUT-M2-A4",
+    "sku": "NUT-M2",
     "name": "M2 NUTS",
     "slug": "m2-nuts",
     "category": "m2-fasteners",
     "shortDescription": "M2 NUTS · ISO 4032 / DIN 934",
     "fullDescription": "A Standard M2 Hex Nut is a metric, six-sided threaded fastener designed to mate with an M2 screw or bolt. It features an internal metric thread and six external flat sides for tightening with a suitable wrench or spanner. It provides a reliable fastening solution for securing components in compact mechanical assemblies, electronics, robotics, and precision engineering applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M2",
     "length": "—",
     "threadType": "Metric coarse",
@@ -425,11 +422,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -443,11 +440,10 @@ export const products: Product[] = [
       "M2",
       "m2 nuts",
       "din-934",
-      "stainless steel",
       "fastener",
       "Standard Hex Nut",
       "ISO 4032 / DIN 934",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -462,15 +458,15 @@ export const products: Product[] = [
   },
   {
     "id": "e06",
-    "sku": "SHCS-M3X10-A4",
+    "sku": "SHCS-M3X10",
     "name": "M3 SHCS × 10 mm",
     "slug": "m3-shcs-10",
     "category": "m3-fasteners",
     "shortDescription": "M3 SHCS × 10 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M3×10 SHCS (Socket Head Cap Screw) is a metric fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 3 mm and a length of 10 mm, measured from the underside of the head to the tip. It provides reliable clamping force and is widely used in mechanical assemblies, machinery, electronics, and precision engineering applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M3",
     "length": "10 mm",
     "threadType": "Metric coarse",
@@ -530,11 +526,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -548,11 +544,10 @@ export const products: Product[] = [
       "M3",
       "m3 shcs × 10 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -567,15 +562,15 @@ export const products: Product[] = [
   },
   {
     "id": "e07",
-    "sku": "SHCS-M3X12-A4",
+    "sku": "SHCS-M3X12",
     "name": "M3 SHCS × 12 mm",
     "slug": "m3-shcs-12",
     "category": "m3-fasteners",
     "shortDescription": "M3 SHCS × 12 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M3×12 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 3 mm and a length of 12 mm, measured from the underside of the head to the tip. It provides reliable clamping force and is suitable for mechanical assemblies requiring secure fastening, precision alignment, and durability.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M3",
     "length": "12 mm",
     "threadType": "Metric coarse",
@@ -635,11 +630,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -653,11 +648,10 @@ export const products: Product[] = [
       "M3",
       "m3 shcs × 12 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -672,15 +666,15 @@ export const products: Product[] = [
   },
   {
     "id": "e08",
-    "sku": "SHCS-M3X16-A4",
+    "sku": "SHCS-M3X16",
     "name": "M3 SHCS × 16 mm",
     "slug": "m3-shcs-16",
     "category": "m3-fasteners",
     "shortDescription": "M3 SHCS × 16 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M3×16 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 3 mm and a length of 16 mm, measured from the underside of the head to the tip. It provides reliable clamping force and is suitable for mechanical assemblies requiring secure fastening, precision alignment, and durability.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M3",
     "length": "16 mm",
     "threadType": "Metric coarse",
@@ -740,11 +734,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -758,11 +752,10 @@ export const products: Product[] = [
       "M3",
       "m3 shcs × 16 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": true,
@@ -777,15 +770,15 @@ export const products: Product[] = [
   },
   {
     "id": "e09",
-    "sku": "SHCS-M3X20-A4",
+    "sku": "SHCS-M3X20",
     "name": "M3 SHCS × 20 mm",
     "slug": "m3-shcs-20",
     "category": "m3-fasteners",
     "shortDescription": "M3 SHCS × 20 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M3×20 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 3 mm and a length of 20 mm, measured from the underside of the head to the tip. It provides secure clamping force and is suitable for mechanical assemblies requiring reliable fastening, precision alignment, and structural stability.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M3",
     "length": "20 mm",
     "threadType": "Metric coarse",
@@ -845,11 +838,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -863,11 +856,10 @@ export const products: Product[] = [
       "M3",
       "m3 shcs × 20 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -882,15 +874,15 @@ export const products: Product[] = [
   },
   {
     "id": "e10",
-    "sku": "SHCS-M3X25-A4",
+    "sku": "SHCS-M3X25",
     "name": "M3 SHCS × 25 mm",
     "slug": "m3-shcs-25",
     "category": "m3-fasteners",
     "shortDescription": "M3 SHCS × 25 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M3×25 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 3 mm and a length of 25 mm, measured from the underside of the head to the tip. It is designed to provide secure clamping force and reliable fastening in mechanical assemblies, particularly where longer thread engagement is required.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M3",
     "length": "25 mm",
     "threadType": "Metric coarse",
@@ -950,11 +942,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -968,11 +960,10 @@ export const products: Product[] = [
       "M3",
       "m3 shcs × 25 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -987,15 +978,15 @@ export const products: Product[] = [
   },
   {
     "id": "e11",
-    "sku": "SHCS-M3X30-A4",
+    "sku": "SHCS-M3X30",
     "name": "M3 SHCS × 30 mm",
     "slug": "m3-shcs-30",
     "category": "m3-fasteners",
     "shortDescription": "M3 SHCS × 30 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M3×30 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 3 mm and a length of 30 mm, measured from the underside of the head to the tip. It is designed to provide secure clamping force and reliable fastening in mechanical assemblies, particularly where longer thread engagement is required.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M3",
     "length": "30 mm",
     "threadType": "Metric coarse",
@@ -1055,11 +1046,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -1073,11 +1064,10 @@ export const products: Product[] = [
       "M3",
       "m3 shcs × 30 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -1092,15 +1082,15 @@ export const products: Product[] = [
   },
   {
     "id": "e12",
-    "sku": "SHCS-M3X35-A4",
+    "sku": "SHCS-M3X35",
     "name": "M3 SHCS × 35 mm",
     "slug": "m3-shcs-35",
     "category": "m3-fasteners",
     "shortDescription": "M3 SHCS × 35 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M3×35 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 3 mm and a length of 35 mm, measured from the underside of the head to the tip. It is designed for secure fastening in mechanical assemblies where longer thread engagement and reliable clamping force are required.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M3",
     "length": "35 mm",
     "threadType": "Metric coarse",
@@ -1160,11 +1150,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -1178,11 +1168,10 @@ export const products: Product[] = [
       "M3",
       "m3 shcs × 35 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -1197,15 +1186,15 @@ export const products: Product[] = [
   },
   {
     "id": "e21",
-    "sku": "NUT-M3-A4",
+    "sku": "NUT-M3",
     "name": "M3 NUTS",
     "slug": "m3-nuts",
     "category": "m3-fasteners",
     "shortDescription": "M3 NUTS · ISO 4032 / DIN 934",
     "fullDescription": "A Standard M3 Hex Nut is a metric, six-sided threaded fastener designed to mate with an M3 screw or bolt. It features an internal metric thread and six external flat sides for tightening with a suitable wrench or spanner. It provides a reliable fastening solution for securing components in mechanical assemblies, electronics, robotics, and precision engineering applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M3",
     "length": "—",
     "threadType": "Metric coarse",
@@ -1257,11 +1246,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -1275,11 +1264,10 @@ export const products: Product[] = [
       "M3",
       "m3 nuts",
       "din-934",
-      "stainless steel",
       "fastener",
       "Standard Hex Nut",
       "ISO 4032 / DIN 934",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -1294,15 +1282,15 @@ export const products: Product[] = [
   },
   {
     "id": "e24",
-    "sku": "SHCS-M4X10-A4",
+    "sku": "SHCS-M4X10",
     "name": "M4 SHCS × 10 mm",
     "slug": "m4-shcs-10",
     "category": "m4-fasteners",
     "shortDescription": "M4 SHCS × 10 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M4×10 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 4 mm and a length of 10 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and precision engineering applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M4",
     "length": "10 mm",
     "threadType": "Metric coarse",
@@ -1362,11 +1350,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -1380,11 +1368,10 @@ export const products: Product[] = [
       "M4",
       "m4 shcs × 10 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -1399,15 +1386,15 @@ export const products: Product[] = [
   },
   {
     "id": "e25",
-    "sku": "SHCS-M4X12-A4",
+    "sku": "SHCS-M4X12",
     "name": "M4 SHCS × 12 mm",
     "slug": "m4-shcs-12",
     "category": "m4-fasteners",
     "shortDescription": "M4 SHCS × 12 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M4×12 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 4 mm and a length of 12 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and precision engineering applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M4",
     "length": "12 mm",
     "threadType": "Metric coarse",
@@ -1467,11 +1454,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -1485,11 +1472,10 @@ export const products: Product[] = [
       "M4",
       "m4 shcs × 12 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -1504,15 +1490,15 @@ export const products: Product[] = [
   },
   {
     "id": "e26",
-    "sku": "SHCS-M4X16-A4",
+    "sku": "SHCS-M4X16",
     "name": "M4 SHCS × 16 mm",
     "slug": "m4-shcs-16",
     "category": "m4-fasteners",
     "shortDescription": "M4 SHCS × 16 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M4×16 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 4 mm and a length of 16 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and precision engineering applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M4",
     "length": "16 mm",
     "threadType": "Metric coarse",
@@ -1572,11 +1558,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -1590,11 +1576,10 @@ export const products: Product[] = [
       "M4",
       "m4 shcs × 16 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": true,
@@ -1609,15 +1594,15 @@ export const products: Product[] = [
   },
   {
     "id": "e27",
-    "sku": "SHCS-M4X20-A4",
+    "sku": "SHCS-M4X20",
     "name": "M4 SHCS × 20 mm",
     "slug": "m4-shcs-20",
     "category": "m4-fasteners",
     "shortDescription": "M4 SHCS × 20 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M4×20 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 4 mm and a length of 20 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and precision engineering applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M4",
     "length": "20 mm",
     "threadType": "Metric coarse",
@@ -1677,11 +1662,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -1695,11 +1680,10 @@ export const products: Product[] = [
       "M4",
       "m4 shcs × 20 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -1714,15 +1698,15 @@ export const products: Product[] = [
   },
   {
     "id": "e28",
-    "sku": "SHCS-M4X25-A4",
+    "sku": "SHCS-M4X25",
     "name": "M4 SHCS × 25 mm",
     "slug": "m4-shcs-25",
     "category": "m4-fasteners",
     "shortDescription": "M4 SHCS × 25 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M4×25 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 4 mm and a length of 25 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies where longer thread engagement is required.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M4",
     "length": "25 mm",
     "threadType": "Metric coarse",
@@ -1782,11 +1766,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -1800,11 +1784,10 @@ export const products: Product[] = [
       "M4",
       "m4 shcs × 25 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -1819,15 +1802,15 @@ export const products: Product[] = [
   },
   {
     "id": "e29",
-    "sku": "SHCS-M4X30-A4",
+    "sku": "SHCS-M4X30",
     "name": "M4 SHCS × 30 mm",
     "slug": "m4-shcs-30",
     "category": "m4-fasteners",
     "shortDescription": "M4 SHCS × 30 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M4×30 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 4 mm and a length of 30 mm, measured from the underside of the head to the tip. It is designed to provide secure clamping force and reliable fastening in mechanical assemblies requiring longer thread engagement.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M4",
     "length": "30 mm",
     "threadType": "Metric coarse",
@@ -1887,11 +1870,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -1904,12 +1887,11 @@ export const products: Product[] = [
     "keywords": [
       "M4",
       "m4 shcs × 30 mm",
-      "din-913",
-      "stainless steel",
+      "din-912",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -1924,15 +1906,15 @@ export const products: Product[] = [
   },
   {
     "id": "e30",
-    "sku": "SHCS-M4X35-A4",
+    "sku": "SHCS-M4X35",
     "name": "M4 SHCS × 35 mm",
     "slug": "m4-shcs-35",
     "category": "m4-fasteners",
     "shortDescription": "M4 SHCS × 35 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M4×35 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 4 mm and a length of 35 mm, measured from the underside of the head to the tip. It is designed to provide secure clamping force and reliable fastening in mechanical assemblies requiring longer thread engagement.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M4",
     "length": "35 mm",
     "threadType": "Metric coarse",
@@ -1992,11 +1974,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -2009,12 +1991,11 @@ export const products: Product[] = [
     "keywords": [
       "M4",
       "m4 shcs × 35 mm",
-      "din-914",
-      "stainless steel",
+      "din-912",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -2029,15 +2010,15 @@ export const products: Product[] = [
   },
   {
     "id": "e39",
-    "sku": "NUT-M4-RH-A4",
+    "sku": "NUT-M4-RH",
     "name": "RH THREAD NUTS M4",
     "slug": "rh-thread-nuts-m4",
     "category": "m4-fasteners",
     "shortDescription": "RH THREAD NUTS M4 · ISO 4032 / DIN 934",
     "fullDescription": "A Standard M4 Hex Nut is a metric, six-sided threaded fastener designed to mate with an M4 screw or bolt. It features an internal metric thread and six external flat sides for tightening with a suitable wrench or spanner. It provides a reliable fastening solution for securing components in mechanical assemblies, machinery, electronics, robotics, and precision engineering applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M4",
     "length": "—",
     "threadType": "Metric coarse",
@@ -2089,11 +2070,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -2107,11 +2088,10 @@ export const products: Product[] = [
       "M4",
       "rh thread nuts m4",
       "din-934",
-      "stainless steel",
       "fastener",
       "Standard Hex Nut",
       "ISO 4032 / DIN 934",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -2126,15 +2106,15 @@ export const products: Product[] = [
   },
   {
     "id": "e46",
-    "sku": "SHCS-M6X10-A4",
+    "sku": "SHCS-M6X10",
     "name": "M6 SHCS × 10 mm",
     "slug": "m6-shcs-10",
     "category": "m6-fasteners",
     "shortDescription": "M6 SHCS × 10 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M6×10 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 6 mm and a length of 10 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and industrial applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M6",
     "length": "10 mm",
     "threadType": "Metric coarse",
@@ -2194,11 +2174,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -2212,11 +2192,10 @@ export const products: Product[] = [
       "M6",
       "m6 shcs × 10 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -2231,15 +2210,15 @@ export const products: Product[] = [
   },
   {
     "id": "e47",
-    "sku": "SHCS-M6X12-A4",
+    "sku": "SHCS-M6X12",
     "name": "M6 SHCS × 12 mm",
     "slug": "m6-shcs-12",
     "category": "m6-fasteners",
     "shortDescription": "M6 SHCS × 12 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M6×12 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 6 mm and a length of 12 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and industrial applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M6",
     "length": "12 mm",
     "threadType": "Metric coarse",
@@ -2299,11 +2278,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -2317,11 +2296,10 @@ export const products: Product[] = [
       "M6",
       "m6 shcs × 12 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -2336,15 +2314,15 @@ export const products: Product[] = [
   },
   {
     "id": "e48",
-    "sku": "SHCS-M6X16-A4",
+    "sku": "SHCS-M6X16",
     "name": "M6 SHCS × 16 mm",
     "slug": "m6-shcs-16",
     "category": "m6-fasteners",
     "shortDescription": "M6 SHCS × 16 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M6×16 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 6 mm and a length of 16 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and industrial applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M6",
     "length": "16 mm",
     "threadType": "Metric coarse",
@@ -2404,11 +2382,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -2422,11 +2400,10 @@ export const products: Product[] = [
       "M6",
       "m6 shcs × 16 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": true,
@@ -2441,15 +2418,15 @@ export const products: Product[] = [
   },
   {
     "id": "e49",
-    "sku": "SHCS-M6X20-A4",
+    "sku": "SHCS-M6X20",
     "name": "M6 SHCS × 20 mm",
     "slug": "m6-shcs-20",
     "category": "m6-fasteners",
     "shortDescription": "M6 SHCS × 20 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M6×20 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 6 mm and a length of 20 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and industrial applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M6",
     "length": "20 mm",
     "threadType": "Metric coarse",
@@ -2509,11 +2486,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -2527,11 +2504,10 @@ export const products: Product[] = [
       "M6",
       "m6 shcs × 20 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -2546,15 +2522,15 @@ export const products: Product[] = [
   },
   {
     "id": "e50",
-    "sku": "SHCS-M6X25-A4",
+    "sku": "SHCS-M6X25",
     "name": "M6 SHCS × 25 mm",
     "slug": "m6-shcs-25",
     "category": "m6-fasteners",
     "shortDescription": "M6 SHCS × 25 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M6×25 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 6 mm and a length of 25 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and industrial applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M6",
     "length": "25 mm",
     "threadType": "Metric coarse",
@@ -2614,11 +2590,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -2632,11 +2608,10 @@ export const products: Product[] = [
       "M6",
       "m6 shcs × 25 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -2651,15 +2626,15 @@ export const products: Product[] = [
   },
   {
     "id": "e51",
-    "sku": "SHCS-M6X30-A4",
+    "sku": "SHCS-M6X30",
     "name": "M6 SHCS × 30 mm",
     "slug": "m6-shcs-30",
     "category": "m6-fasteners",
     "shortDescription": "M6 SHCS × 30 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M6×30 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 6 mm and a length of 30 mm, measured from the underside of the head to the tip. It is designed to provide secure clamping force and reliable fastening in mechanical assemblies requiring longer thread engagement.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M6",
     "length": "30 mm",
     "threadType": "Metric coarse",
@@ -2719,11 +2694,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -2736,12 +2711,11 @@ export const products: Product[] = [
     "keywords": [
       "M6",
       "m6 shcs × 30 mm",
-      "din-913",
-      "stainless steel",
+      "din-912",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -2756,15 +2730,15 @@ export const products: Product[] = [
   },
   {
     "id": "e52",
-    "sku": "SHCS-M6X35-A4",
+    "sku": "SHCS-M6X35",
     "name": "M6 SHCS × 35 mm",
     "slug": "m6-shcs-35",
     "category": "m6-fasteners",
     "shortDescription": "M6 SHCS × 35 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M6×35 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 6 mm and a length of 35 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies requiring longer thread engagement.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M6",
     "length": "35 mm",
     "threadType": "Metric coarse",
@@ -2824,11 +2798,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -2841,12 +2815,11 @@ export const products: Product[] = [
     "keywords": [
       "M6",
       "m6 shcs × 35 mm",
-      "din-914",
-      "stainless steel",
+      "din-912",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -2861,15 +2834,15 @@ export const products: Product[] = [
   },
   {
     "id": "e53",
-    "sku": "NUT-M6-RH-A4",
+    "sku": "NUT-M6-RH",
     "name": "RH THREAD NUTS M6",
     "slug": "rh-thread-nuts-m6",
     "category": "m6-fasteners",
     "shortDescription": "RH THREAD NUTS M6 · ISO 4032 / DIN 934",
     "fullDescription": "A Standard M6 Hex Nut is a metric, six-sided threaded fastener designed to mate with an M6 screw or bolt. It features an internal metric thread and six external flat sides for tightening with a suitable wrench or spanner. It provides a reliable fastening solution for securing components in mechanical assemblies, machinery, structural equipment, robotics, and industrial applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M6",
     "length": "—",
     "threadType": "Metric coarse",
@@ -2921,11 +2894,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -2939,11 +2912,10 @@ export const products: Product[] = [
       "M6",
       "rh thread nuts m6",
       "din-934",
-      "stainless steel",
       "fastener",
       "Standard Hex Nut",
       "ISO 4032 / DIN 934",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -2958,15 +2930,15 @@ export const products: Product[] = [
   },
   {
     "id": "e65",
-    "sku": "SHCS-M8X10-A4",
+    "sku": "SHCS-M8X10",
     "name": "M8 SHCS × 10 mm",
     "slug": "m8-shcs-10",
     "category": "m8-fasteners",
     "shortDescription": "M8 SHCS × 10 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M8×10 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 8 mm and a length of 10 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and industrial applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M8",
     "length": "10 mm",
     "threadType": "Metric coarse",
@@ -3026,11 +2998,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -3044,11 +3016,10 @@ export const products: Product[] = [
       "M8",
       "m8 shcs × 10 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -3063,15 +3034,15 @@ export const products: Product[] = [
   },
   {
     "id": "e66",
-    "sku": "SHCS-M8X12-A4",
+    "sku": "SHCS-M8X12",
     "name": "M8 SHCS × 12 mm",
     "slug": "m8-shcs-12",
     "category": "m8-fasteners",
     "shortDescription": "M8 SHCS × 12 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M8×12 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 8 mm and a length of 12 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and industrial applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M8",
     "length": "12 mm",
     "threadType": "Metric coarse",
@@ -3131,11 +3102,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -3149,11 +3120,10 @@ export const products: Product[] = [
       "M8",
       "m8 shcs × 12 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -3168,15 +3138,15 @@ export const products: Product[] = [
   },
   {
     "id": "e67",
-    "sku": "SHCS-M8X16-A4",
+    "sku": "SHCS-M8X16",
     "name": "M8 SHCS × 16 mm",
     "slug": "m8-shcs-16",
     "category": "m8-fasteners",
     "shortDescription": "M8 SHCS × 16 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M8×16 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 8 mm and a length of 16 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and industrial applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M8",
     "length": "16 mm",
     "threadType": "Metric coarse",
@@ -3236,11 +3206,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -3254,11 +3224,10 @@ export const products: Product[] = [
       "M8",
       "m8 shcs × 16 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": true,
@@ -3273,15 +3242,15 @@ export const products: Product[] = [
   },
   {
     "id": "e68",
-    "sku": "SHCS-M8X20-A4",
+    "sku": "SHCS-M8X20",
     "name": "M8 SHCS × 20 mm",
     "slug": "m8-shcs-20",
     "category": "m8-fasteners",
     "shortDescription": "M8 SHCS × 20 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M8×20 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 8 mm and a length of 20 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and industrial applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M8",
     "length": "20 mm",
     "threadType": "Metric coarse",
@@ -3341,11 +3310,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -3359,11 +3328,10 @@ export const products: Product[] = [
       "M8",
       "m8 shcs × 20 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -3378,15 +3346,15 @@ export const products: Product[] = [
   },
   {
     "id": "e69",
-    "sku": "SHCS-M8X25-A4",
+    "sku": "SHCS-M8X25",
     "name": "M8 SHCS × 25 mm",
     "slug": "m8-shcs-25",
     "category": "m8-fasteners",
     "shortDescription": "M8 SHCS × 25 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M8×25 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 8 mm and a length of 25 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies, machinery, and industrial applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M8",
     "length": "25 mm",
     "threadType": "Metric coarse",
@@ -3446,11 +3414,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -3464,11 +3432,10 @@ export const products: Product[] = [
       "M8",
       "m8 shcs × 25 mm",
       "din-912",
-      "stainless steel",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -3483,15 +3450,15 @@ export const products: Product[] = [
   },
   {
     "id": "e70",
-    "sku": "SHCS-M8X30-A4",
+    "sku": "SHCS-M8X30",
     "name": "M8 SHCS × 30 mm",
     "slug": "m8-shcs-30",
     "category": "m8-fasteners",
     "shortDescription": "M8 SHCS × 30 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M8×30 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 8 mm and a length of 30 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies requiring longer thread engagement.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M8",
     "length": "30 mm",
     "threadType": "Metric coarse",
@@ -3551,11 +3518,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -3568,12 +3535,11 @@ export const products: Product[] = [
     "keywords": [
       "M8",
       "m8 shcs × 30 mm",
-      "din-913",
-      "stainless steel",
+      "din-912",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -3588,15 +3554,15 @@ export const products: Product[] = [
   },
   {
     "id": "e71",
-    "sku": "SHCS-M8X35-A4",
+    "sku": "SHCS-M8X35",
     "name": "M8 SHCS × 35 mm",
     "slug": "m8-shcs-35",
     "category": "m8-fasteners",
     "shortDescription": "M8 SHCS × 35 mm · ISO 4762 / DIN 912",
     "fullDescription": "A Standard M8×35 SHCS (Socket Head Cap Screw) is a metric threaded fastener featuring a cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 8 mm and a length of 35 mm, measured from the underside of the head to the tip. It provides reliable clamping force and secure fastening in mechanical assemblies requiring longer thread engagement.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M8",
     "length": "35 mm",
     "threadType": "Metric coarse",
@@ -3656,11 +3622,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -3673,12 +3639,11 @@ export const products: Product[] = [
     "keywords": [
       "M8",
       "m8 shcs × 35 mm",
-      "din-914",
-      "stainless steel",
+      "din-912",
       "fastener",
       "Socket Head Cap Screw",
       "ISO 4762 / DIN 912",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -3693,15 +3658,15 @@ export const products: Product[] = [
   },
   {
     "id": "e72",
-    "sku": "NUT-M8-RH-A4",
+    "sku": "NUT-M8-RH",
     "name": "RH THREAD NUTS M8",
     "slug": "rh-thread-nuts-m8",
     "category": "m8-fasteners",
     "shortDescription": "RH THREAD NUTS M8 · ISO 4032 / DIN 934",
     "fullDescription": "A Standard M8 Hex Nut is a metric, six-sided threaded fastener designed to mate with an M8 screw or bolt. It features an internal metric thread and six external flat sides for tightening with a suitable wrench or spanner. It provides a reliable fastening solution for securing components in mechanical assemblies, machinery, structural equipment, robotics, automotive, and industrial applications.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M8",
     "length": "—",
     "threadType": "Metric coarse",
@@ -3753,11 +3718,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -3771,11 +3736,10 @@ export const products: Product[] = [
       "M8",
       "rh thread nuts m8",
       "din-934",
-      "stainless steel",
       "fastener",
       "Standard Hex Nut",
       "ISO 4032 / DIN 934",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -3796,9 +3760,9 @@ export const products: Product[] = [
     "category": "ultralow-sockets",
     "shortDescription": "ULTRA LOW HEAD (HEX) M4 × 10 mm · Ultraflat Head Socket Screw",
     "fullDescription": "A Standard M4×10 Ultraflat Head Fastener is a metric threaded screw featuring an extra-low-profile head and an internal hexagonal (Allen) drive. It has a nominal thread diameter of 4 mm and a length of 10 mm, measured from the underside of the head to the tip. Its low-profile design makes it suitable for compact mechanical assemblies where limited installation height and minimal head projection are important.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M4",
     "length": "10 mm",
     "threadType": "Metric coarse",
@@ -3854,11 +3818,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -3871,11 +3835,9 @@ export const products: Product[] = [
     "keywords": [
       "M4",
       "ultra low head (hex) m4 × 10 mm",
-      "jis",
-      "carbon steel",
       "fastener",
       "Ultraflat Head Socket Screw",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": true,
@@ -3896,9 +3858,9 @@ export const products: Product[] = [
     "category": "ultralow-sockets",
     "shortDescription": "ULTRA LOW HEAD (HEX) M4 × 12 mm · Ultraflat Head Socket Screw",
     "fullDescription": "A Standard M4×12 Ultraflat Head Fastener is a metric threaded screw featuring an extra-low-profile, wide cylindrical head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 4 mm and a length of 12 mm, measured from the underside of the head to the tip. Its low-profile design makes it suitable for compact mechanical assemblies where reduced head projection and limited installation space are important.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M4",
     "length": "12 mm",
     "threadType": "Metric coarse",
@@ -3954,11 +3916,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -3971,11 +3933,9 @@ export const products: Product[] = [
     "keywords": [
       "M4",
       "ultra low head (hex) m4 × 12 mm",
-      "jis",
-      "carbon steel",
       "fastener",
       "Ultraflat Head Socket Screw",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -3996,9 +3956,9 @@ export const products: Product[] = [
     "category": "ultralow-sockets",
     "shortDescription": "ULTRA LOW HEAD (HEX) M4 × 16 mm · Ultraflat Head Socket Screw",
     "fullDescription": "A Standard M4×16 Ultraflat Head Fastener is a metric threaded screw featuring an extra-low-profile, wide head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 4 mm and a length of 16 mm, measured from the underside of the head to the tip. Its low-profile design makes it suitable for compact mechanical assemblies where reduced head projection and limited installation space are important.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M4",
     "length": "16 mm",
     "threadType": "Metric coarse",
@@ -4054,11 +4014,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -4071,11 +4031,9 @@ export const products: Product[] = [
     "keywords": [
       "M4",
       "ultra low head (hex) m4 × 16 mm",
-      "jis",
-      "carbon steel",
       "fastener",
       "Ultraflat Head Socket Screw",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -4096,9 +4054,9 @@ export const products: Product[] = [
     "category": "ultralow-sockets",
     "shortDescription": "ULTRA LOW HEAD (HEX) M4 × 20 mm · Ultraflat Head Socket Screw",
     "fullDescription": "A Standard M4×20 Ultraflat Head Fastener is a metric threaded screw featuring an extra-low-profile, wide head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 4 mm and a length of 20 mm, measured from the underside of the head to the tip. Its low-profile design makes it suitable for compact mechanical assemblies where reduced head projection and limited installation space are important.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M4",
     "length": "20 mm",
     "threadType": "Metric coarse",
@@ -4154,11 +4112,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -4171,11 +4129,9 @@ export const products: Product[] = [
     "keywords": [
       "M4",
       "ultra low head (hex) m4 × 20 mm",
-      "jis",
-      "carbon steel",
       "fastener",
       "Ultraflat Head Socket Screw",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,
@@ -4196,9 +4152,9 @@ export const products: Product[] = [
     "category": "ultralow-sockets",
     "shortDescription": "ULTRA LOW HEAD (HEX) M4 × 25 mm · Ultraflat Head Socket Screw",
     "fullDescription": "A Standard M4×25 Ultraflat Head Fastener is a metric threaded screw featuring an extra-low-profile, wide head with an internal hexagonal (Allen) drive. It has a nominal thread diameter of 4 mm and a length of 25 mm, measured from the underside of the head to the tip. Its low-profile design makes it suitable for compact mechanical assemblies where reduced head projection and limited installation space are important.",
-    "material": "As specified",
+    "material": "To be confirmed",
     "grade": "—",
-    "finish": "As specified",
+    "finish": "To be confirmed",
     "diameter": "M4",
     "length": "25 mm",
     "threadType": "Metric coarse",
@@ -4254,11 +4210,11 @@ export const products: Product[] = [
       },
       {
         "label": "Material",
-        "value": "As specified"
+        "value": "To be confirmed"
       },
       {
         "label": "Surface finish",
-        "value": "As specified"
+        "value": "To be confirmed"
       }
     ],
     "related": [
@@ -4271,11 +4227,9 @@ export const products: Product[] = [
     "keywords": [
       "M4",
       "ultra low head (hex) m4 × 25 mm",
-      "jis",
-      "carbon steel",
       "fastener",
       "Ultraflat Head Socket Screw",
-      "WELTORQUE catalogue"
+      "WELTOQ catalogue"
     ],
     "sample": false,
     "featured": false,

@@ -39,9 +39,9 @@ function MenuThumb({ product, size = 36 }: { product: Product; size?: number }) 
 
 export function Header({ onSearch }: { onSearch: () => void }) {
   const [scrolled, setScrolled] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [mega, setMega] = useState(false);
   const [mobile, setMobile] = useState(false);
+  const progressRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number | null>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -152,14 +152,29 @@ export function Header({ onSearch }: { onSearch: () => void }) {
   }, []);
 
   useEffect(() => {
-    const fn = () => {
-      setScrolled(window.scrollY > 24);
+    let raf = 0;
+    const update = () => {
+      const next = window.scrollY > 24;
+      setScrolled((prev) => (prev === next ? prev : next));
       const h = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(h > 0 ? Math.min(1, window.scrollY / h) : 0);
+      const p = h > 0 ? Math.min(1, window.scrollY / h) : 0;
+      // Progress is visual-only: write it straight to the DOM so a scroll
+      // doesn't re-render the header (and the 41-product mega menu).
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(${p.toFixed(4)})`;
     };
-    fn();
+    const fn = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        raf = 0;
+        update();
+      });
+    };
+    update();
     window.addEventListener('scroll', fn, { passive: true });
-    return () => window.removeEventListener('scroll', fn);
+    return () => {
+      window.removeEventListener('scroll', fn);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
   }, []);
 
   // Reference-counted: opening Search on top of the drawer can't unlock early.
@@ -178,28 +193,28 @@ export function Header({ onSearch }: { onSearch: () => void }) {
         )}
       >
         <div className="h-[2px] w-full bg-white/5" aria-hidden>
-          <div className="h-full bg-gradient-to-r from-brass-dark via-brass to-brass-light transition-[width]" style={{ width: `${progress * 100}%` }} />
+          <div ref={progressRef} className="h-full w-full origin-left bg-gradient-to-r from-brass-dark via-brass to-brass-light" style={{ transform: 'scaleX(0)' }} />
         </div>
-        <div className="shell flex h-[68px] items-center justify-between gap-4">
-          <Link to="/" className="group flex items-center gap-3" aria-label="WELTOQ — home">
-            <span className="grid h-10 w-10 place-items-center rounded-xl border border-brass/30 bg-gradient-to-br from-white/10 to-transparent shadow-premium transition-transform duration-300 group-hover:rotate-6">
+        <div className="shell flex h-[68px] items-center justify-between gap-3 sm:gap-4">
+          <Link to="/" className="group flex min-h-[44px] min-w-0 items-center gap-2 sm:gap-3" aria-label="WELTOQ — home">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-brass/30 bg-gradient-to-br from-white/10 to-transparent shadow-premium transition-transform duration-300 group-hover:rotate-6">
               <svg width="24" height="24" viewBox="0 0 34 34" aria-hidden>
                 <polygon points="9,3 23,3 29,9 29,23 23,29 9,29 3,23 3,9" fill="none" stroke="#E8D5A3" strokeWidth={2.5} />
                 <circle cx="17" cy="17" r="5.5" fill="none" stroke="#C9A86A" strokeWidth={2.5} />
               </svg>
             </span>
-            <span className="leading-tight">
+            <span className="min-w-0 leading-tight">
               <span className="block font-display text-[13px] font-bold tracking-[0.18em]">WELTOQ</span>
-              <span className="block text-[10px] tracking-[0.24em] text-muted">{brand.tagline.toUpperCase()} · {products.length} PRODUCTS</span>
+              <span className="hidden truncate text-[10px] tracking-[0.14em] text-muted sm:block">{brand.tagline.toUpperCase()} · {products.length} PRODUCTS</span>
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
+          <nav className="hidden items-center gap-4 lg:flex xl:gap-7" aria-label="Primary">
             <div ref={triggerRef} className="relative" onMouseEnter={hoverOpen} onMouseLeave={scheduleCloseMega}>
               <button
                 type="button"
                 className={cx(
-                  'flex items-center gap-1.5 text-[13px] font-semibold uppercase tracking-[0.14em] hover:text-paper',
+                  'flex min-h-[44px] items-center gap-1.5 text-[13px] font-semibold uppercase tracking-[0.14em] hover:text-paper',
                   productsActive || mega ? 'text-paper' : 'text-silver',
                 )}
                 aria-expanded={mega}
@@ -227,7 +242,7 @@ export function Header({ onSearch }: { onSearch: () => void }) {
                 key={to}
                 to={to}
                 className={({ isActive }) =>
-                  cx('text-[13px] font-semibold uppercase tracking-[0.14em] hover:text-paper', isActive ? 'text-paper' : 'text-silver')
+                  cx('inline-flex min-h-[44px] items-center text-[13px] font-semibold uppercase tracking-[0.14em] hover:text-paper', isActive ? 'text-paper' : 'text-silver')
                 }
               >
                 {label}
@@ -235,21 +250,23 @@ export function Header({ onSearch }: { onSearch: () => void }) {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
-            <button type="button" onClick={onSearch} className="rounded-lg border hairline bg-white/[0.02] p-2.5 text-silver backdrop-blur transition-all hover:-translate-y-0.5 hover:border-brass/50 hover:text-brass-light" aria-label="Search products">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+            <button type="button" onClick={onSearch} className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border hairline bg-white/[0.02] text-silver transition-all hover:-translate-y-0.5 hover:border-brass/50 hover:text-brass-light" aria-label="Search products">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden><circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.8" /><line x1="12.5" y1="12.5" x2="16.5" y2="16.5" stroke="currentColor" strokeWidth="1.8" /></svg>
             </button>
-            <button type="button" onClick={() => navigate('/cart')} className="relative rounded-lg border hairline bg-white/[0.02] p-2.5 text-silver backdrop-blur transition-all hover:-translate-y-0.5 hover:border-brass/50 hover:text-brass-light" aria-label={`Cart, ${cart.count} items`}>
+            <button type="button" onClick={() => navigate('/cart')} className="relative grid h-11 w-11 shrink-0 place-items-center rounded-lg border hairline bg-white/[0.02] text-silver transition-all hover:-translate-y-0.5 hover:border-brass/50 hover:text-brass-light" aria-label={`Cart, ${cart.count} items`}>
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden><path d="M2 3h2.5l2 9h8l2-6H6" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /><circle cx="7.5" cy="15" r="1.4" fill="currentColor" /><circle cx="13.5" cy="15" r="1.4" fill="currentColor" /></svg>
               {cart.count > 0 && (
                 <span className="absolute -right-1.5 -top-1.5 min-w-[20px] rounded-full bg-gradient-to-br from-brass-light to-brass-dark px-1.5 text-center text-[11px] font-bold leading-5 text-black">{cart.count}</span>
               )}
             </button>
-            <Link to="/quote" className="btn-primary hidden !px-5 !py-2.5 md:inline-flex">Request a quote</Link>
+            <span className="hidden md:inline-flex">
+              <Link to="/quote" className="btn-primary min-h-[44px] !px-5 !py-2.5">Request a quote</Link>
+            </span>
             <button
               type="button"
               onClick={() => setMobile(true)}
-              className="rounded-lg border hairline p-2.5 text-silver lg:hidden"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border hairline text-silver lg:hidden"
               aria-label="Open menu"
               aria-expanded={mobile}
               aria-controls="mobile-nav"
@@ -273,7 +290,7 @@ export function Header({ onSearch }: { onSearch: () => void }) {
             onMouseEnter={hoverOpen}
             onMouseLeave={scheduleCloseMega}
           >
-            <nav id="products-mega" className="card-premium max-h-[calc(100vh-110px)] overflow-auto bg-ink-900/95 p-5 backdrop-blur-xl" aria-label="Product categories and products">
+            <nav id="products-mega" className="card-premium max-h-[calc(100svh-110px)] overflow-auto overscroll-contain bg-ink-900/95 p-5 backdrop-blur-xl" aria-label="Product categories and products">
               <div className="flex flex-wrap items-end justify-between gap-3 border-b hairline pb-4">
                 <div>
                   <p className="eyebrow">Catalogue · {products.length} products</p>
@@ -324,7 +341,7 @@ export function Header({ onSearch }: { onSearch: () => void }) {
               )}
 
               <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t hairline pt-4">
-                <p className="text-[13px] text-muted">Full catalog — {products.length} WELTORQUE catalogue products. <span className="text-brass">PBR + scroll-story inside.</span></p>
+                <p className="text-[13px] text-muted">Full catalog — {products.length} WELTOQ products, sourced from the WELTORQUE reference. <span className="text-brass">INR prices · MOQ · stock.</span></p>
                 <Link to="/products" onClick={closeMega} className="btn-primary !py-2.5 !px-5">
                   View all products
                 </Link>
@@ -337,10 +354,10 @@ export function Header({ onSearch }: { onSearch: () => void }) {
       {mobile && (
         <div ref={drawerRef} className="fixed inset-0 z-[70] lg:hidden" role="dialog" aria-modal="true" aria-label="Mobile navigation">
           <div className="absolute inset-0 bg-black/70" onClick={closeMobile} />
-          <div id="mobile-nav" className="absolute right-0 top-0 flex h-full w-[86%] max-w-sm flex-col overflow-y-auto overscroll-contain bg-ink-900 p-6">
+          <div id="mobile-nav" className="absolute right-0 top-0 flex h-[100svh] w-[86%] max-w-sm flex-col overflow-y-auto overscroll-contain bg-ink-900 px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))]">
             <div className="flex items-center justify-between">
               <p className="font-display text-sm font-bold tracking-[0.18em]">MENU</p>
-              <button type="button" onClick={closeMobile} className="rounded-md border hairline px-3 py-1.5 text-sm" autoFocus>Close</button>
+              <button type="button" onClick={closeMobile} className="grid min-h-[44px] min-w-[44px] place-items-center rounded-md border hairline px-3 text-sm" autoFocus>Close</button>
             </div>
             <nav className="mt-6 flex flex-col" aria-label="Mobile">
               {[
@@ -383,7 +400,7 @@ export function Header({ onSearch }: { onSearch: () => void }) {
                 );
               })}
             </div>
-            <Link to="/products" onClick={closeMobile} className="btn-ghost mt-4 !py-2.5">View all products</Link>
+            <Link to="/products" onClick={closeMobile} className="btn-ghost mt-4 min-h-[44px] !py-2.5">View all products</Link>
 
             <div className="mt-auto flex flex-col gap-2 pt-6">
               <button type="button" onClick={() => { closeMobile(); onSearch(); }} className="btn-ghost">Search</button>

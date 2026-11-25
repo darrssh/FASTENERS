@@ -15,19 +15,21 @@ type Props = {
   assembled?: boolean;
   /** Composition offset: desktop right-weighted [1.0, -0.05, 0], mobile stacked [0, 0.75, 0]. */
   shift?: [number, number, number];
+  /** Lower thread tessellation on phones — the helix is tiny on a 280px canvas. */
+  isMobile?: boolean;
 };
 
 /** Hero bolt: detailed hex head, beveled edges, real helical thread geometry. */
-export function HeroBolt({ finishId = 'stainless', assembled = false, shift = [0.4, -0.1, 0] }: Props) {
+export function HeroBolt({ finishId = 'stainless', assembled = false, shift = [0.4, -0.1, 0], isMobile = false }: Props) {
   const material = useFastenerMaterial(finishId);
 
   const { bolt, nut, washer } = useMemo(() => {
-    const b = buildBolt(material);
+    const b = buildBolt(material, isMobile ? 'low' : 'high');
     const n = buildNut(material);
     const w = buildWasher(material);
     return { bolt: b.group, nut: n, washer: w };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [material]);
+  }, [material, isMobile]);
 
   // Generator code owns its buffers: dispose geometries on unmount/rematerial
   // (the shared material itself is owned by useFastenerMaterial — not here).

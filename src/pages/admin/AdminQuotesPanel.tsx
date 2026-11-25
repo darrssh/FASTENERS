@@ -68,7 +68,7 @@ export function AdminQuotesPanel({ onChanged }: { onChanged: () => void }) {
             {quotes.length} total · <span className={unread ? 'text-brass' : ''}>{unread} new</span>
           </p>
         </div>
-        <Button variant="ghost" onClick={() => void load()} className="!px-4 !py-2 !text-[12px]">Refresh</Button>
+        <Button variant="ghost" onClick={() => void load()} className="min-h-[44px] !px-4 !py-2 !text-[12px]">Refresh</Button>
       </div>
       {error && <p role="alert" className="mt-4 rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-[13px] text-red-300">{error}</p>}
       {loading && <p className="mt-6 text-[13px] text-muted">Loading quote requests…</p>}
@@ -79,21 +79,21 @@ export function AdminQuotesPanel({ onChanged }: { onChanged: () => void }) {
       <div className="mt-6 space-y-4">
         {quotes.map((quote) => (
           <article key={quote.id} className="card-premium overflow-hidden">
-            <div className="flex flex-wrap items-start justify-between gap-4 p-5">
-              <div>
+            <div className="flex flex-wrap items-start justify-between gap-4 p-4 sm:p-5">
+              <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="font-display text-[17px] font-bold">{quote.quoteNumber}</p>
                   {!quote.isRead && <span className="rounded-full border border-brass/40 bg-brass/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-brass-light">New</span>}
                   <span className="rounded-full border hairline px-2 py-0.5 text-[10px] uppercase tracking-widest text-muted">{quote.status}</span>
                   {quote.hasAttachment && <span className="rounded-full border border-sky-400/30 bg-sky-400/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-sky-200">Drawing attached</span>}
                 </div>
-                <p className="mt-2 text-[13px] text-muted">
-                  {new Date(quote.createdAt).toLocaleString()} · {quote.fullName}{quote.company ? ` · ${quote.company}` : ''} · {quote.email}
+                <p className="mt-2 break-words text-[13px] text-muted">
+                  {new Date(quote.createdAt).toLocaleString()} · {quote.fullName}{quote.company ? ` · ${quote.company}` : ''} · <span className="break-all">{quote.email}</span>
                 </p>
               </div>
-              <div className="text-right text-[13px]">
+              <div className="min-w-0 shrink-0 text-right text-[13px]">
                 <p className="font-semibold">{quote.quantity}</p>
-                <p className="text-muted">{quote.productName || quote.categoryName || 'Custom requirement'}</p>
+                <p className="break-words text-muted">{quote.productName || quote.categoryName || 'Custom requirement'}</p>
               </div>
             </div>
 
@@ -107,9 +107,9 @@ export function AdminQuotesPanel({ onChanged }: { onChanged: () => void }) {
                 {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
               </Select>
               {!quote.isRead && (
-                <Button variant="ghost" onClick={() => void markRead(quote.id)} className="!px-4 !py-2 !text-[12px]">Mark as read</Button>
+                <Button variant="ghost" onClick={() => void markRead(quote.id)} className="min-h-[44px] !px-4 !py-2 !text-[12px]">Mark as read</Button>
               )}
-              <Button variant="ghost" onClick={() => setExpanded(expanded === quote.id ? null : quote.id)} className="!px-4 !py-2 !text-[12px]">
+              <Button variant="ghost" onClick={() => setExpanded(expanded === quote.id ? null : quote.id)} className="min-h-[44px] !px-4 !py-2 !text-[12px]">
                 {expanded === quote.id ? 'Hide details' : 'View details'}
               </Button>
             </div>
@@ -153,7 +153,7 @@ export function AdminQuotesPanel({ onChanged }: { onChanged: () => void }) {
                 {quote.hasAttachment && (
                   <p className="mt-4">
                     <a
-                      className="btn-ghost inline-flex !px-4 !py-2 !text-[12px]"
+                      className="btn-ghost inline-flex min-h-[44px] break-all !px-4 !py-2 !text-[12px]"
                       href={quoteAttachmentUrl(quote.id)}
                       target="_blank"
                       rel="noreferrer"

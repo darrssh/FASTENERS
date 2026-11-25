@@ -28,11 +28,18 @@ export function useScrollProgress<T extends HTMLElement>(): {
         progress.current = self.progress;
       },
     });
-    const refresh = () => ScrollTrigger.refresh();
+    let alive = true;
+    const refresh = () => {
+      if (alive) ScrollTrigger.refresh();
+    };
     window.addEventListener('load', refresh);
     // Fonts/layout shift can move tall-section edges — re-measure once settled.
     const t = window.setTimeout(refresh, 800);
+    if (typeof document.fonts !== 'undefined') {
+      void document.fonts.ready.then(refresh).catch(() => undefined);
+    }
     return () => {
+      alive = false;
       window.removeEventListener('load', refresh);
       window.clearTimeout(t);
       st.kill();

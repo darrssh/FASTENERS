@@ -10,7 +10,7 @@ export function ProductGrid({ items, onClear }: { items: Product[]; onClear: () 
         <p className="eyebrow">No matches</p>
         <h3 className="mt-2 font-display text-2xl font-bold">No products match those filters.</h3>
         <p className="mx-auto mt-2 max-w-md text-[14px] text-muted">
-          Try clearing a filter or searching by SKU, material, or category. Full catalog — {products.length} WELTORQUE catalogue products.
+          Try clearing a filter or searching by SKU, size, or category. Full catalog — {products.length} WELTOQ listings sourced from the WELTORQUE reference.
         </p>
         {/* In-app reset, not an <a href>: no full-page reload, no lost SPA state. */}
         <button type="button" onClick={onClear} className="btn-ghost mt-5 inline-flex">Clear all filters</button>

@@ -52,30 +52,36 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
   const [ready, setReady] = useState(false);
   const [finish, setFinish] = useState(finishId);
   const [addedId, setAddedId] = useState<string | null>(null);
+  const [visible, setVisible] = useState(true);
+  const [pageVisible, setPageVisible] = useState(() => typeof document === 'undefined' || !document.hidden);
   const barRef = useRef<HTMLDivElement>(null);
   const lastScene = useRef(0);
-  const visibleRef = useRef(true);
 
   useEffect(() => setFinish(finishId), [finishId]);
   useEffect(() => {
     setNoGL(!webglAvailable());
   }, []);
 
-  // Pause scene bookkeeping while the story is off-screen or the tab hidden.
+  // Pause scene bookkeeping and WebGL while the story is off-screen or hidden.
   useEffect(() => {
     const el = ref.current;
     if (!el || typeof IntersectionObserver === 'undefined') return;
-    const io = new IntersectionObserver(([entry]) => {
-      visibleRef.current = entry.isIntersecting;
-    }, { threshold: 0 });
+    const io = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: 0 });
     io.observe(el);
     return () => io.disconnect();
   }, [ref]);
 
   useEffect(() => {
+    const fn = () => setPageVisible(!document.hidden);
+    document.addEventListener('visibilitychange', fn);
+    return () => document.removeEventListener('visibilitychange', fn);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion || !visible) return;
     let raf = 0;
     const tick = () => {
-      if (!document.hidden && visibleRef.current) {
+      if (!document.hidden) {
         const p = progress.current;
         // Compare OUTSIDE the setter: no 60fps setState churn when idle.
         const n = sceneIndexForProgress(p, totalScenes);
@@ -87,9 +93,16 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
       }
       raf = requestAnimationFrame(tick);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [progress, totalScenes]);
+    const start = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    const stop = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
+    const onVisibility = () => (document.hidden ? stop() : start());
+    start();
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      stop();
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, [visible, progress, totalScenes, reducedMotion]);
 
   const scrollToFraction = (f: number) => {
     const el = ref.current;
@@ -97,7 +110,11 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
     const top = el.getBoundingClientRect().top + window.scrollY;
     const travel = el.offsetHeight - window.innerHeight;
     // Programmatic smooth-scroll fights the scrub damping on low-end phones.
-    window.scrollTo({ top: top + travel * f, behavior: reducedMotion || isMobile ? 'auto' : 'smooth' });
+    const root = document.documentElement;
+    const previous = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, top + travel * f);
+    root.style.scrollBehavior = previous;
   };
 
   const fallback = failed || noGL;
@@ -141,8 +158,8 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
                     </div>
                   </div>
                   <div className="mt-4 flex flex-wrap gap-2">
-                    <Link to={`/products/${p.slug}`} className="btn-primary !px-4 !py-2 !text-[12px]">View product</Link>
-                    <button type="button" onClick={() => handleAddToCart(p.id, 'Standard')} className="btn-ghost !px-4 !py-2 !text-[12px]">
+                    <Link to={`/products/${p.slug}`} className="btn-primary min-h-[44px] !px-4 !py-2 !text-[12px]">View product</Link>
+                    <button type="button" onClick={() => handleAddToCart(p.id, 'Standard')} className="btn-ghost min-h-[44px] !px-4 !py-2 !text-[12px]">
                       {addedId === p.id ? 'Added' : 'Add to cart'}
                     </button>
                   </div>
@@ -156,8 +173,8 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
   }
 
   return (
-    <div ref={ref} className="relative" style={{ height: isMobile ? `${totalScenes * 70}vh` : `${totalScenes * 95}vh` }} aria-label="Scroll-driven 3D bolt journey with products">
-      <div className="sticky top-0 h-screen overflow-hidden transition-[background] duration-700" style={{ background: backdrop }}>
+    <div ref={ref} className="relative" style={{ height: isMobile ? `${totalScenes * 70}svh` : `${totalScenes * 95}svh` }} aria-label="Scroll-driven 3D bolt journey with products">
+      <div className="sticky top-0 h-[100svh] overflow-hidden transition-[background] duration-700" style={{ background: backdrop }}>
         {/* Mobile progress hairline */}
         <div className="absolute inset-x-0 top-0 z-30 h-[3px] bg-white/10 md:hidden" aria-hidden>
           <div ref={barRef} className="h-full w-full origin-left bg-gradient-to-r from-brass-light to-brass-dark" style={{ transform: 'scaleX(0)' }} />
@@ -168,7 +185,8 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
             <Canvas
               dpr={isMobile ? [1, 1.25] : [1, 1.75]}
               camera={{ position: [3.4, 1.5, 4.6], fov: 35 }}
-              gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+              frameloop={visible && pageVisible ? 'always' : 'never'}
+              gl={{ antialias: !isMobile, alpha: true, powerPreference: 'high-performance' }}
               onCreated={({ gl }) => {
                 gl.shadowMap.enabled = !isMobile;
                 setReady(true);
@@ -210,8 +228,8 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
         />
 
         {/* Product content — choreographed swap, one product per scroll step */}
-        <div className="pointer-events-none absolute inset-0 flex items-end md:items-center">
-          <div className="shell w-full pb-28 md:pb-0">
+        <div className="pointer-events-none absolute inset-0 flex items-end pt-[72px] md:items-center md:pt-0">
+          <div className="shell w-full pb-36 md:pb-0">
             <div className="max-w-xl">
               <AnimatePresence mode="wait">
                 {product && (
@@ -223,7 +241,7 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
                     transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <p className="eyebrow">{categoryName} · {String(scene + 1).padStart(2, '0')}/{sceneCountLabel}</p>
-                    <h2 className="display-section mt-3 text-balance">{product.name}</h2>
+                    <h2 className="journey-title display-section mt-3 break-words text-balance">{product.name}</h2>
                     <p className="mt-4 max-w-md text-[15px] leading-relaxed text-silver-light/90 [text-shadow:0_2px_18px_rgba(0,0,0,0.65)]">
                       {product.shortDescription}
                     </p>
@@ -233,14 +251,14 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
                         <img
                           src={productImage}
                           alt={product.name}
-                          className="h-20 w-20 rounded-xl border border-white/10 bg-white object-contain p-2 shadow-premium"
+                          className="journey-thumb h-20 w-20 shrink-0 rounded-xl border border-white/10 bg-white object-contain p-2 shadow-premium"
                           loading="lazy"
                         />
                       )}
                       <div>
                         <p className="font-display text-[12px] font-bold tracking-[0.22em] text-brass-light/90">{productSpec}</p>
                         <p className="mt-1 text-[14px] font-semibold text-paper">{productPrice}</p>
-                        <p className="mt-1 text-[11px] tracking-[0.14em] text-muted-dim">{product.sku}</p>
+                        <p className="mt-1 break-words text-[12px] tracking-[0.1em] text-muted-dim">{product.sku}</p>
                       </div>
                     </div>
 
@@ -262,8 +280,8 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
         </div>
 
         {/* Finish picker — makes the finishId prop interactive */}
-        <div className="absolute bottom-6 right-5 z-30 md:bottom-8 md:right-8">
-          <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-white/10 bg-black/50 p-1.5 backdrop-blur-md" role="group" aria-label="Preview finish">
+        <div className="absolute right-4 top-[80px] z-30 sm:right-5 md:bottom-8 md:right-8 md:top-auto">
+          <div className="pointer-events-auto flex items-center gap-0.5 rounded-full border border-white/10 bg-black/50 p-1 backdrop-blur-md sm:gap-2 sm:p-1.5" role="group" aria-label="Preview finish">
             {FINISH_OPTIONS.map((id) => {
               const meta = materials.find((m) => m.id === id);
               if (!meta) return null;
@@ -276,12 +294,17 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
                   aria-label={`Preview ${meta.name}`}
                   aria-pressed={active}
                   onClick={() => setFinish(id)}
-                  className={cx(
-                    'h-8 w-8 rounded-full border transition-all duration-300',
-                    active ? 'scale-110 border-brass-light shadow-glow' : 'border-white/20 hover:scale-105 hover:border-white/40',
-                  )}
-                  style={{ background: meta.swatch }}
-                />
+                  className="grid h-11 w-11 shrink-0 place-items-center rounded-full"
+                >
+                  <span
+                    aria-hidden
+                    className={cx(
+                      'h-8 w-8 rounded-full border transition-all duration-300',
+                      active ? 'scale-110 border-brass-light shadow-glow' : 'border-white/20',
+                    )}
+                    style={{ background: meta.swatch }}
+                  />
+                </button>
               );
             })}
           </div>
@@ -289,17 +312,18 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
 
         {/* Scroll hint + skip (scene 0 only) */}
         {scene === 0 && (
-          <div className="absolute bottom-6 left-1/2 z-30 -translate-x-1/2 text-center">
+          <div className="absolute bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-30 flex -translate-x-1/2 flex-col items-center text-center md:bottom-8">
             <button
               type="button"
+              aria-label="Scroll to next product"
               onClick={() => scrollToFraction(totalScenes > 1 ? 1 / (totalScenes - 1) : 1)}
-              className="pointer-events-auto flex flex-col items-center gap-2 text-[11px] font-semibold tracking-[0.28em] text-muted transition-colors hover:text-brass-light"
+              className="pointer-events-auto grid h-11 w-11 place-items-center rounded-full text-muted transition-colors hover:text-brass-light"
             >
               <span className="flex h-11 w-7 items-start justify-center rounded-full border border-brass/30 p-1.5">
                 <span className="h-2 w-2 animate-bounce rounded-full bg-brass" aria-hidden />
               </span>
             </button>
-            <button type="button" onClick={() => scrollToFraction(1)} className="pointer-events-auto mt-2 min-h-[44px] px-3 text-[11px] tracking-[0.2em] text-muted-dim underline-offset-4 hover:text-paper hover:underline">
+            <button type="button" onClick={() => scrollToFraction(1)} className="pointer-events-auto min-h-[44px] px-3 text-[11px] tracking-[0.2em] text-muted-dim underline-offset-4 hover:text-paper hover:underline">
               Skip products
             </button>
           </div>
@@ -314,11 +338,16 @@ export function ScrollScene({ finishId = 'stainless', reducedMotion = false, isM
               type="button"
               onClick={() => scrollToFraction(totalScenes > 1 ? i / (totalScenes - 1) : 0)}
               aria-label={`Go to ${p.name}`}
-              className={cx(
-                'w-[3px] rounded-full transition-all duration-500 hover:bg-brass-light',
-                i === scene ? 'h-10 bg-gradient-to-b from-brass-light to-brass-dark' : i < scene ? 'h-8 bg-brass/60' : 'h-8 bg-white/15',
-              )}
-            />
+              className="grid h-11 w-11 place-items-center"
+            >
+              <span
+                aria-hidden
+                className={cx(
+                  'w-[3px] rounded-full transition-all duration-500',
+                  i === scene ? 'h-10 bg-gradient-to-b from-brass-light to-brass-dark' : i < scene ? 'h-8 bg-brass/60' : 'h-8 bg-white/15',
+                )}
+              />
+            </button>
           ))}
           <span className="mt-1 text-[11px] tracking-[0.2em] text-muted-dim">{sceneCountLabel}</span>
         </div>

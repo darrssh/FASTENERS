@@ -46,11 +46,11 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
   return (
     <div ref={dialogRef} className="fixed inset-0 z-[75]" role="dialog" aria-modal="true" aria-label="Product search">
       <div className="absolute inset-0 bg-black/75" onClick={onClose} />
-      <div className="shell relative max-h-full overflow-auto pt-24">
-        <div className="card-premium mx-auto max-w-2xl bg-ink-900/95 p-6 backdrop-blur-xl">
+      <div className="shell relative max-h-[100svh] overflow-auto pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(5rem,env(safe-area-inset-top))]">
+        <div className="card-premium mx-auto max-w-2xl bg-ink-900/95 p-5 backdrop-blur-xl sm:p-6">
           <div className="flex items-center justify-between">
             <p className="eyebrow">Search the catalog</p>
-            <button type="button" onClick={onClose} className="rounded-md border hairline px-3 py-1.5 text-sm">Close</button>
+            <button type="button" onClick={onClose} className="grid min-h-[44px] min-w-[44px] place-items-center rounded-md border hairline px-3 text-sm">Close</button>
           </div>
           <input
             ref={inputRef}
@@ -60,7 +60,10 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
             aria-label="Search products by name, SKU, category, or material"
             className="mt-4 w-full rounded-lg border hairline bg-ink-950 px-4 py-3.5 text-base text-paper placeholder:text-muted-dim focus:border-accent"
           />
-          <div className="mt-4 max-h-[40vh] overflow-auto">
+          <div className="mt-4 max-h-[40svh] overflow-auto overscroll-contain">
+            {q.trim().length < 2 && (
+              <p className="py-4 text-center text-[14px] text-muted">Type at least 2 characters — try M4, SKU or material.</p>
+            )}
             {q.trim().length >= 2 && results.length === 0 && (
               <p className="py-4 text-center text-[14px] text-muted">No matches for “{q}”. Try a SKU or material.</p>
             )}

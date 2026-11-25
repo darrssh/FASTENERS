@@ -24,5 +24,6 @@ export function useReducedMotion(): boolean {
 }
 
 export function useIsMobile(): boolean {
-  return useMediaQuery('(max-width: 768px)');
+  // Match Tailwind's `md` boundary exactly: at 768px CSS uses desktop layouts.
+  return useMediaQuery('(max-width: 767.98px)');
 }

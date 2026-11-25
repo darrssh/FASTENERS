@@ -4,6 +4,7 @@ import type { Product } from '../../data/products';
 import { formatINR } from '../../lib/utils';
 import { ProductRender } from './ProductRender';
 import { useCart } from '../../hooks/useCart';
+import { overviewImage } from '../../data/productMedia';
 
 const STOCK_LABEL: Record<Product['stockStatus'], string> = {
   'in-stock': 'In stock',
@@ -33,7 +34,7 @@ export function ProductCard({ product }: { product: Product }) {
   );
 
   const onAdd = () => {
-    cart.add(product.id, product.availableSizes[0] ?? 'Standard', Math.max(1, product.moq));
+    cart.add(product.id, product.availableSizes[0] ?? 'Standard', product.moq);
     setAdded(true);
     if (addedTimer.current) window.clearTimeout(addedTimer.current);
     addedTimer.current = window.setTimeout(() => setAdded(false), 1800);
@@ -45,7 +46,7 @@ export function ProductCard({ product }: { product: Product }) {
           interactive-in-interactive breaks keyboard/AT activation. */}
       <div className="img-zoom relative block overflow-hidden">
         <Link to={`/products/${product.slug}`} aria-label={`View ${product.name}`}>
-          <ProductRender renderKey={product.images[0] ?? 'hex-bolt'} name={product.name} />
+          <ProductRender renderKey={overviewImage(product)} name={product.name} />
         </Link>
         <button
           type="button"
@@ -58,17 +59,20 @@ export function ProductCard({ product }: { product: Product }) {
         </button>
       </div>
       <div className="flex flex-1 flex-col gap-2 p-5">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brass/90">{product.material} · {product.diameter}</p>
-        <Link to={`/products/${product.slug}`} className="font-display text-[19px] font-semibold leading-snug hover:text-brass-light hover:underline hover:decoration-brass/60 hover:underline-offset-4">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brass/90">{product.fastenerType} · {product.diameter}</p>
+        <Link to={`/products/${product.slug}`} className="inline-flex min-h-[44px] items-center break-words font-display text-[19px] font-semibold leading-snug hover:text-brass-light hover:underline hover:decoration-brass/60 hover:underline-offset-4">
           {product.name}
         </Link>
         <p className="text-[12px] tracking-[0.14em] text-muted-dim">SKU {product.sku}</p>
         <p className="text-[13px] text-muted">
           Sizes: {product.availableSizes.length > 0 ? `${product.availableSizes.slice(0, 3).join(' · ')}${product.availableSizes.length > 3 ? ' +' : ''}` : 'See details'}
         </p>
-        <div className="mt-auto flex items-center justify-between pt-3">
-          <p className="font-display text-[17px] font-bold">{formatINR(product.price, product.currency)}</p>
-          <span className={`rounded-full border px-2.5 py-1 text-[11px] ${STOCK_STYLE[product.stockStatus]}`}>{STOCK_LABEL[product.stockStatus]}</span>
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-3">
+          <div className="min-w-0">
+            <p className="font-display text-[17px] font-bold">{formatINR(product.price, product.currency)} <span className="text-[12px] font-medium text-muted">each</span></p>
+            <p className="text-[12px] text-muted">MOQ {product.moq} · from {formatINR((product.price ?? 0) * product.moq, product.currency)}</p>
+          </div>
+          <span className={`shrink-0 rounded-full border px-2.5 py-1 text-[11px] ${STOCK_STYLE[product.stockStatus]}`}>{STOCK_LABEL[product.stockStatus]}</span>
         </div>
         <div className="mt-2 flex gap-2">
           {product.price !== null ? (
@@ -76,9 +80,9 @@ export function ProductCard({ product }: { product: Product }) {
               type="button"
               className="btn-primary min-h-[44px] flex-1 !px-3 !py-2.5 !text-[12px]"
               onClick={onAdd}
-              aria-label={`Add ${product.name} to cart`}
+              aria-label={`Add ${product.moq} pcs of ${product.name} to cart`}
             >
-              {added ? '✓ Added' : 'Add to cart'}
+              {added ? '✓ Added' : `Add ${product.moq} pcs`}
             </button>
           ) : (
             <Link to={`/quote?product=${product.id}`} className="btn-primary min-h-[44px] flex-1 !px-3 !py-2.5 !text-[12px]">Get quote</Link>

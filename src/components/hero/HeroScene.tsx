@@ -21,9 +21,9 @@ type Props = {
 export function HeroScene({ finishId = 'stainless', reducedMotion = false, isMobile = false, onError }: Props) {
   return (
     <Canvas
-      dpr={isMobile ? [1, 1.5] : [1, 2]}
+      dpr={isMobile ? [1, 1.25] : [1, 2]}
       camera={{ position: isMobile ? [4.4, 1.9, 5.9] : [4.2, 1.8, 5.6], fov: 35 }}
-      gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+      gl={{ antialias: !isMobile, alpha: true, powerPreference: 'high-performance' }}
       onCreated={({ gl }) => {
         // Context creation already succeeded when this runs; real WebGL-missing
         // handling is the webglAvailable() gate + onError prop.
@@ -37,11 +37,11 @@ export function HeroScene({ finishId = 'stainless', reducedMotion = false, isMob
       <Suspense fallback={null}>
         <AimCamera target={[0, 0, 0]} />
         <StudioLighting shadows={!isMobile} />
-        {reducedMotion ? (
-          <HeroBolt finishId={finishId} shift={[0, 0, 0]} />
+        {reducedMotion || isMobile ? (
+          <HeroBolt finishId={finishId} shift={[0, 0, 0]} isMobile={isMobile} />
         ) : (
           <Float speed={1.1} rotationIntensity={0.12} floatIntensity={0.35} floatingRange={[-0.08, 0.08]}>
-            <HeroBolt finishId={finishId} shift={[0, 0, 0]} />
+            <HeroBolt finishId={finishId} shift={[0, 0, 0]} isMobile={isMobile} />
           </Float>
         )}
         {!isMobile && <ContactShadows position={[0, -1.6, 0]} opacity={0.55} scale={10} blur={2.4} far={4} color="#000000" />}

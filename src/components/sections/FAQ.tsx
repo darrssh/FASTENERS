@@ -3,11 +3,12 @@ import { useReveal } from '../../hooks/useScrollProgress';
 import { cx } from '../../lib/utils';
 
 const FAQS = [
-  { q: 'Is this a live store I can buy from today?', a: 'Yes. Orders are placed on this site with cash on delivery only. Your order is stored in our backend and the admin is notified immediately — no online payment is taken.' },
-  { q: 'Are the listed prices and stock real?', a: 'The PDF catalogue has no commercial data, so the displayed INR prices, MOQs and stock states are the current acting catalogue values. Technical details and photos are the exact WELTORQUE catalogue pages.' },
-  { q: 'Can I request bulk or custom fasteners?', a: 'Yes — the Quote page collects category, sizes, materials, quantities, delivery, and drawings. The request is sent to our backend and appears in the admin queue.' },
-  { q: 'What if my device cannot render 3D?', a: 'The site detects missing WebGL or load failures and swaps in a static render while keeping headlines, CTAs, catalog, and navigation fully usable.' },
-  { q: 'How do I replace the brand, contact, and legal text?', a: 'Edit src/data/brand.ts for identity/contact, src/data/products.ts for catalog, and the legal pages under src/pages/LegalPage. All placeholders are labeled.' },
+  { q: 'Can I order from this site today?', a: 'Yes. Stocked lines are ordered with cash on delivery only. Your order is stored in our backend and the team is notified — no online payment is taken here.' },
+  { q: 'Are the prices, MOQs and stock real?', a: 'Yes. The INR prices, MOQ tiers and stock states are the current acting catalogue values. Technical details and images are sourced from the WELTORQUE technical reference — each product shows both a cropped overview and the original catalogue page.' },
+  { q: 'How do material, grade and finish get specified?', a: 'We do not assume them from a catalogue image. Tell us what your application needs in the quote form or order notes, and we confirm the exact material, grade and finish with you before supply.' },
+  { q: 'Can I order below the MOQ?', a: 'MOQs are set per SKU (100, 200 or 500 pcs) and the quantity controls enforce them. For smaller volumes or custom requirements, send a quote request and we will review it.' },
+  { q: 'Can I request bulk or custom fasteners?', a: 'Yes. The quote form collects the product or category, sizes, quantities, drawings, delivery location and dates. The request goes straight to our team.' },
+  { q: 'What if my device cannot render 3D?', a: 'The site detects missing WebGL or load failures and swaps in static product views while keeping the catalogue, prices, CTAs and navigation fully usable.' },
 ];
 
 export function FAQ() {
@@ -19,7 +20,7 @@ export function FAQ() {
         <div className="md:sticky md:top-28 md:self-start">
           <p className="eyebrow" data-reveal>FAQ · 10</p>
           <h2 className="display-section mt-3 text-balance" data-reveal>Straight <span className="serif-accent brass-text">answers.</span></h2>
-          <p className="mt-4 max-w-sm text-[14px] text-muted" data-reveal>No sales talk. COD and ordering details stated plainly.</p>
+          <p className="mt-4 max-w-sm text-[14px] text-muted" data-reveal>Pricing, MOQ, specification and delivery — stated plainly.</p>
         </div>
         <div className="space-y-3">
           {FAQS.map((f, i) => (

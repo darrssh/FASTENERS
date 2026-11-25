@@ -15,10 +15,11 @@ export function IndustriesSection() {
   return (
     <section ref={ref} className="shell relative py-24 md:py-32" aria-label="Industry applications">
       <p className="eyebrow" data-reveal>Applications · 05</p>
-      <h2 className="display-section mt-3 max-w-3xl text-balance" data-reveal>Engineered for <span className="serif-accent brass-text">real-world</span> applications.</h2>
+      <h2 className="display-section mt-3 max-w-3xl text-balance" data-reveal>Pick the joint. <span className="serif-accent brass-text">We'll show the fastener.</span></h2>
       <p className="mt-4 max-w-2xl text-[15px] text-muted" data-reveal>
-        Representative scenes rendered in-brand (no unrelated stock). Each card routes to the relevant
-        fastener family. Never specify safety-critical joints from marketing copy — confirm approvals.
+        Six everyday assembly situations, each mapped to the exact M2–M8 family that fits it. Every card
+        opens priced, stocked listings with MOQ tiers. Confirm material, grade and finish on your quote —
+        never specify safety-critical joints from marketing copy.
       </p>
       <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
         {APPS.map((a, i) => (

@@ -267,22 +267,22 @@ function SpecsEditor({ rows, onChange }: { rows: SpecRow[]; onChange: (rows: Spe
     <div className="flex flex-col gap-2">
       <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">Technical specifications</span>
       {rows.map((row, i) => (
-        <div key={i} className="flex gap-2">
+        <div key={i} className="flex flex-col gap-2 rounded-lg border hairline bg-white/[0.02] p-2 sm:flex-row sm:items-center sm:border-0 sm:bg-transparent sm:p-0">
           <input
-            className="w-2/5 rounded-lg border hairline bg-ink-900 px-3 py-2.5 text-base text-paper"
+            className="w-full rounded-lg border hairline bg-ink-900 px-3 py-2.5 text-base text-paper sm:w-2/5"
             placeholder="Label (e.g. Thread)"
             value={row.label}
             onChange={(e) => onChange(rows.map((r, j) => (j === i ? { ...r, label: e.target.value } : r)))}
           />
           <input
-            className="flex-1 rounded-lg border hairline bg-ink-900 px-3 py-2.5 text-base text-paper"
+            className="w-full flex-1 rounded-lg border hairline bg-ink-900 px-3 py-2.5 text-base text-paper"
             placeholder="Value (e.g. M10 × 1.5)"
             value={row.value}
             onChange={(e) => onChange(rows.map((r, j) => (j === i ? { ...r, value: e.target.value } : r)))}
           />
           <button
             type="button"
-            className="btn-ghost !px-3 !py-2"
+            className="btn-ghost min-h-[44px] self-end !px-3 !py-2 sm:self-center"
             aria-label="Remove specification"
             onClick={() => onChange(rows.filter((_, j) => j !== i))}
           >
@@ -290,7 +290,7 @@ function SpecsEditor({ rows, onChange }: { rows: SpecRow[]; onChange: (rows: Spe
           </button>
         </div>
       ))}
-      <button type="button" className="btn-ghost self-start !px-4 !py-2 !text-[12px]" onClick={() => onChange([...rows, { label: '', value: '' }])}>
+      <button type="button" className="btn-ghost min-h-[44px] self-start !px-4 !py-2 !text-[12px]" onClick={() => onChange([...rows, { label: '', value: '' }])}>
         + Add specification
       </button>
     </div>
@@ -333,7 +333,7 @@ function ImageManager({ images, onChange }: { images: string[]; onChange: (image
               type="button"
               aria-label={`Remove image ${i + 1}`}
               onClick={() => onChange(images.filter((_, j) => j !== i))}
-              className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-black/70 text-[12px] text-white"
+              className="absolute right-0 top-0 grid h-11 w-11 place-items-center rounded-full bg-black/70 text-[12px] text-white"
             >
               ✕
             </button>
@@ -543,7 +543,7 @@ function AdminDashboard() {
           </button>
         ))}
         {summary.total > 0 && (
-          <Button variant="ghost" onClick={() => void markAll()} className="!px-4 !py-2 !text-[12px]">
+          <Button variant="ghost" onClick={() => void markAll()} className="min-h-[44px] !px-4 !py-2 !text-[12px]">
             Mark all {summary.total} as read
           </Button>
         )}
@@ -562,17 +562,17 @@ function AdminDashboard() {
       )}
       {tab === 'products' && (
       <div className="mt-8 grid gap-8 lg:grid-cols-[340px_1fr]">
-        {/* Product list */}
-        <aside className="lg:sticky lg:top-24 lg:self-start">
-          <div className="card-premium p-5">
+        {/* Product list — editor comes first on phones, chooser after it. */}
+        <aside className="order-2 lg:order-1 lg:sticky lg:top-24 lg:self-start">
+          <div className="card-premium p-4 sm:p-5">
             <div className="flex items-center justify-between gap-3">
               <p className="eyebrow">{filtered.length} products</p>
-              <Button onClick={startNew} className="!px-4 !py-2 !text-[12px]">+ New</Button>
+              <Button onClick={startNew} className="min-h-[44px] !px-4 !py-2 !text-[12px]">+ New</Button>
             </div>
             <div className="mt-4">
               <Input label="Search" name="admin-search" placeholder="Name, SKU, category…" value={filter} onChange={(e) => setFilter(e.target.value)} />
             </div>
-            <div className="mt-4 max-h-[60vh] space-y-2 overflow-auto pr-1">
+            <div className="mt-4 max-h-[50svh] space-y-2 overflow-auto overscroll-contain pr-1 lg:max-h-[calc(100svh-16rem)]">
               {listLoading && <p className="text-[13px] text-muted">Loading…</p>}
               {!listLoading && filtered.length === 0 && <p className="text-[13px] text-muted">No products match.</p>}
               {filtered.map((p) => (
@@ -585,7 +585,7 @@ function AdminDashboard() {
                   }`}
                 >
                   <span className="h-12 w-12 shrink-0 overflow-hidden rounded-md border hairline bg-white">
-                    <ProductRender renderKey={p.images[0] ?? 'hex-bolt'} name={p.name} compact />
+                    <ProductRender renderKey={p.images[0] ?? 'hex-bolt'} name={p.name} compact fit />
                   </span>
                   <span className="min-w-0">
                     <span className="block truncate text-[13px] font-semibold text-paper">{p.name}</span>
@@ -599,15 +599,15 @@ function AdminDashboard() {
         </aside>
 
         {/* Form */}
-        <section className="min-w-0">
-          <form className="card-premium p-6" onSubmit={save}>
+        <section className="order-1 min-w-0 lg:order-2">
+          <form className="card-premium p-5 sm:p-6" onSubmit={save}>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2 className="font-display text-xl font-bold">
                 {editingId ? 'Edit product' : 'Add product'}
                 {editingId && <span className="ml-2 text-[12px] font-normal text-muted">id: {editingId}</span>}
               </h2>
               {editingId && (
-                <Button variant="ghost" onClick={startNew} className="!px-4 !py-2 !text-[12px]">Cancel edit</Button>
+                <Button variant="ghost" onClick={startNew} className="min-h-[44px] !px-4 !py-2 !text-[12px]">Cancel edit</Button>
               )}
             </div>
 

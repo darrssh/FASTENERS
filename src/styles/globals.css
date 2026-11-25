@@ -23,11 +23,16 @@
 * { box-sizing: border-box; }
 
 html {
-  scroll-behavior: smooth;
-}
-
-html, body, #root {
   height: 100%;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  -webkit-text-size-adjust: 100%;
+  /* Keep the document element as the single scroller so window.scrollY,
+     sticky positioning and GSAP all measure the same viewport. */
+  overflow-x: hidden;
+}
+@supports (overflow: clip) {
+  html, body { overflow-x: clip; }
 }
 
 body {
@@ -38,11 +43,9 @@ body {
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  /* clip (not hidden): kills horizontal scroll without breaking position:sticky
-     children, which overflow-x:hidden breaks on some mobile browsers. */
-  overflow-x: hidden;
-  overflow-x: clip;
 }
+
+a, button { touch-action: manipulation; }
 
 /* 16px floor on form controls — iOS Safari auto-zooms on focus below 16px,
    which shatters fixed drawers and sticky layouts on phones. */
@@ -50,7 +53,8 @@ input, select, textarea {
   font-size: 16px;
 }
 
-/* film grain */
+/* film grain — decorative only; skip the full-screen composite layer on
+   touch devices and for users who prefer reduced motion. */
 body::after {
   content: '';
   position: fixed;
@@ -59,6 +63,9 @@ body::after {
   pointer-events: none;
   opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  body::after { display: none; }
 }
 
 h1, h2, h3, h4 {
@@ -85,16 +92,16 @@ h1, h2, h3, h4 {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: clamp(16px, 5vw, 24px);
+  padding-right: clamp(16px, 5vw, 24px);
 }
 @media (min-width: 1024px) {
   .shell { padding-left: 48px; padding-right: 48px; }
 }
 
 .eyebrow {
-  font-size: 11px;
-  letter-spacing: 0.24em;
+  font-size: 12px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--brass);
   font-weight: 700;
@@ -109,14 +116,26 @@ h1, h2, h3, h4 {
   background: linear-gradient(90deg, var(--brass), transparent);
   display: inline-block;
 }
+@media (min-width: 640px) {
+  .eyebrow { letter-spacing: 0.24em; }
+}
 
 .display-hero {
-  font-size: clamp(38px, 9vw, 108px);
+  font-size: clamp(34px, 9.5vw, 44px);
   font-weight: 700;
   text-transform: uppercase;
 }
+@media (min-width: 640px) {
+  .display-hero { font-size: clamp(44px, 6vw, 64px); }
+}
+@media (min-width: 1024px) {
+  .display-hero { font-size: clamp(64px, 6vw, 88px); }
+}
+@media (min-width: 1536px) {
+  .display-hero { font-size: clamp(80px, 6vw, 104px); }
+}
 .display-section {
-  font-size: clamp(32px, 4.5vw, 62px);
+  font-size: clamp(30px, 4.5vw, 62px);
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -177,9 +196,12 @@ h1, h2, h3, h4 {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
   transform: translateX(-150%) skewX(-18deg);
 }
-.btn-primary:hover { transform: translateY(-2px); filter: brightness(1.05); box-shadow: 0 18px 44px -12px rgba(201,168,106,0.65); }
-.btn-primary:hover::after { animation: btnshine 0.9s ease; }
 @keyframes btnshine { to { transform: translateX(320%) skewX(-18deg); } }
+/* Hover affordances only on real pointers — on touch they stay latched after a tap. */
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.05); box-shadow: 0 18px 44px -12px rgba(201,168,106,0.65); }
+  .btn-primary:hover::after { animation: btnshine 0.9s ease; }
+}
 
 .btn-ghost {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
@@ -189,7 +211,9 @@ h1, h2, h3, h4 {
   backdrop-filter: blur(8px);
   transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
 }
-.btn-ghost:hover { border-color: rgba(201,168,106,0.55); background: rgba(201,168,106,0.08); transform: translateY(-2px); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-ghost:hover { border-color: rgba(201,168,106,0.55); background: rgba(201,168,106,0.08); transform: translateY(-2px); }
+}
 
 .studio-bg {
   background:
@@ -199,23 +223,41 @@ h1, h2, h3, h4 {
     linear-gradient(180deg, #14161a 0%, #0a0b0d 55%, #070809 100%);
 }
 
+/* Subtle technical grid for the phone hero — atmosphere, not a fake product. */
+.hero-blueprint {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 72%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 72%, transparent 100%);
+}
+
 .text-balance { text-wrap: balance; }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 
 /* scroll reveal helpers */
-[data-reveal] { will-change: transform, opacity; }
 .reveal-clip { clip-path: inset(0 0 100% 0); }
 .marquee-track { display: flex; width: max-content; animation: marquee 28s linear infinite; }
-.marquee-track:hover { animation-play-state: paused; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 .card-hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
-.card-hover-lift:hover { transform: translateY(-6px); border-color: rgba(201,168,106,0.4); box-shadow: 0 28px 60px -20px rgba(0,0,0,0.7); }
-
 .img-zoom img, .img-zoom svg { transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
-.img-zoom:hover img, .img-zoom:hover svg { transform: scale(1.05); }
+
+@media (hover: hover) and (pointer: fine) {
+  .marquee-track:hover { animation-play-state: paused; }
+  .card-hover-lift:hover { transform: translateY(-6px); border-color: rgba(201,168,106,0.4); box-shadow: 0 28px 60px -20px rgba(0,0,0,0.7); }
+  .img-zoom:hover img, .img-zoom:hover svg { transform: scale(1.05); }
+}
+
+/* Short phones/landscape: keep the sticky journey copy clear of the header
+   and bottom controls without hiding the primary CTA. */
+@media (max-height: 680px) {
+  .journey-thumb { display: none !important; }
+  .journey-title { font-size: clamp(28px, 8vw, 40px) !important; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

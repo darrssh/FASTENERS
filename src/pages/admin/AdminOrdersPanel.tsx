@@ -62,7 +62,7 @@ export function AdminOrdersPanel({ onChanged }: { onChanged: () => void }) {
             {orders.length} total · <span className={unread ? 'text-brass' : ''}>{unread} new</span>
           </p>
         </div>
-        <Button variant="ghost" onClick={() => void load()} className="!px-4 !py-2 !text-[12px]">Refresh</Button>
+        <Button variant="ghost" onClick={() => void load()} className="min-h-[44px] !px-4 !py-2 !text-[12px]">Refresh</Button>
       </div>
       {error && <p role="alert" className="mt-4 rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-[13px] text-red-300">{error}</p>}
       {loading && <p className="mt-6 text-[13px] text-muted">Loading orders…</p>}
@@ -73,19 +73,19 @@ export function AdminOrdersPanel({ onChanged }: { onChanged: () => void }) {
       <div className="mt-6 space-y-4">
         {orders.map((order) => (
           <article key={order.id} className="card-premium overflow-hidden">
-            <div className="flex flex-wrap items-start justify-between gap-4 p-5">
-              <div>
+            <div className="flex flex-wrap items-start justify-between gap-4 p-4 sm:p-5">
+              <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="font-display text-[17px] font-bold">{order.orderNumber}</p>
                   {!order.isRead && <span className="rounded-full border border-brass/40 bg-brass/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-brass-light">New</span>}
                   <span className="rounded-full border hairline px-2 py-0.5 text-[10px] uppercase tracking-widest text-muted">{order.status}</span>
                   <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-emerald-200">COD · {order.paymentStatus}</span>
                 </div>
-                <p className="mt-2 text-[13px] text-muted">
-                  {new Date(order.createdAt).toLocaleString()} · {order.customerName} · {order.customerEmail}
+                <p className="mt-2 break-words text-[13px] text-muted">
+                  {new Date(order.createdAt).toLocaleString()} · {order.customerName} · <span className="break-all">{order.customerEmail}</span>
                 </p>
               </div>
-              <div className="text-right">
+              <div className="shrink-0 text-right">
                 <p className="font-display text-2xl font-bold">{formatINR(order.total, order.currency)}</p>
                 <p className="text-[12px] text-muted">{order.items.reduce((n, i) => n + i.qty, 0)} units</p>
               </div>
@@ -101,9 +101,9 @@ export function AdminOrdersPanel({ onChanged }: { onChanged: () => void }) {
                 {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
               </Select>
               {!order.isRead && (
-                <Button variant="ghost" onClick={() => void markRead(order.id)} className="!px-4 !py-2 !text-[12px]">Mark as read</Button>
+                <Button variant="ghost" onClick={() => void markRead(order.id)} className="min-h-[44px] !px-4 !py-2 !text-[12px]">Mark as read</Button>
               )}
-              <Button variant="ghost" onClick={() => setExpanded(expanded === order.id ? null : order.id)} className="!px-4 !py-2 !text-[12px]">
+              <Button variant="ghost" onClick={() => setExpanded(expanded === order.id ? null : order.id)} className="min-h-[44px] !px-4 !py-2 !text-[12px]">
                 {expanded === order.id ? 'Hide details' : 'View details'}
               </Button>
             </div>
@@ -114,8 +114,8 @@ export function AdminOrdersPanel({ onChanged }: { onChanged: () => void }) {
                 <div className="mt-2 divide-y divide-white/5">
                   {order.items.map((item) => (
                     <div key={item.id} className="flex justify-between gap-4 py-2">
-                      <span>{item.name} · {item.variant} × {item.qty}<span className="text-muted"> · {item.sku}</span></span>
-                      <span className="font-semibold">{formatINR(item.lineTotal, order.currency)}</span>
+                      <span className="min-w-0 break-words">{item.name} · {item.variant} × {item.qty}<span className="text-muted"> · {item.sku}</span></span>
+                      <span className="shrink-0 font-semibold">{formatINR(item.lineTotal, order.currency)}</span>
                     </div>
                   ))}
                 </div>
